@@ -1,4 +1,4 @@
-package fr.thomasbernard03.tarot.ui.theme
+package fr.thomasbernard03.tarot.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

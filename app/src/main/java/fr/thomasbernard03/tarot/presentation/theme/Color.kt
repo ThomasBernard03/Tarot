@@ -1,4 +1,4 @@
-package fr.thomasbernard03.tarot.ui.theme
+package fr.thomasbernard03.tarot.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
