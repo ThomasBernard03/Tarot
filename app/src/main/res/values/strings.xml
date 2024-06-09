@@ -3,4 +3,10 @@
 
     <!-- Game -->
     <string name="new_game">Nouvelle partie</string>
+    <string name="loading_current_game">Chargement de la partie</string>
+    <string name="create_new_game_sheet_title">Nouvelle partie</string>
+    <string name="create_new_game_sheet_validate">Créer la partie</string>
+    <string name="create_new_game_sheet_add_new_player">Ajouter un nouveau joueur</string>
+    <string name="create_new_game_sheet_edit_player">Modifier le joueur</string>
+    <string name="create_new_game_sheet_delete_player">Supprimer le joueur</string>
 </resources>
