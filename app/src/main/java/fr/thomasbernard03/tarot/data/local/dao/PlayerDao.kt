@@ -7,5 +7,5 @@ import fr.thomasbernard03.tarot.data.local.entities.PlayerEntity
 @Dao
 interface PlayerDao {
     @Insert
-    suspend fun insertPlayer(player: PlayerEntity): Long
+    suspend fun insertPlayers(players: List<PlayerEntity>): List<Long>
 }

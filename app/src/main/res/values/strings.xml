@@ -9,4 +9,5 @@
     <string name="create_new_game_sheet_add_new_player">Ajouter un nouveau joueur</string>
     <string name="create_new_game_sheet_edit_player">Modifier le joueur</string>
     <string name="create_new_game_sheet_delete_player">Supprimer le joueur</string>
+    <string name="create_new_game_sheet_default_player_name">Joueur</string>
 </resources>

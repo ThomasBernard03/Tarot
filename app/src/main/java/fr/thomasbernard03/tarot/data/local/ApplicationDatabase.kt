@@ -18,6 +18,7 @@ import fr.thomasbernard03.tarot.data.local.entities.PlayerGameEntity
     ],
     version = 3
 )
+@TypeConverters(DateConverter::class)
 abstract class ApplicationDatabase : RoomDatabase() {
     abstract fun playerDao(): PlayerDao
     abstract fun gameDao(): GameDao

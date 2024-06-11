@@ -45,11 +45,7 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
             sheetState = modalBottomSheetState,
         ) {
             CreateGameSheet(
-                players = state.players,
-                onPlayersChanged = { onEvent(GameEvent.OnPlayersChanged(it)) },
-                onDismiss = { onEvent(GameEvent.OnCloseCreateDialogSheet) },
                 onValidate = { onEvent(GameEvent.OnValidateCreateGameSheet(it)) },
-                onCreateNewPlayer = { onEvent(GameEvent.OnCreateNewPlayer) }
             )
         }
     }
