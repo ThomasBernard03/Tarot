@@ -12,6 +12,7 @@ import fr.thomasbernard03.tarot.domain.models.Game
 import fr.thomasbernard03.tarot.domain.models.Player
 import fr.thomasbernard03.tarot.domain.models.Resource
 import fr.thomasbernard03.tarot.domain.models.errors.CreateGameError
+import fr.thomasbernard03.tarot.domain.models.errors.GetGameError
 import fr.thomasbernard03.tarot.domain.repositories.GameRepository
 import org.koin.java.KoinJavaComponent.get
 import java.util.Date
@@ -21,6 +22,9 @@ class GameRepositoryImpl(
     private val playerGameDao : PlayerGameDao = get(PlayerGameDao::class.java),
     private val gameDao: GameDao = get(GameDao::class.java)
 ) : GameRepository {
+
+
+    // Use transactions to ensure that all operations are successful
     override suspend fun createGame(players: List<CreatePlayerModel>): Resource<Game, CreateGameError> {
         try {
             // TODO Check if game is not already in progress
@@ -48,6 +52,23 @@ class GameRepositoryImpl(
         catch (e: Exception) {
             Log.e(e.message, e.stackTraceToString())
             return Resource.Error(CreateGameError.UnknownError)
+        }
+    }
+
+    // TODO optimize this
+    override suspend fun getAllGames(): Resource<List<Game>, GetGameError> {
+        return try {
+            val games = gameDao.getAllGames().map {
+                val players = playerGameDao.getPlayersForGame(it.id!!).map { playerEntity ->
+                    Player(id = playerEntity.id!!, name = playerEntity.name, color = playerEntity.color)
+                }
+                Game(id = it.id, startedAt = it.startedAt, players = players)
+            }
+
+            Resource.Success(games)
+        } catch (e : Exception){
+            Log.e(e.message, e.stackTraceToString())
+            Resource.Error(GetGameError.UnknownError)
         }
     }
 }

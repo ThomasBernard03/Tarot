@@ -19,6 +19,7 @@ import fr.thomasbernard03.tarot.presentation.components.BottomAppBar
 import fr.thomasbernard03.tarot.presentation.game.GameScreen
 import fr.thomasbernard03.tarot.presentation.game.GameViewModel
 import fr.thomasbernard03.tarot.presentation.history.HistoryScreen
+import fr.thomasbernard03.tarot.presentation.history.HistoryViewModel
 import fr.thomasbernard03.tarot.presentation.information.InformationScreen
 import fr.thomasbernard03.tarot.presentation.theme.TarotTheme
 
@@ -45,7 +46,9 @@ class MainActivity : ComponentActivity() {
                                 GameScreen(state = state, onEvent = viewModel::onEvent)
                             }
                             composable("history"){
-                                HistoryScreen()
+                                val viewModel : HistoryViewModel = viewModel()
+                                val state by viewModel.state.collectAsStateWithLifecycle()
+                                HistoryScreen(state = state, onEvent = viewModel::onEvent)
                             }
                             composable("information") {
                                 InformationScreen()
