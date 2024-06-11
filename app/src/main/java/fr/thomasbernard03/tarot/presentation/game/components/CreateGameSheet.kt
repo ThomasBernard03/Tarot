@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -28,6 +29,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.LargePadding
@@ -66,7 +68,6 @@ fun CreateGameSheet(
                     horizontalArrangement = Arrangement.spacedBy(MediumPadding),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    PlayerIcon(name = player.name, color = player.color.toColor())
 
                     if (editedPlayerId == player.id){
                         var editedPlayerName by remember { mutableStateOf(player.name) }
@@ -75,11 +76,16 @@ fun CreateGameSheet(
                             focusRequester.requestFocus()
                         }
 
+                        PlayerIcon(name = editedPlayerName, color =  player.color.toColor())
+
                         OutlinedTextField(
                             modifier = Modifier.focusRequester(focusRequester),
                             value = editedPlayerName,
                             onValueChange = { editedPlayerName = it },
-                            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                            keyboardOptions = KeyboardOptions.Default.copy(
+                                imeAction = ImeAction.Done,
+                                capitalization = KeyboardCapitalization.Words
+                            ),
                             keyboardActions = KeyboardActions(
                                 onDone = {
                                     onPlayersChanged(
@@ -97,6 +103,8 @@ fun CreateGameSheet(
                         )
                     }
                     else {
+                        PlayerIcon(name = player.name, color = player.color.toColor())
+
                         Text(
                             text = player.name,
                             modifier = Modifier.weight(1f)
@@ -128,8 +136,14 @@ fun CreateGameSheet(
             Text(text = stringResource(id = R.string.create_new_game_sheet_add_new_player))
         }
 
-        Row {
-            TextButton(onClick = { onValidate(players) }) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
+        ) {
+            TextButton(
+                onClick = { onValidate(players) },
+                enabled = players.size >= 3
+            ) {
                 Text(text = stringResource(id = R.string.create_new_game_sheet_validate))
             }
         }

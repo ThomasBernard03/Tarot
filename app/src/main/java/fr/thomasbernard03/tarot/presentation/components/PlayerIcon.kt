@@ -30,7 +30,7 @@ fun PlayerIcon(
             .size(44.dp)
     ) {
         Text(
-            text = name.first().uppercase(),
+            text = if (name.isEmpty()) "" else name.first().uppercase(),
             color = MaterialTheme.colorScheme.onPrimary,
             modifier = Modifier.align(alignment = Alignment.Center)
         )
