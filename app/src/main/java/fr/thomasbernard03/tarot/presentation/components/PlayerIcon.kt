@@ -21,6 +21,7 @@ import fr.thomasbernard03.tarot.presentation.theme.Red
 
 @Composable
 fun PlayerIcon(
+    modifier : Modifier = Modifier,
     name: String,
     color: Color,
 ) {
@@ -28,6 +29,7 @@ fun PlayerIcon(
         modifier = Modifier
             .background(color = color, shape = CircleShape)
             .size(44.dp)
+            .then(modifier)
     ) {
         Text(
             text = if (name.isEmpty()) "" else name.first().uppercase(),
