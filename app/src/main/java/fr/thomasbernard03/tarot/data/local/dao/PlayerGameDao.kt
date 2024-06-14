@@ -8,8 +8,8 @@ import fr.thomasbernard03.tarot.data.local.entities.GameEntity
 import fr.thomasbernard03.tarot.data.local.entities.PlayerEntity
 import fr.thomasbernard03.tarot.data.local.entities.PlayerGameEntity
 import fr.thomasbernard03.tarot.domain.models.CreatePlayerModel
-import fr.thomasbernard03.tarot.domain.models.Game
-import fr.thomasbernard03.tarot.domain.models.Player
+import fr.thomasbernard03.tarot.domain.models.GameModel
+import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import java.util.Date
 
 @Dao
@@ -36,10 +36,10 @@ interface PlayerGameDao {
     @Transaction
     suspend fun createGameAndAddPlayer(
         players : List<CreatePlayerModel>
-    ) : Game {
+    ) : GameModel {
         // 1) Insert players
         val playersIds = insertPlayers(players.map { PlayerEntity(name = it.name, color = it.color) })
-        val playersWithId = players.zip(playersIds).map { Player(id = it.second, name = it.first.name, color = it.first.color) }
+        val playersWithId = players.zip(playersIds).map { PlayerModel(id = it.second, name = it.first.name, color = it.first.color) }
 
 
         // 2) Create a game
@@ -50,9 +50,9 @@ interface PlayerGameDao {
         // 3) Insert all players in the game
         val playerGameEntities = playersWithId.map { PlayerGameEntity(playerId = it.id, gameId = gameId) }
         addPlayerToGame(playerGameEntities)
-        return Game(
+        return GameModel(
             id = gameId,
             startedAt = game.startedAt,
-            players = playersWithId.map { Player(id = it.id, name = it.name, color = it.color) })
+            players = playersWithId.map { PlayerModel(id = it.id, name = it.name, color = it.color) })
     }
 }

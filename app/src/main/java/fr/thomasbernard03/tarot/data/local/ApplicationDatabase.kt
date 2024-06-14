@@ -9,12 +9,18 @@ import fr.thomasbernard03.tarot.data.local.dao.PlayerGameDao
 import fr.thomasbernard03.tarot.data.local.entities.GameEntity
 import fr.thomasbernard03.tarot.data.local.entities.PlayerEntity
 import fr.thomasbernard03.tarot.data.local.entities.PlayerGameEntity
+import fr.thomasbernard03.tarot.data.local.entities.RoundEntity
+import fr.thomasbernard03.tarot.data.local.entities.TakerEntity
+import fr.thomasbernard03.tarot.data.local.entities.TakerOudlerEntity
 
 @Database(
     entities = [
         PlayerEntity::class,
         GameEntity::class,
         PlayerGameEntity::class,
+        RoundEntity::class,
+        TakerEntity::class,
+        TakerOudlerEntity::class
     ],
     version = 3
 )

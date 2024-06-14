@@ -3,8 +3,6 @@ package fr.thomasbernard03.tarot.presentation.game
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.thomasbernard03.tarot.domain.models.CreatePlayerModel
-import fr.thomasbernard03.tarot.domain.models.Player
-import fr.thomasbernard03.tarot.domain.models.PlayerColor
 import fr.thomasbernard03.tarot.domain.models.Resource
 import fr.thomasbernard03.tarot.domain.usecases.CreateGameUseCase
 import fr.thomasbernard03.tarot.domain.usecases.GetCurrentGameUseCase

@@ -1,6 +1,8 @@
 package fr.thomasbernard03.tarot.presentation.game.components
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -10,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.tooling.preview.Preview
+import fr.thomasbernard03.tarot.commons.MediumPadding
 import fr.thomasbernard03.tarot.commons.toColor
 import fr.thomasbernard03.tarot.domain.models.PlayerColor
 import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
@@ -31,8 +34,10 @@ fun PlayerButton(
         ),
         shape = RectangleShape
     ) {
-        PlayerIcon(name = name, color = color.toColor())
-        Text(text = name)
+        Row(horizontalArrangement = Arrangement.spacedBy(MediumPadding)) {
+            PlayerIcon(name = name, color = color.toColor())
+            Text(text = name)
+        }
     }
 }
 

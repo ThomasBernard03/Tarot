@@ -4,7 +4,6 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -24,16 +23,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.LargePadding
 import fr.thomasbernard03.tarot.commons.MediumPadding
-import fr.thomasbernard03.tarot.commons.toColor
-import fr.thomasbernard03.tarot.domain.models.Game
-import fr.thomasbernard03.tarot.domain.models.Player
+import fr.thomasbernard03.tarot.domain.models.GameModel
+import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.domain.models.PlayerColor
 import fr.thomasbernard03.tarot.presentation.components.Loader
-import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
 import fr.thomasbernard03.tarot.presentation.components.PreviewScreen
 import fr.thomasbernard03.tarot.presentation.game.components.CreateGameSheet
 import fr.thomasbernard03.tarot.presentation.game.components.PlayerButton
@@ -89,7 +85,7 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(LargePadding)
+                    .padding(vertical = LargePadding)
                     .verticalScroll(rememberScrollState())
             ){
                 Column(
@@ -105,7 +101,7 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
         }
 
 
-        if (!state.loadingGame){
+        if (!state.loadingGame && state.currentGame == null){
             FloatingActionButton(
                 containerColor = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
@@ -142,14 +138,14 @@ private fun GameScreenPreview() = PreviewScreen {
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 private fun GameScreenInProgressPreview() = PreviewScreen {
-    val game = Game(
+    val game = GameModel(
         id = 1,
         startedAt = Date(),
         finishedAt = null,
         players = listOf(
-            Player(id = 1, name = "Thomas", color = PlayerColor.BLUE),
-            Player(id = 1, name = "Marianne", color = PlayerColor.RED),
-            Player(id = 1, name = "Nanou", color = PlayerColor.GREEN),
+            PlayerModel(id = 1, name = "Thomas", color = PlayerColor.BLUE),
+            PlayerModel(id = 1, name = "Marianne", color = PlayerColor.RED),
+            PlayerModel(id = 1, name = "Nanou", color = PlayerColor.GREEN),
         )
     )
     val state = GameState(currentGame = game)

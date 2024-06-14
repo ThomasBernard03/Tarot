@@ -4,19 +4,15 @@ import android.util.Log
 import fr.thomasbernard03.tarot.data.local.dao.GameDao
 import fr.thomasbernard03.tarot.data.local.dao.PlayerDao
 import fr.thomasbernard03.tarot.data.local.dao.PlayerGameDao
-import fr.thomasbernard03.tarot.data.local.entities.GameEntity
-import fr.thomasbernard03.tarot.data.local.entities.PlayerEntity
-import fr.thomasbernard03.tarot.data.local.entities.PlayerGameEntity
 import fr.thomasbernard03.tarot.domain.models.CreatePlayerModel
-import fr.thomasbernard03.tarot.domain.models.Game
-import fr.thomasbernard03.tarot.domain.models.Player
+import fr.thomasbernard03.tarot.domain.models.GameModel
+import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.domain.models.Resource
 import fr.thomasbernard03.tarot.domain.models.errors.CreateGameError
 import fr.thomasbernard03.tarot.domain.models.errors.GetGameError
 import fr.thomasbernard03.tarot.domain.repositories.GameRepository
 import org.koin.java.KoinJavaComponent.get
 import java.lang.NullPointerException
-import java.util.Date
 
 class GameRepositoryImpl(
     private val playerDao: PlayerDao = get(PlayerDao::class.java),
@@ -25,7 +21,7 @@ class GameRepositoryImpl(
 ) : GameRepository {
 
 
-    override suspend fun createGame(players: List<CreatePlayerModel>): Resource<Game, CreateGameError> {
+    override suspend fun createGame(players: List<CreatePlayerModel>): Resource<GameModel, CreateGameError> {
         return try {
             val gameAlreadyInProgress = gameDao.gameAlreadyInProgress()
             if (gameAlreadyInProgress)
@@ -45,13 +41,13 @@ class GameRepositoryImpl(
     }
 
     // TODO optimize this
-    override suspend fun getAllGames(): Resource<List<Game>, GetGameError> {
+    override suspend fun getAllGames(): Resource<List<GameModel>, GetGameError> {
         return try {
             val games = gameDao.getAllGames().map {
                 val players = playerGameDao.getPlayersForGame(it.id!!).map { playerEntity ->
-                    Player(id = playerEntity.id!!, name = playerEntity.name, color = playerEntity.color)
+                    PlayerModel(id = playerEntity.id!!, name = playerEntity.name, color = playerEntity.color)
                 }
-                Game(id = it.id, startedAt = it.startedAt, players = players)
+                GameModel(id = it.id, startedAt = it.startedAt, players = players)
             }
 
             Resource.Success(games)
@@ -61,16 +57,16 @@ class GameRepositoryImpl(
         }
     }
 
-    override suspend fun getCurrentGame(): Resource<Game, GetGameError> {
+    override suspend fun getCurrentGame(): Resource<GameModel, GetGameError> {
         return try {
             val game = gameDao.getCurrentGame()
 
             return Resource.Success(
-                Game(
+                GameModel(
                     id = game.id!!,
                     startedAt = game.startedAt,
                     players = playerGameDao.getPlayersForGame(game.id).map { playerEntity ->
-                        Player(id = playerEntity.id!!, name = playerEntity.name, color = playerEntity.color)
+                        PlayerModel(id = playerEntity.id!!, name = playerEntity.name, color = playerEntity.color)
                     }
                 )
             )
