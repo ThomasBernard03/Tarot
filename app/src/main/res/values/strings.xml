@@ -10,6 +10,7 @@
     <string name="create_new_game_sheet_edit_player">Modifier le joueur</string>
     <string name="create_new_game_sheet_delete_player">Supprimer le joueur</string>
     <string name="create_new_game_sheet_default_player_name">Joueur</string>
+    <string name="no_current_game_message">Aucune partie en cours, utilisez le bouton en bas à droite pour créer une nouvelle partie</string>
 
 
     <!-- History -->

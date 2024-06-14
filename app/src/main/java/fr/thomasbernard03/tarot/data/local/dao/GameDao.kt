@@ -7,9 +7,13 @@ import fr.thomasbernard03.tarot.data.local.entities.GameEntity
 
 @Dao
 interface GameDao {
-    @Insert
-    suspend fun createGame(gameEntity: GameEntity): Long
+    @Query("SELECT * FROM GameEntity WHERE finishedAt IS NULL")
+    suspend fun getCurrentGame(): GameEntity
 
     @Query("SELECT * FROM GameEntity")
     suspend fun getAllGames(): List<GameEntity>
+
+
+    @Query("SELECT COUNT(1) >= 1  FROM GameEntity WHERE finishedAt IS NULL")
+    suspend fun gameAlreadyInProgress() : Boolean
 }

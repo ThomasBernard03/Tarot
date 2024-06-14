@@ -10,4 +10,7 @@ import fr.thomasbernard03.tarot.domain.models.errors.GetGameError
 interface GameRepository {
     suspend fun createGame(players : List<CreatePlayerModel>) : Resource<Game, CreateGameError>
     suspend fun getAllGames() : Resource<List<Game>, GetGameError>
+
+
+    suspend fun getCurrentGame() : Resource<Game, GetGameError>
 }

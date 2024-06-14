@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Share
@@ -26,6 +27,7 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -88,6 +90,7 @@ fun HistoryScreen(state : HistoryState, onEvent : (HistoryEvent) -> Unit) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .weight(1f)
                     .nestedScroll(scrollBehavior.nestedScrollConnection)
             ) {
                 items(state.games, key = { it.id }) { game ->
@@ -103,6 +106,7 @@ fun HistoryScreen(state : HistoryState, onEvent : (HistoryEvent) -> Unit) {
                                     modifier = Modifier
                                         .offset(x = 24.dp * index)
                                         .zIndex(game.players.size - index.toFloat())
+                                        .shadow(1.dp, shape = CircleShape, clip = true)
                                 ) {
                                     PlayerIcon(
                                         name = player.name,
