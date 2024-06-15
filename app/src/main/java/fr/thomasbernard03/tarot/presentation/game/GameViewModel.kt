@@ -2,7 +2,10 @@ package fr.thomasbernard03.tarot.presentation.game
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import fr.thomasbernard03.tarot.domain.models.Bid
 import fr.thomasbernard03.tarot.domain.models.CreatePlayerModel
+import fr.thomasbernard03.tarot.domain.models.Oudler
+import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.domain.models.Resource
 import fr.thomasbernard03.tarot.domain.usecases.CreateGameUseCase
 import fr.thomasbernard03.tarot.domain.usecases.GetCurrentGameUseCase
@@ -28,6 +31,19 @@ class GameViewModel(
             is GameEvent.OnValidateCreateGameSheet -> createGame(event.players)
             is GameEvent.OnOpenNewRoundSheet -> _state.update { it.copy(showCreateRoundSheet = true) }
             is GameEvent.OnCloseNewRoundSheet -> _state.update { it.copy(showCreateRoundSheet = false) }
+            is GameEvent.OnValidateCreateRoundSheet -> onValidateCreateRoundSheet(event.taker, event.bid, event.oudlers, event.numberOfPoints)
+        }
+    }
+
+    private fun onValidateCreateRoundSheet(taker : PlayerModel, bid : Bid, oudlers : List<Oudler>, numberOfPoints : Int){
+        viewModelScope.launch {
+//            when(val result = createRoundUseCase(taker, bid, oudlers, numberOfPoints)){
+//                is Resource.Success -> {
+//                    _state.update { it.copy(showCreateRoundSheet = false) }
+//                }
+//                is Resource.Error -> {
+//                }
+//            }
         }
     }
 

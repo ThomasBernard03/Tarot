@@ -1,5 +1,11 @@
 <resources>
+    <!-- General -->
     <string name="app_name">Tarot</string>
+    <string name="counter">Compteur</string>
+    <string name="excuse">Excuse</string>
+    <string name="petit">Petit</string>
+    <string name="grand">21</string>
+
 
     <!-- Game -->
     <string name="new_game">Nouvelle partie</string>
@@ -19,6 +25,9 @@
     <string name="guard">Garde</string>
     <string name="guard_without">Garde sans</string>
     <string name="guard_against">Garde contre</string>
+    <string name="score">Résultat</string>
+    <string name="number_of_points">Nombre de points</string>
+    <string name="oudlers">Bouts</string>
 
 
 

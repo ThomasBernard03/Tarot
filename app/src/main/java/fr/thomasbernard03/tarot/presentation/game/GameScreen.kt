@@ -3,6 +3,7 @@ package fr.thomasbernard03.tarot.presentation.game
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -78,8 +79,11 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
             sheetState = createGameBottomSheetState,
         ) {
              NewRoundSheet(
+                 modifier = Modifier.fillMaxHeight(),
                  players = state.currentGame.players,
-                 onValidate = {  }
+                 onValidate = { _, _, _, _ ->
+
+                 }
              )
         }
     }
