@@ -3,6 +3,7 @@
 
     <!-- Game -->
     <string name="new_game">Nouvelle partie</string>
+    <string name="new_round">Nouveau tour</string>
     <string name="loading_current_game">Chargement de la partie</string>
     <string name="create_new_game_sheet_title">Nouvelle partie</string>
     <string name="create_new_game_sheet_validate">Créer la partie</string>
@@ -11,6 +12,14 @@
     <string name="create_new_game_sheet_delete_player">Supprimer le joueur</string>
     <string name="create_new_game_sheet_default_player_name">Joueur</string>
     <string name="no_current_game_message">Aucune partie en cours, utilisez le bouton en bas à droite pour créer une nouvelle partie</string>
+    <string name="create_new_round_sheet_title">Nouveau tour</string>
+    <string name="taker">Preneur</string>
+    <string name="bid">Contrat</string>
+    <string name="small">Petite</string>
+    <string name="guard">Garde</string>
+    <string name="guard_without">Garde sans</string>
+    <string name="guard_against">Garde contre</string>
+
 
 
     <!-- History -->

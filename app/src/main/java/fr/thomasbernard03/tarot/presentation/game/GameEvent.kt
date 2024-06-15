@@ -9,4 +9,8 @@ sealed class GameEvent {
     data object OnOpenCreateDialogSheet : GameEvent()
     data object OnCloseCreateDialogSheet : GameEvent()
     data class OnValidateCreateGameSheet(val players : List<CreatePlayerModel>) : GameEvent()
+
+
+    data object OnOpenNewRoundSheet : GameEvent()
+    data object OnCloseNewRoundSheet : GameEvent()
 }

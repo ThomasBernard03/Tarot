@@ -16,6 +16,7 @@ import java.util.Date
     ]
 )
 data class RoundEntity(
+    @PrimaryKey
     val id : Long? = null,
     val gameId: Long,
     val finishedAt : Date,

@@ -7,4 +7,6 @@ data class GameState(
     val currentGame : GameModel? = null,
 
     val showCreateGameSheet : Boolean = false,
+
+    val showCreateRoundSheet : Boolean = false,
 )

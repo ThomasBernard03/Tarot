@@ -26,6 +26,8 @@ class GameViewModel(
             is GameEvent.OnOpenCreateDialogSheet -> _state.update { it.copy(showCreateGameSheet = true) }
             is GameEvent.OnCloseCreateDialogSheet -> _state.update { it.copy(showCreateGameSheet = false) }
             is GameEvent.OnValidateCreateGameSheet -> createGame(event.players)
+            is GameEvent.OnOpenNewRoundSheet -> _state.update { it.copy(showCreateRoundSheet = true) }
+            is GameEvent.OnCloseNewRoundSheet -> _state.update { it.copy(showCreateRoundSheet = false) }
         }
     }
 

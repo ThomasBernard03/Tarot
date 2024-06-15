@@ -1,10 +1,10 @@
 package fr.thomasbernard03.tarot.presentation.game
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -23,28 +23,38 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.LargePadding
-import fr.thomasbernard03.tarot.commons.MediumPadding
 import fr.thomasbernard03.tarot.domain.models.GameModel
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.domain.models.PlayerColor
 import fr.thomasbernard03.tarot.presentation.components.Loader
 import fr.thomasbernard03.tarot.presentation.components.PreviewScreen
 import fr.thomasbernard03.tarot.presentation.game.components.CreateGameSheet
+import fr.thomasbernard03.tarot.presentation.game.components.NewRoundSheet
 import fr.thomasbernard03.tarot.presentation.game.components.PlayerButton
 import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
-    val modalBottomSheetState = rememberModalBottomSheetState()
+    val createGameBottomSheetState = rememberModalBottomSheetState()
+    val createRoundBottomSheetState = rememberModalBottomSheetState()
 
     LaunchedEffect(state.showCreateGameSheet) {
         if (state.showCreateGameSheet){
-            modalBottomSheetState.show()
+            createGameBottomSheetState.show()
         } else {
-            modalBottomSheetState.hide()
+            createGameBottomSheetState.hide()
+        }
+    }
+
+    LaunchedEffect(state.showCreateRoundSheet) {
+        if (state.showCreateRoundSheet){
+            createRoundBottomSheetState.show()
+        } else {
+            createRoundBottomSheetState.hide()
         }
     }
 
@@ -55,11 +65,22 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
     if (state.showCreateGameSheet){
         ModalBottomSheet(
             onDismissRequest = { onEvent(GameEvent.OnCloseCreateDialogSheet) },
-            sheetState = modalBottomSheetState,
+            sheetState = createGameBottomSheetState,
         ) {
             CreateGameSheet(
                 onValidate = { onEvent(GameEvent.OnValidateCreateGameSheet(it)) },
             )
+        }
+    }
+    else if (state.showCreateRoundSheet && state.currentGame != null){
+        ModalBottomSheet(
+            onDismissRequest = { onEvent(GameEvent.OnCloseNewRoundSheet) },
+            sheetState = createGameBottomSheetState,
+        ) {
+             NewRoundSheet(
+                 players = state.currentGame.players,
+                 onValidate = {  }
+             )
         }
     }
 
@@ -85,22 +106,23 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(vertical = LargePadding)
                     .verticalScroll(rememberScrollState())
             ){
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(MediumPadding)
-                ) {
-                    state.currentGame.players.forEach {
-                        PlayerButton(name = it.name, color = it.color) {
-                            
+                state.currentGame.players.forEach {
+                    PlayerButton(
+                        modifier = Modifier.height(70.dp),
+                        name = it.name,
+                        color = it.color,
+                        onClick = {
+
                         }
-                    }
+                    )
                 }
             }
         }
 
 
+        // Create a new game
         if (!state.loadingGame && state.currentGame == null){
             FloatingActionButton(
                 containerColor = MaterialTheme.colorScheme.primary,
@@ -112,6 +134,20 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
                 Icon(
                     painter = painterResource(id = R.drawable.add),
                     contentDescription = stringResource(id = R.string.new_game)
+                )
+            }
+        }
+        else if (state.currentGame != null && state.currentGame.finishedAt == null){
+            FloatingActionButton(
+                containerColor = MaterialTheme.colorScheme.primary,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(LargePadding),
+                onClick = { onEvent(GameEvent.OnOpenNewRoundSheet) }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.add),
+                    contentDescription = stringResource(id = R.string.new_round)
                 )
             }
         }
@@ -146,7 +182,8 @@ private fun GameScreenInProgressPreview() = PreviewScreen {
             PlayerModel(id = 1, name = "Thomas", color = PlayerColor.BLUE),
             PlayerModel(id = 1, name = "Marianne", color = PlayerColor.RED),
             PlayerModel(id = 1, name = "Nanou", color = PlayerColor.GREEN),
-        )
+        ),
+        rounds = listOf()
     )
     val state = GameState(currentGame = game)
     GameScreen(state = state, onEvent = {})

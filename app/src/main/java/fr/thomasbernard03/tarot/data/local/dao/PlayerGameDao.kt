@@ -53,6 +53,8 @@ interface PlayerGameDao {
         return GameModel(
             id = gameId,
             startedAt = game.startedAt,
-            players = playersWithId.map { PlayerModel(id = it.id, name = it.name, color = it.color) })
+            players = playersWithId.map { PlayerModel(id = it.id, name = it.name, color = it.color) },
+            rounds = listOf()
+        )
     }
 }

@@ -6,5 +6,6 @@ data class GameModel(
     val id: Long,
     val startedAt : Date,
     val finishedAt : Date? = null,
-    val players: List<PlayerModel>
+    val players: List<PlayerModel>,
+    val rounds : List<RoundModel>
 )

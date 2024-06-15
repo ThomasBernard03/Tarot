@@ -3,15 +3,20 @@ package fr.thomasbernard03.tarot.presentation.game.components
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.MediumPadding
 import fr.thomasbernard03.tarot.commons.toColor
 import fr.thomasbernard03.tarot.domain.models.PlayerColor
@@ -34,10 +39,21 @@ fun PlayerButton(
         ),
         shape = RectangleShape
     ) {
-        Row(horizontalArrangement = Arrangement.spacedBy(MediumPadding)) {
-            PlayerIcon(name = name, color = color.toColor())
-            Text(text = name)
+        Row(
+            modifier = Modifier.weight(1f),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(horizontalArrangement = Arrangement.spacedBy(MediumPadding)) {
+                PlayerIcon(name = name, color = color.toColor())
+                Text(text = name)
+            }
+
+            Icon(
+                painter = painterResource(id = R.drawable.chevron_right),
+                contentDescription = null)
         }
+
     }
 }
 

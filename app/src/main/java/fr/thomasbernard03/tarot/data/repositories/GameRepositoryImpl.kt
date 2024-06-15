@@ -47,7 +47,12 @@ class GameRepositoryImpl(
                 val players = playerGameDao.getPlayersForGame(it.id!!).map { playerEntity ->
                     PlayerModel(id = playerEntity.id!!, name = playerEntity.name, color = playerEntity.color)
                 }
-                GameModel(id = it.id, startedAt = it.startedAt, players = players)
+                GameModel(
+                    id = it.id,
+                    startedAt = it.startedAt,
+                    players = players,
+                    rounds = listOf()
+                )
             }
 
             Resource.Success(games)
@@ -67,7 +72,8 @@ class GameRepositoryImpl(
                     startedAt = game.startedAt,
                     players = playerGameDao.getPlayersForGame(game.id).map { playerEntity ->
                         PlayerModel(id = playerEntity.id!!, name = playerEntity.name, color = playerEntity.color)
-                    }
+                    },
+                    rounds = listOf()
                 )
             )
         }
