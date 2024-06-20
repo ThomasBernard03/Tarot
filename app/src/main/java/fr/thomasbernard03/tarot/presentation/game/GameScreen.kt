@@ -3,45 +3,59 @@ package fr.thomasbernard03.tarot.presentation.game
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.LargePadding
+import fr.thomasbernard03.tarot.commons.toColor
 import fr.thomasbernard03.tarot.domain.models.GameModel
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.domain.models.PlayerColor
 import fr.thomasbernard03.tarot.presentation.components.Loader
+import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
 import fr.thomasbernard03.tarot.presentation.components.PreviewScreen
 import fr.thomasbernard03.tarot.presentation.game.components.CreateGameSheet
-import fr.thomasbernard03.tarot.presentation.game.components.NewRoundSheet
-import fr.thomasbernard03.tarot.presentation.game.components.PlayerButton
 import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
     val createGameBottomSheetState = rememberModalBottomSheetState()
-    val createRoundBottomSheetState = rememberModalBottomSheetState()
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+    var expanded by remember { mutableStateOf(false) }
 
     LaunchedEffect(state.showCreateGameSheet) {
         if (state.showCreateGameSheet){
@@ -51,17 +65,11 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
         }
     }
 
-    LaunchedEffect(state.showCreateRoundSheet) {
-        if (state.showCreateRoundSheet){
-            createRoundBottomSheetState.show()
-        } else {
-            createRoundBottomSheetState.hide()
-        }
-    }
-
     LaunchedEffect(Unit) {
         onEvent(GameEvent.OnGetCurrentGame)
     }
+
+
 
     if (state.showCreateGameSheet){
         ModalBottomSheet(
@@ -73,86 +81,108 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
             )
         }
     }
-    else if (state.showCreateRoundSheet && state.currentGame != null){
-        ModalBottomSheet(
-            onDismissRequest = { onEvent(GameEvent.OnCloseNewRoundSheet) },
-            sheetState = createGameBottomSheetState,
-        ) {
-             NewRoundSheet(
-                 modifier = Modifier.fillMaxHeight(),
-                 players = state.currentGame.players,
-                 onValidate = { _, _, _, _ ->
 
-                 }
-             )
-        }
-    }
-
-
-    Box(modifier = Modifier.fillMaxSize()) {
-
-        if (state.loadingGame){
-            Loader(
-                modifier = Modifier.align(Alignment.Center),
-                message = R.string.loading_current_game
-            )
-        }
-        else if(state.currentGame == null) {
-            Text(
-                modifier = Modifier
-                    .padding(LargePadding)
-                    .align(Alignment.Center),
-                text = stringResource(id = R.string.no_current_game_message),
-                textAlign = TextAlign.Center
-            )
-        }
-        else {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-            ){
-                state.currentGame.players.forEach {
-                    PlayerButton(
-                        modifier = Modifier.height(70.dp),
-                        name = it.name,
-                        color = it.color,
-                        onClick = {
-
+    Scaffold(
+        topBar = {
+            MediumTopAppBar(
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.primary,
+                ),
+                title = {
+                    Text(
+                        text = stringResource(id = R.string.current_game),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                },
+                actions = {
+                    if (state.currentGame != null){
+                        IconButton(onClick = { expanded = true }) {
+                            Icon(
+                                imageVector = Icons.Filled.MoreVert,
+                                contentDescription = stringResource(id = R.string.share_history)
+                            )
                         }
+                    }
+
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        DropdownMenuItem(
+                            text = { Text("Load") },
+                            onClick = { }
+                        )
+                        DropdownMenuItem(
+                            text = { Text("Save") },
+                            onClick = { }
+                        )
+                    }
+                },
+                scrollBehavior = scrollBehavior
+            )
+        }
+    ) {
+        Box(modifier = Modifier.fillMaxSize().padding(it)) {
+            if (state.loadingGame){
+                Loader(
+                    modifier = Modifier.align(Alignment.Center),
+                    message = R.string.loading_current_game
+                )
+            }
+            else if(state.currentGame == null) {
+                Text(
+                    modifier = Modifier
+                        .padding(LargePadding)
+                        .align(Alignment.Center),
+                    text = stringResource(id = R.string.no_current_game_message),
+                    textAlign = TextAlign.Center
+                )
+            }
+            else {
+                LazyVerticalGrid(
+                    contentPadding = PaddingValues(LargePadding),
+                    modifier = Modifier.fillMaxSize(),
+                    columns = GridCells.Fixed(state.currentGame.players.size)
+                ) {
+                    items(state.currentGame.players){
+                        Column(horizontalAlignment = Alignment.CenterHorizontally){
+                            PlayerIcon(name = it.name, color = it.color.toColor())
+                            Text(text = it.name)
+                        }
+                    }
+                }
+            }
+
+            // Create a new game
+            if (!state.loadingGame && state.currentGame == null){
+                FloatingActionButton(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(LargePadding),
+                    onClick = { onEvent(GameEvent.OnOpenCreateDialogSheet) }
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.add),
+                        contentDescription = stringResource(id = R.string.new_game)
                     )
                 }
             }
-        }
-
-
-        // Create a new game
-        if (!state.loadingGame && state.currentGame == null){
-            FloatingActionButton(
-                containerColor = MaterialTheme.colorScheme.primary,
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(LargePadding),
-                onClick = { onEvent(GameEvent.OnOpenCreateDialogSheet) }
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.add),
-                    contentDescription = stringResource(id = R.string.new_game)
-                )
-            }
-        }
-        else if (state.currentGame != null && state.currentGame.finishedAt == null){
-            FloatingActionButton(
-                containerColor = MaterialTheme.colorScheme.primary,
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(LargePadding),
-                onClick = { onEvent(GameEvent.OnOpenNewRoundSheet) }
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.add),
-                    contentDescription = stringResource(id = R.string.new_round)
-                )
+            else if (state.currentGame != null && state.currentGame.finishedAt == null){
+                FloatingActionButton(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(LargePadding),
+                    onClick = { onEvent(GameEvent.OnNewRoundButtonPressed) }
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.add),
+                        contentDescription = stringResource(id = R.string.new_round)
+                    )
+                }
             }
         }
     }

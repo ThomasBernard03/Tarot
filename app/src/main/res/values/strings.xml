@@ -5,6 +5,7 @@
     <string name="excuse">Excuse</string>
     <string name="petit">Petit</string>
     <string name="grand">21</string>
+    <string name="go_back">Retour en arrière</string>
 
 
     <!-- Game -->
@@ -28,6 +29,7 @@
     <string name="score">Résultat</string>
     <string name="number_of_points">Nombre de points</string>
     <string name="oudlers">Bouts</string>
+    <string name="current_game">Partie en cours</string>
 
 
 

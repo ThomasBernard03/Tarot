@@ -59,7 +59,7 @@ fun TarotTheme(
         SideEffect {
             val window = (view.context as Activity).window
             window.statusBarColor = colorScheme.primary.toArgb()
-            window.navigationBarColor = colorScheme.inversePrimary.toArgb() // TODO choose color
+            window.navigationBarColor = colorScheme.surface.toArgb() // TODO choose color
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }

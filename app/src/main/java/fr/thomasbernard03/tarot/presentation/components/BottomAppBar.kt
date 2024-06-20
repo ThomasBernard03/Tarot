@@ -50,7 +50,7 @@ fun BottomAppBar(navController: NavController) {
                                 }
                             }
                             launchSingleTop = true
-                            restoreState = true
+//                            restoreState = true
                         }
                     }
                 )
