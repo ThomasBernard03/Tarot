@@ -85,10 +85,6 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
     Scaffold(
         topBar = {
             MediumTopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
                 title = {
                     Text(
                         text = stringResource(id = R.string.current_game),
@@ -149,7 +145,7 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
                     items(state.currentGame.players){
                         Column(horizontalAlignment = Alignment.CenterHorizontally){
                             PlayerIcon(name = it.name, color = it.color.toColor())
-                            Text(text = it.name)
+                            Text(text = it.name, maxLines = 1, overflow = TextOverflow.Ellipsis)
                         }
                     }
                 }
@@ -176,7 +172,7 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
                         .padding(LargePadding),
-                    onClick = { onEvent(GameEvent.OnNewRoundButtonPressed) }
+                    onClick = { onEvent(GameEvent.OnNewRoundButtonPressed(state.currentGame.id)) }
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.add),

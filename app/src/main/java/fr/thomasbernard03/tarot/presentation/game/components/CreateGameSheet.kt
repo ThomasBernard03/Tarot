@@ -89,7 +89,8 @@ fun CreateGameSheet(
                                     editedPlayerIndex = -1
                                     focusRequester.freeFocus()
                                 }
-                            )
+                            ),
+                            singleLine = true
                         )
                     }
                     else {

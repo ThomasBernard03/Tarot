@@ -2,13 +2,15 @@ package fr.thomasbernard03.tarot.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+val PrimaryLight = Color(0xFF266197)
+val PrimaryDark = Color(0xFF8FCFFA)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val SecondaryLight = Color(0xFFC9E5FC)
+val SecondaryDark = Color(0xFF91CEFA)
+
+
+val TertiaryLight = Color(0xFFF3F6FB)
+val TertiaryDark = Color(0xFF212326)
 
 
 val Purple = Color(0xFFAA6DA3)

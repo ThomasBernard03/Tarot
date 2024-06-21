@@ -5,5 +5,5 @@ import java.util.Date
 data class RoundModel(
     val id : Long,
     val finishedAt : Date,
-    val takerModel: TakerModel
+    val taker: TakerModel
 )

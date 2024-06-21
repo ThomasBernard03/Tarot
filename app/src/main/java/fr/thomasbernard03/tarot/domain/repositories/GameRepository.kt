@@ -12,4 +12,5 @@ interface GameRepository {
 
 
     suspend fun getCurrentGame() : Resource<GameModel, GetGameError>
+    suspend fun getGame(id : Long) : Resource<GameModel, GetGameError>
 }

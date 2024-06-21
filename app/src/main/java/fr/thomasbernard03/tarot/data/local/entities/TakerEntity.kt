@@ -27,5 +27,5 @@ data class TakerEntity(
     val roundId : Long,
     val playerId : Long,
     val bid : Bid,
-    val score : Int  // Between 0 and 91
+    val points : Int  // Between 0 and 91
 )

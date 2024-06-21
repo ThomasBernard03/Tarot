@@ -31,6 +31,12 @@
     <string name="oudlers">Bouts</string>
     <string name="current_game">Partie en cours</string>
 
+    <!-- Round -->
+    <string name="add_turn">Ajouter le tour</string>
+    <string name="attack">Attaque</string>
+    <string name="defense">Défense</string>
+    <string name="player_called">Joueur appelé</string>
+
 
 
     <!-- History -->

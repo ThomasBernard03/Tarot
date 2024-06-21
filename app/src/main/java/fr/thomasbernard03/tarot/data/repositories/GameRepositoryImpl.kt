@@ -86,4 +86,25 @@ class GameRepositoryImpl(
             Resource.Error(GetGameError.UnknownError)
         }
     }
+
+    override suspend fun getGame(id: Long): Resource<GameModel, GetGameError> {
+        return try {
+            val game = gameDao.getGame(id)
+
+            return Resource.Success(
+                GameModel(
+                    id = game.id!!,
+                    startedAt = game.startedAt,
+                    players = playerGameDao.getPlayersForGame(game.id).map { playerEntity ->
+                        PlayerModel(id = playerEntity.id!!, name = playerEntity.name, color = playerEntity.color)
+                    },
+                    rounds = listOf()
+                )
+            )
+        }
+        catch (e : Exception){
+            Log.e(e.message, e.stackTraceToString())
+            Resource.Error(GetGameError.UnknownError)
+        }
+    }
 }

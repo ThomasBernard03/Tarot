@@ -10,6 +10,9 @@ interface GameDao {
     @Query("SELECT * FROM GameEntity WHERE finishedAt IS NULL")
     suspend fun getCurrentGame(): GameEntity
 
+    @Query("SELECT * FROM GameEntity WHERE id = :id")
+    suspend fun getGame(id : Long): GameEntity
+
     @Query("SELECT * FROM GameEntity")
     suspend fun getAllGames(): List<GameEntity>
 
