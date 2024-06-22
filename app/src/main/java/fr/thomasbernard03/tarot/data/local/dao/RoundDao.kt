@@ -2,6 +2,7 @@ package fr.thomasbernard03.tarot.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.Query
 import androidx.room.Transaction
 import fr.thomasbernard03.tarot.data.local.entities.RoundEntity
 import fr.thomasbernard03.tarot.data.local.entities.RoundOudlerEntity
@@ -9,7 +10,6 @@ import fr.thomasbernard03.tarot.domain.models.Bid
 import fr.thomasbernard03.tarot.domain.models.Oudler
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.domain.models.RoundModel
-import fr.thomasbernard03.tarot.domain.models.TakerModel
 import java.util.Date
 
 @Dao
@@ -20,6 +20,9 @@ interface RoundDao {
 
     @Insert
     suspend fun insertOudler(oudler : RoundOudlerEntity) : Long
+
+    @Query("SELECT * FROM RoundEntity WHERE gameId = :gameId")
+    suspend fun getGameRounds(gameId : Long) : List<RoundEntity>
 
     @Transaction
     suspend fun createRound(
@@ -41,12 +44,11 @@ interface RoundDao {
         return RoundModel(
             id = roundId,
             finishedAt = round.finishedAt,
-            taker = TakerModel(
-                player = taker,
-                bid = bid,
-                oudlers = oudlers,
-                points = points
-            ),
+            taker = taker,
+            bid = bid,
+            oudlers = oudlers,
+            points = points,
+            calledPlayer = playerCalled
         )
     }
 }

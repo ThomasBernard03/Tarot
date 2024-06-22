@@ -7,12 +7,8 @@ import fr.thomasbernard03.tarot.domain.models.Bid
 import fr.thomasbernard03.tarot.domain.models.Oudler
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.domain.models.Resource
-import fr.thomasbernard03.tarot.domain.models.TakerModel
-import fr.thomasbernard03.tarot.domain.usecases.CreateGameUseCase
 import fr.thomasbernard03.tarot.domain.usecases.CreateRoundUseCase
 import fr.thomasbernard03.tarot.domain.usecases.GetGameUseCase
-import fr.thomasbernard03.tarot.presentation.history.HistoryEvent
-import fr.thomasbernard03.tarot.presentation.history.HistoryState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

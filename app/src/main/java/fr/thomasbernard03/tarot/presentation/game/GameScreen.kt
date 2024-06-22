@@ -41,6 +41,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.LargePadding
+import fr.thomasbernard03.tarot.commons.calculateDefenderScore
+import fr.thomasbernard03.tarot.commons.calculatePartnerScore
+import fr.thomasbernard03.tarot.commons.calculateTakerScore
 import fr.thomasbernard03.tarot.commons.toColor
 import fr.thomasbernard03.tarot.domain.models.GameModel
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
@@ -145,6 +148,23 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
                         Column(horizontalAlignment = Alignment.CenterHorizontally){
                             PlayerIcon(name = it.name, color = it.color.toColor())
                             Text(text = it.name, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        }
+                    }
+
+                    state.currentGame.rounds.forEach { round ->
+                        val takerScore =
+                            calculateTakerScore(round.points, round.bid, round.oudlers.size, state.currentGame.players.size, round.taker.id == round.calledPlayer?.id)
+
+                        state.currentGame.players.forEach { player ->
+
+                            val score =
+                                if (player.id == round.taker.id) takerScore
+                                else if (player.id == round.calledPlayer?.id) calculatePartnerScore(takerScore)
+                                else calculateDefenderScore(takerScore, state.currentGame.players.size)
+
+                            item {
+                                Text(text = score.toString())
+                            }
                         }
                     }
                 }

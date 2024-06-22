@@ -9,6 +9,7 @@ import fr.thomasbernard03.tarot.domain.models.CreatePlayerModel
 import fr.thomasbernard03.tarot.domain.models.GameModel
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.domain.models.Resource
+import fr.thomasbernard03.tarot.domain.models.RoundModel
 import fr.thomasbernard03.tarot.domain.models.errors.CreateGameError
 import fr.thomasbernard03.tarot.domain.models.errors.GetGameError
 import fr.thomasbernard03.tarot.domain.repositories.GameRepository
@@ -67,15 +68,30 @@ class GameRepositoryImpl(
     override suspend fun getCurrentGame(): Resource<GameModel, GetGameError> {
         return try {
             val game = gameDao.getCurrentGame()
+            val rounds = roundDao.getGameRounds(game.id!!)
 
             return Resource.Success(
                 GameModel(
-                    id = game.id!!,
+                    id = game.id,
                     startedAt = game.startedAt,
                     players = playerGameDao.getPlayersForGame(game.id).map { playerEntity ->
                         PlayerModel(id = playerEntity.id!!, name = playerEntity.name, color = playerEntity.color)
                     },
-                    rounds = listOf()
+                    rounds = rounds.map {
+
+                        val takerEntity = playerDao.getPlayer(it.takerId)
+                        val calledPlayer = it.calledPlayerId?.let { playerDao.getPlayer(it) }
+
+                        RoundModel(
+                            id = it.id!!,
+                            finishedAt = it.finishedAt,
+                            taker = PlayerModel(id = takerEntity.id!!, name = takerEntity.name, color = takerEntity.color),
+                            bid = it.bid,
+                            oudlers = emptyList(),
+                            points = it.points,
+                            calledPlayer = calledPlayer?.let { PlayerModel(id = it.id!!, name = it.name, color = it.color) }
+                        )
+                    }
                 )
             )
         }
@@ -92,6 +108,7 @@ class GameRepositoryImpl(
     override suspend fun getGame(id: Long): Resource<GameModel, GetGameError> {
         return try {
             val game = gameDao.getGame(id)
+            val rounds = roundDao.getGameRounds(id)
 
             return Resource.Success(
                 GameModel(
@@ -100,7 +117,21 @@ class GameRepositoryImpl(
                     players = playerGameDao.getPlayersForGame(game.id).map { playerEntity ->
                         PlayerModel(id = playerEntity.id!!, name = playerEntity.name, color = playerEntity.color)
                     },
-                    rounds = listOf()
+                    rounds = rounds.map {
+
+                        val takerEntity = playerDao.getPlayer(it.takerId)
+                        val calledPlayer = it.calledPlayerId?.let { playerDao.getPlayer(it) }
+
+                        RoundModel(
+                            id = it.id!!,
+                            finishedAt = it.finishedAt,
+                            taker = PlayerModel(id = takerEntity.id!!, name = takerEntity.name, color = takerEntity.color),
+                            bid = it.bid,
+                            oudlers = emptyList(),
+                            points = it.points,
+                            calledPlayer = calledPlayer?.let { PlayerModel(id = it.id!!, name = it.name, color = it.color) }
+                        )
+                    }
                 )
             )
         }
