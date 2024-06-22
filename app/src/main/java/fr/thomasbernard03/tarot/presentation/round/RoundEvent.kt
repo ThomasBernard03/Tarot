@@ -6,7 +6,7 @@ import fr.thomasbernard03.tarot.domain.models.PlayerModel
 
 sealed class RoundEvent {
     data object OnGoBack : RoundEvent()
-    data class OnCreateRound(val gameId : Long, val taker : PlayerModel, val bid: Bid, val oudlers : List<Oudler>, val points : Int) : RoundEvent()
+    data class OnCreateRound(val gameId : Long, val taker : PlayerModel, val bid: Bid, val oudlers : List<Oudler>, val points : Int, val calledPlayer : PlayerModel?) : RoundEvent()
 
     data class OnGetPlayers(val gameId: Long) : RoundEvent()
 

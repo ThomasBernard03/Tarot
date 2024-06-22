@@ -39,18 +39,17 @@ class RoundViewModel(
             is RoundEvent.OnScoreChanged -> _state.update { it.copy(score = event.score) }
             is RoundEvent.OnOudlerSelected -> onOudlerSelected(event.oudler)
             is RoundEvent.OnCalledPlayerChanged -> _state.update { it.copy(calledPlayer = event.player) }
-            is RoundEvent.OnCreateRound -> onCreateRound(event.gameId, event.taker, event.bid, event.oudlers, event.points)
+            is RoundEvent.OnCreateRound -> onCreateRound(event.gameId, event.taker, event.bid, event.oudlers, event.points, event.calledPlayer)
         }
     }
 
-    private fun onCreateRound(gameId : Long, taker : PlayerModel, bid : Bid, oudlers : List<Oudler>, points: Int){
+    private fun onCreateRound(gameId : Long, taker : PlayerModel, bid : Bid, oudlers : List<Oudler>, points: Int, calledPlayer : PlayerModel?) {
         viewModelScope.launch {
-            when(val result = createRoundUseCase(gameId, taker, null, bid, oudlers, points)){
+            when(val result = createRoundUseCase(gameId, taker, calledPlayer, bid, oudlers, points)){
                 is Resource.Success -> {
                     navigationHelper.goBack()
                 }
                 is Resource.Error -> {
-
                 }
             }
         }
@@ -63,7 +62,6 @@ class RoundViewModel(
                     _state.update { it.copy(players = result.data.players) }
                 }
                 is Resource.Error -> {
-
                 }
             }
         }

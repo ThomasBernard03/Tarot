@@ -4,8 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Transaction
 import fr.thomasbernard03.tarot.data.local.entities.RoundEntity
-import fr.thomasbernard03.tarot.data.local.entities.TakerEntity
-import fr.thomasbernard03.tarot.data.local.entities.TakerOudlerEntity
+import fr.thomasbernard03.tarot.data.local.entities.RoundOudlerEntity
 import fr.thomasbernard03.tarot.domain.models.Bid
 import fr.thomasbernard03.tarot.domain.models.Oudler
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
@@ -20,11 +19,7 @@ interface RoundDao {
     suspend fun insertRound(round : RoundEntity) : Long
 
     @Insert
-    suspend fun insertTaker(taker : TakerEntity) : Long
-
-
-    @Insert
-    suspend fun insertOudler(oudler : TakerOudlerEntity) : Long
+    suspend fun insertOudler(oudler : RoundOudlerEntity) : Long
 
     @Transaction
     suspend fun createRound(
@@ -35,14 +30,11 @@ interface RoundDao {
         oudlers : List<Oudler>,
         points : Int) : RoundModel {
 
-        val round = RoundEntity(gameId = gameId, finishedAt = Date())
+        val round = RoundEntity(gameId = gameId, finishedAt = Date(), bid = bid, points = points, takerId = taker.id, calledPlayerId = playerCalled?.id)
         val roundId = insertRound(round)
 
-        val takerEntity = TakerEntity(roundId = roundId, playerId = taker.id, bid = bid, points = points)
-        val takerId = insertTaker(takerEntity)
-
         oudlers.forEach {
-            val oudler = TakerOudlerEntity(takerId = takerId, oudler = it)
+            val oudler = RoundOudlerEntity(roundId = roundId, oudler = it)
             insertOudler(oudler)
         }
 

@@ -4,6 +4,7 @@ import android.util.Log
 import fr.thomasbernard03.tarot.data.local.dao.GameDao
 import fr.thomasbernard03.tarot.data.local.dao.PlayerDao
 import fr.thomasbernard03.tarot.data.local.dao.PlayerGameDao
+import fr.thomasbernard03.tarot.data.local.dao.RoundDao
 import fr.thomasbernard03.tarot.domain.models.CreatePlayerModel
 import fr.thomasbernard03.tarot.domain.models.GameModel
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
@@ -17,7 +18,8 @@ import java.lang.NullPointerException
 class GameRepositoryImpl(
     private val playerDao: PlayerDao = get(PlayerDao::class.java),
     private val playerGameDao : PlayerGameDao = get(PlayerGameDao::class.java),
-    private val gameDao: GameDao = get(GameDao::class.java)
+    private val gameDao: GameDao = get(GameDao::class.java),
+    private val roundDao: RoundDao = get(RoundDao::class.java)
 ) : GameRepository {
 
 

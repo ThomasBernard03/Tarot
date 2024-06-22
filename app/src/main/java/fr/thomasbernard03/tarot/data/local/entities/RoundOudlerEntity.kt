@@ -7,15 +7,15 @@ import fr.thomasbernard03.tarot.domain.models.Oudler
 @Entity(
     foreignKeys = [
         ForeignKey(
-            entity = TakerEntity::class,
+            entity = RoundEntity::class,
             parentColumns = ["id"],
-            childColumns = ["takerId"],
+            childColumns = ["roundId"],
             onDelete = ForeignKey.CASCADE
         )
     ],
-    primaryKeys = ["takerId", "oudler"]
+    primaryKeys = ["roundId", "oudler"]
 )
-data class TakerOudlerEntity(
-    val takerId : Long,
+data class RoundOudlerEntity(
+    val roundId : Long,
     val oudler : Oudler
 )

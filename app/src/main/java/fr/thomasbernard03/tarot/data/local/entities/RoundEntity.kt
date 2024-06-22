@@ -3,6 +3,7 @@ package fr.thomasbernard03.tarot.data.local.entities
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import fr.thomasbernard03.tarot.domain.models.Bid
 import java.util.Date
 
 @Entity(
@@ -12,6 +13,18 @@ import java.util.Date
             parentColumns = ["id"],
             childColumns = ["gameId"],
             onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = PlayerEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["takerId"],
+            onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = PlayerEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["calledPlayerId"],
+            onDelete = ForeignKey.CASCADE
         )
     ]
 )
@@ -20,4 +33,8 @@ data class RoundEntity(
     val id : Long? = null,
     val gameId: Long,
     val finishedAt : Date,
+    val bid : Bid,
+    val points : Int,
+    val takerId : Long,
+    val calledPlayerId : Long?
 )

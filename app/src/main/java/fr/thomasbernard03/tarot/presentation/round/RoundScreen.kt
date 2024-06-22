@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
@@ -18,6 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
@@ -27,6 +29,8 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -40,6 +44,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -59,6 +64,7 @@ import androidx.compose.ui.unit.sp
 import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.LargePadding
 import fr.thomasbernard03.tarot.commons.MediumPadding
+import fr.thomasbernard03.tarot.commons.calculateTakerScore
 import fr.thomasbernard03.tarot.commons.toColor
 import fr.thomasbernard03.tarot.commons.toText
 import fr.thomasbernard03.tarot.domain.models.Bid
@@ -81,6 +87,14 @@ fun RoundScreen(
         onEvent(RoundEvent.OnGetPlayers(gameId))
     }
 
+    val score by remember(state.bid, state.oudlers.size, state.numberOfPoints) {
+        derivedStateOf {
+            state.bid?.let {
+                val takerScore = calculateTakerScore(state.numberOfPoints, state.bid, state.oudlers.size, playerCount = state.players.size, isCalledPlayerTaker = state.calledPlayer == state.taker)
+            }
+        }
+    }
+
     Scaffold(
         topBar = {
             MediumTopAppBar(
@@ -90,11 +104,20 @@ fun RoundScreen(
                     }
                 },
                 title = {
-                    Text(
-                        text = stringResource(id = R.string.create_new_round_sheet_title),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(LargePadding)
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.create_new_round_sheet_title),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+
+                        score?.let {
+                            Text(text = it.toString())
+                        }
+                    }
+
                 },
                 actions = { },
                 scrollBehavior = scrollBehavior
@@ -108,15 +131,6 @@ fun RoundScreen(
                 .verticalScroll(rememberScrollState())
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
         ) {
-            AnimatedCounter(value = state.score) {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = it.toString(),
-                    style = MaterialTheme.typography.titleLarge,
-                    textAlign = TextAlign.Center
-                )
-            }
-
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(id = R.string.taker),
@@ -207,26 +221,24 @@ fun RoundScreen(
                 contentPadding = PaddingValues(horizontal = LargePadding),
                 horizontalArrangement = Arrangement.spacedBy(MediumPadding),
             ) {
-                items(items = Bid.entries, key = { it.name }) {
-                    Button(
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = if (state.bid == it) MaterialTheme.colorScheme.primary else Color.Transparent,
-                            contentColor = if (state.bid == it) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.primary
+                items(items = Bid.entries, key = { it.ordinal }) {
+                    FilterChip(
+                        colors = FilterChipDefaults.filterChipColors(
+                            selectedContainerColor = MaterialTheme.colorScheme.primary,
+                            selectedLabelColor = MaterialTheme.colorScheme.onPrimary
                         ),
+                        selected = state.bid == it,
                         onClick = {
                             val bid = if (state.bid == it) null else it
                             onEvent(RoundEvent.OnBidChanged(bid))
                         },
-                        shape = RoundedCornerShape(8.dp),
-                        border = ButtonDefaults.outlinedButtonBorder
-                    ) {
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(4.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(text = it.toText())
+                        label = {
+                            Text(
+                                modifier = Modifier.padding(12.dp),
+                                text = it.toText()
+                            )
                         }
-                    }
+                    )
                 }
             }
 
@@ -241,24 +253,22 @@ fun RoundScreen(
                 horizontalArrangement = Arrangement.spacedBy(MediumPadding),
             ) {
                 items(items = Oudler.entries, key = { it.name }) {
-                    Button(
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = if (state.oudlers.contains(it)) MaterialTheme.colorScheme.primary else Color.Transparent,
-                            contentColor = if (state.oudlers.contains(it)) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.primary
+                    FilterChip(
+                        colors = FilterChipDefaults.filterChipColors(
+                            selectedContainerColor = MaterialTheme.colorScheme.primary,
+                            selectedLabelColor = MaterialTheme.colorScheme.onPrimary
                         ),
+                        selected = state.oudlers.contains(it),
                         onClick = {
                             onEvent(RoundEvent.OnOudlerSelected(it))
                         },
-                        shape = RoundedCornerShape(8.dp),
-                        border = ButtonDefaults.outlinedButtonBorder
-                    ) {
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(4.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(text = it.toText())
+                        label = {
+                            Text(
+                                modifier = Modifier.padding(12.dp),
+                                text = it.toText()
+                            )
                         }
-                    }
+                    )
                 }
             }
 
@@ -313,7 +323,10 @@ fun RoundScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     IconButton(onClick = { onEvent(RoundEvent.OnNumberOfPointsChanged(state.numberOfPoints - 1)) }) {
-                        Icon(painter = painterResource(id = R.drawable.minus), contentDescription = null)
+                        Icon(
+                            modifier = Modifier.size(22.dp),
+                            painter = painterResource(id = R.drawable.minus),
+                            contentDescription = null)
                     }
 
                     Row(
@@ -346,7 +359,7 @@ fun RoundScreen(
                 horizontalArrangement = Arrangement.End
             ) {
                 TextButton(
-                    onClick = { onEvent(RoundEvent.OnCreateRound(gameId, state.taker!!, state.bid!!, state.oudlers, state.numberOfPoints)) },
+                    onClick = { onEvent(RoundEvent.OnCreateRound(gameId, state.taker!!, state.bid!!, state.oudlers, state.numberOfPoints, state.calledPlayer)) },
                     enabled = state.taker != null && state.bid != null
                 ) {
                     Text(text = stringResource(id = R.string.add_turn))

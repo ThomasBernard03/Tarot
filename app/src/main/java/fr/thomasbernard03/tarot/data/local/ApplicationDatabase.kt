@@ -11,8 +11,7 @@ import fr.thomasbernard03.tarot.data.local.entities.GameEntity
 import fr.thomasbernard03.tarot.data.local.entities.PlayerEntity
 import fr.thomasbernard03.tarot.data.local.entities.PlayerGameEntity
 import fr.thomasbernard03.tarot.data.local.entities.RoundEntity
-import fr.thomasbernard03.tarot.data.local.entities.TakerEntity
-import fr.thomasbernard03.tarot.data.local.entities.TakerOudlerEntity
+import fr.thomasbernard03.tarot.data.local.entities.RoundOudlerEntity
 
 @Database(
     entities = [
@@ -20,8 +19,7 @@ import fr.thomasbernard03.tarot.data.local.entities.TakerOudlerEntity
         GameEntity::class,
         PlayerGameEntity::class,
         RoundEntity::class,
-        TakerEntity::class,
-        TakerOudlerEntity::class
+        RoundOudlerEntity::class
     ],
     version = 3
 )

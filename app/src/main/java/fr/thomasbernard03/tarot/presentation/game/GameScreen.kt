@@ -33,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -68,8 +69,6 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
     LaunchedEffect(Unit) {
         onEvent(GameEvent.OnGetCurrentGame)
     }
-
-
 
     if (state.showCreateGameSheet){
         ModalBottomSheet(
@@ -172,8 +171,7 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
                         .padding(LargePadding),
-                    onClick = { onEvent(GameEvent.OnNewRoundButtonPressed(state.currentGame.id)) }
-                ) {
+                    onClick = { onEvent(GameEvent.OnNewRoundButtonPressed(state.currentGame.id)) }) {
                     Icon(
                         painter = painterResource(id = R.drawable.add),
                         contentDescription = stringResource(id = R.string.new_round)
