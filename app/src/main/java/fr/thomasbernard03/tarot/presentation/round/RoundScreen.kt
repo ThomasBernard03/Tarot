@@ -65,6 +65,7 @@ import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.LargePadding
 import fr.thomasbernard03.tarot.commons.MediumPadding
 import fr.thomasbernard03.tarot.commons.calculateTakerScore
+import fr.thomasbernard03.tarot.commons.getRequiredPoints
 import fr.thomasbernard03.tarot.commons.toColor
 import fr.thomasbernard03.tarot.commons.toText
 import fr.thomasbernard03.tarot.domain.models.Bid
@@ -72,6 +73,8 @@ import fr.thomasbernard03.tarot.domain.models.Oudler
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.presentation.components.AnimatedCounter
 import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
+import fr.thomasbernard03.tarot.presentation.theme.Green
+import fr.thomasbernard03.tarot.presentation.theme.Red
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -90,7 +93,7 @@ fun RoundScreen(
     val score by remember(state.bid, state.oudlers.size, state.numberOfPoints) {
         derivedStateOf {
             state.bid?.let {
-                val takerScore = calculateTakerScore(state.numberOfPoints, state.bid, state.oudlers.size, playerCount = state.players.size, isCalledPlayerTaker = state.calledPlayer == state.taker)
+                calculateTakerScore(state.numberOfPoints, state.bid, state.oudlers.size, playerCount = state.players.size, isCalledPlayerTaker = state.calledPlayer == state.taker)
             }
         }
     }
@@ -300,7 +303,13 @@ fun RoundScreen(
                         )
                     }
 
-                    Text(text = (state.numberOfPoints - (91 - state.numberOfPoints)).toString())
+                    if(state.bid != null){
+                        Text(
+                            text = "${state.numberOfPoints - state.oudlers.getRequiredPoints()}",
+                            color = if (state.numberOfPoints - state.oudlers.getRequiredPoints() >= 0) Green else Red
+                        )
+                    }
+
 
                     Column(
                         modifier = Modifier.weight(1f),

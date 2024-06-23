@@ -46,13 +46,14 @@ class GameViewModel(
     }
 
     private fun onGetCurrentGame(){
+        _state.update { it.copy(loadingGame = true) }
         viewModelScope.launch {
             when(val result = getCurrentGameUseCase()){
                 is Resource.Success -> {
-                    _state.update { it.copy(currentGame = result.data) }
+                    _state.update { it.copy(currentGame = result.data, loadingGame = false) }
                 }
                 is Resource.Error -> {
-
+                    _state.update { it.copy(loadingGame = false) }
                 }
             }
         }

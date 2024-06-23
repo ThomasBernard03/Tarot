@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -17,6 +18,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.ModalBottomSheet
@@ -36,11 +38,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.LargePadding
+import fr.thomasbernard03.tarot.commons.MediumPadding
 import fr.thomasbernard03.tarot.commons.calculateDefenderScore
 import fr.thomasbernard03.tarot.commons.calculatePartnerScore
 import fr.thomasbernard03.tarot.commons.calculateTakerScore
@@ -52,6 +56,8 @@ import fr.thomasbernard03.tarot.presentation.components.Loader
 import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
 import fr.thomasbernard03.tarot.presentation.components.PreviewScreen
 import fr.thomasbernard03.tarot.presentation.game.components.CreateGameSheet
+import fr.thomasbernard03.tarot.presentation.theme.Green
+import fr.thomasbernard03.tarot.presentation.theme.Red
 import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -109,7 +115,7 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
                         onDismissRequest = { expanded = false }
                     ) {
                         DropdownMenuItem(
-                            text = { Text("Load") },
+                            text = { Text("Terminer la partie") },
                             onClick = { }
                         )
                         DropdownMenuItem(
@@ -122,7 +128,10 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
             )
         }
     ) {
-        Box(modifier = Modifier.fillMaxSize().padding(it)) {
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .padding(it)
+        ) {
             if (state.loadingGame){
                 Loader(
                     modifier = Modifier.align(Alignment.Center),
@@ -139,31 +148,56 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
                 )
             }
             else {
-                LazyVerticalGrid(
-                    contentPadding = PaddingValues(LargePadding),
-                    modifier = Modifier.fillMaxSize(),
-                    columns = GridCells.Fixed(state.currentGame.players.size)
-                ) {
-                    items(state.currentGame.players){
-                        Column(horizontalAlignment = Alignment.CenterHorizontally){
-                            PlayerIcon(name = it.name, color = it.color.toColor())
-                            Text(text = it.name, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Column {
+                    Row(
+                        modifier = Modifier
+                            .padding(horizontal = LargePadding)
+                    ) {
+                        state.currentGame.players.forEachIndexed { index, player ->
+                            Column(
+                                modifier = Modifier.weight(1f),
+                                horizontalAlignment = Alignment.CenterHorizontally){
+
+                                PlayerIcon(
+                                    name = player.name,
+                                    color = player.color.toColor()
+                                )
+
+                                Text(
+                                    text = player.name,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            }
                         }
                     }
 
-                    state.currentGame.rounds.forEach { round ->
-                        val takerScore =
-                            calculateTakerScore(round.points, round.bid, round.oudlers.size, state.currentGame.players.size, round.taker.id == round.calledPlayer?.id)
+                    LazyVerticalGrid(
+                        contentPadding = PaddingValues(LargePadding),
+                        modifier = Modifier.fillMaxSize(),
+                        columns = GridCells.Fixed(state.currentGame.players.size)
+                    ) {
 
-                        state.currentGame.players.forEach { player ->
+                        state.currentGame.rounds.forEach { round ->
+                            val takerScore =
+                                calculateTakerScore(round.points, round.bid, round.oudlers.size, state.currentGame.players.size, round.taker.id == round.calledPlayer?.id)
 
-                            val score =
-                                if (player.id == round.taker.id) takerScore
-                                else if (player.id == round.calledPlayer?.id) calculatePartnerScore(takerScore)
-                                else calculateDefenderScore(takerScore, state.currentGame.players.size)
+                            state.currentGame.players.forEach { player ->
 
-                            item {
-                                Text(text = score.toString())
+                                val score =
+                                    if (player.id == round.taker.id) takerScore
+                                    else if (player.id == round.calledPlayer?.id) calculatePartnerScore(takerScore)
+                                    else calculateDefenderScore(takerScore, state.currentGame.players.size)
+
+                                item {
+                                    Text(
+                                        modifier = Modifier.padding(vertical = MediumPadding),
+                                        text = score.toString(),
+                                        textAlign = TextAlign.Center,
+                                        fontWeight = if (player.id == round.taker.id) FontWeight.Bold else FontWeight.Normal,
+                                        color = if (score >= 0) Green else Red
+                                    )
+                                }
                             }
                         }
                     }
@@ -233,6 +267,6 @@ private fun GameScreenInProgressPreview() = PreviewScreen {
         ),
         rounds = listOf()
     )
-    val state = GameState(currentGame = game)
+    val state = GameState(currentGame = game, loadingGame = false)
     GameScreen(state = state, onEvent = {})
 }
