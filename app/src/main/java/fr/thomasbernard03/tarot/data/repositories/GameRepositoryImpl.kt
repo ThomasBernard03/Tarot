@@ -11,10 +11,11 @@ import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.domain.models.Resource
 import fr.thomasbernard03.tarot.domain.models.RoundModel
 import fr.thomasbernard03.tarot.domain.models.errors.CreateGameError
+import fr.thomasbernard03.tarot.domain.models.errors.FinishGameError
 import fr.thomasbernard03.tarot.domain.models.errors.GetGameError
 import fr.thomasbernard03.tarot.domain.repositories.GameRepository
 import org.koin.java.KoinJavaComponent.get
-import java.lang.NullPointerException
+import kotlin.NullPointerException
 
 class GameRepositoryImpl(
     private val playerDao: PlayerDao = get(PlayerDao::class.java),
@@ -40,6 +41,27 @@ class GameRepositoryImpl(
         catch (e: Exception) {
             Log.e(e.message, e.stackTraceToString())
             Resource.Error(CreateGameError.UnknownError)
+        }
+    }
+
+    override suspend fun finishGame(id: Long): Resource<Unit, FinishGameError> {
+        return try {
+            val game = gameDao.getGame(id)
+
+            if (game.finishedAt != null)
+                return Resource.Error(FinishGameError.GameAlreadyFinished)
+
+            gameDao.gameFinished(id)
+
+            Resource.Success(Unit)
+        }
+        catch (e : NullPointerException){
+            Log.e(e.message, e.stackTraceToString())
+            Resource.Error(FinishGameError.GameNotFound)
+        }
+        catch (e : Exception){
+            Log.e(e.message, e.stackTraceToString())
+            Resource.Error(FinishGameError.UnknownError)
         }
     }
 

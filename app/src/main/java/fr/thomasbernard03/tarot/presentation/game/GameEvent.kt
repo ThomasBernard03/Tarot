@@ -4,6 +4,7 @@ import fr.thomasbernard03.tarot.domain.models.CreatePlayerModel
 
 sealed class GameEvent {
     data object OnGetCurrentGame : GameEvent()
+    data class OnFinishGame(val gameId : Long) : GameEvent()
 
     // Create game sheet
     data object OnOpenCreateDialogSheet : GameEvent()

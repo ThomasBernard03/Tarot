@@ -8,6 +8,7 @@ import fr.thomasbernard03.tarot.domain.models.Oudler
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.domain.models.Resource
 import fr.thomasbernard03.tarot.domain.usecases.CreateGameUseCase
+import fr.thomasbernard03.tarot.domain.usecases.FinishGameUseCase
 import fr.thomasbernard03.tarot.domain.usecases.GetCurrentGameUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +18,8 @@ import kotlinx.coroutines.launch
 
 class GameViewModel(
     private val createGameUseCase: CreateGameUseCase = CreateGameUseCase(),
-    private val getCurrentGameUseCase: GetCurrentGameUseCase = GetCurrentGameUseCase()
+    private val getCurrentGameUseCase: GetCurrentGameUseCase = GetCurrentGameUseCase(),
+    private val finishGameUseCase: FinishGameUseCase = FinishGameUseCase()
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(GameState())
@@ -30,6 +32,7 @@ class GameViewModel(
             is GameEvent.OnCloseCreateDialogSheet -> _state.update { it.copy(showCreateGameSheet = false) }
             is GameEvent.OnValidateCreateGameSheet -> createGame(event.players)
             is GameEvent.OnNewRoundButtonPressed -> Unit
+            is GameEvent.OnFinishGame -> onFinishGame(event.gameId)
         }
     }
 
@@ -54,6 +57,21 @@ class GameViewModel(
                 }
                 is Resource.Error -> {
                     _state.update { it.copy(loadingGame = false) }
+                }
+            }
+        }
+    }
+
+    private fun onFinishGame(gameId : Long){
+        viewModelScope.launch {
+            when(val result = finishGameUseCase(gameId)){
+                is Resource.Success -> {
+
+                    _state.update { it.copy(currentGame = null) }
+                }
+                is Resource.Error -> {
+
+
                 }
             }
         }

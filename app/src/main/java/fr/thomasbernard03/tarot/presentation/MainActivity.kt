@@ -4,7 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -19,6 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import fr.thomasbernard03.tarot.commons.helpers.NavigationHelper
 import fr.thomasbernard03.tarot.domain.models.Screen
+import fr.thomasbernard03.tarot.presentation.components.BottomAppBar
 import fr.thomasbernard03.tarot.presentation.game.GameEvent
 import fr.thomasbernard03.tarot.presentation.game.GameScreen
 import fr.thomasbernard03.tarot.presentation.game.GameViewModel
@@ -63,46 +66,55 @@ class MainActivity(
                         }.launchIn(this)
                     }
 
-                    NavHost(navController = navController, startDestination = Screen.Game.route){
-                        navigation(route = "game", startDestination = "current-game"){
-                            composable(route = "current-game"){
-                                val viewModel : GameViewModel = viewModel()
-                                val state by viewModel.state.collectAsStateWithLifecycle()
-                                GameScreen(state = state){ event ->
+                    Scaffold(
+                        bottomBar = {
+                            BottomAppBar(navController = navController)
+                        }
+                    ) {
+                        NavHost(
+                            modifier = Modifier.padding(it),
+                            navController = navController, startDestination = Screen.Game.route
+                        ){
+                            navigation(route = "game", startDestination = "current-game"){
+                                composable(route = "current-game"){
+                                    val viewModel : GameViewModel = viewModel()
+                                    val state by viewModel.state.collectAsStateWithLifecycle()
+                                    GameScreen(state = state){ event ->
 
-                                    if (event is GameEvent.OnNewRoundButtonPressed){
-                                        navController.navigate("round/${event.gameId}")
+                                        if (event is GameEvent.OnNewRoundButtonPressed){
+                                            navController.navigate("round/${event.gameId}")
+                                        }
+
+                                        viewModel.onEvent(event)
                                     }
+                                }
+                                composable(
+                                    route = Screen.Round.PATH,
+                                    arguments = listOf(
+                                        navArgument(name = "gameId"){
+                                            type = NavType.LongType
+                                        }
+                                    )
+                                ){
+                                    val gameId = it.arguments?.getLong("gameId") ?: 0
+                                    val viewModel : RoundViewModel = viewModel()
+                                    val state by viewModel.state.collectAsStateWithLifecycle()
+                                    RoundScreen(gameId = gameId, state = state){ event ->
+                                        if (event is RoundEvent.OnGoBack)
+                                            navController.navigateUp()
 
-                                    viewModel.onEvent(event)
+                                        viewModel.onEvent(event)
+                                    }
                                 }
                             }
-                            composable(
-                                route = Screen.Round.PATH,
-                                arguments = listOf(
-                                    navArgument(name = "gameId"){
-                                        type = NavType.LongType
-                                    }
-                                )
-                            ){
-                                val gameId = it.arguments?.getLong("gameId") ?: 0
-                                val viewModel : RoundViewModel = viewModel()
+                            composable("history"){
+                                val viewModel : HistoryViewModel = viewModel()
                                 val state by viewModel.state.collectAsStateWithLifecycle()
-                                RoundScreen(gameId = gameId, state = state){ event ->
-                                    if (event is RoundEvent.OnGoBack)
-                                        navController.navigateUp()
-
-                                    viewModel.onEvent(event)
-                                }
+                                HistoryScreen(state = state, onEvent = viewModel::onEvent)
                             }
-                        }
-                        composable("history"){
-                            val viewModel : HistoryViewModel = viewModel()
-                            val state by viewModel.state.collectAsStateWithLifecycle()
-                            HistoryScreen(state = state, onEvent = viewModel::onEvent)
-                        }
-                        composable("information") {
-                            InformationScreen()
+                            composable("information") {
+                                InformationScreen()
+                            }
                         }
                     }
                 }
