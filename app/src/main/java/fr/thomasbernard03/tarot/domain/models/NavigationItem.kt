@@ -11,5 +11,5 @@ sealed class NavigationItem(var route: String, val icon: ImageVector?, var title
     data object Game : NavigationItem("game", Icons.Rounded.Home, "Home")
     data object History : NavigationItem("history", Icons.AutoMirrored.Rounded.List, "History")
     data object Information : NavigationItem("information", Icons.Rounded.Info, "Information")
-    data object Players : NavigationItem("players", Icons.Rounded.Person, "players")
+    data object Players : NavigationItem("players", Icons.Rounded.Person, "Players")
 }

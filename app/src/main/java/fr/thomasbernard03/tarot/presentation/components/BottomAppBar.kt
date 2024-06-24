@@ -37,7 +37,7 @@ fun BottomAppBar(navController: NavController) {
         NavigationBar {
             items.forEachIndexed { index, item ->
                 NavigationBarItem(
-                    alwaysShowLabel = true,
+                    alwaysShowLabel = false,
                     icon = { Icon(item.icon!!, contentDescription = item.title) },
                     label = { Text(item.title) },
                     selected = selectedItem == index,
