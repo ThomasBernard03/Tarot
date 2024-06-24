@@ -1,0 +1,9 @@
+package fr.thomasbernard03.tarot.domain.repositories
+
+import fr.thomasbernard03.tarot.domain.models.PlayerModel
+import fr.thomasbernard03.tarot.domain.models.Resource
+import fr.thomasbernard03.tarot.domain.models.errors.GetPlayersError
+
+interface PlayerRepository {
+    suspend fun getPlayers() : Resource<List<PlayerModel>, GetPlayersError>
+}

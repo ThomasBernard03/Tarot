@@ -2,11 +2,22 @@
     <!-- General -->
     <string name="app_name">Tarot</string>
     <string name="counter">Compteur</string>
+
+    <string name="go_back">Retour en arrière</string>
+
+
     <string name="excuse">Excuse</string>
     <string name="petit">Petit</string>
     <string name="grand">21</string>
-    <string name="go_back">Retour en arrière</string>
 
+    <string name="small">Petite</string>
+    <string name="small_indicator">P</string>
+    <string name="guard">Garde</string>
+    <string name="guard_indicator">G</string>
+    <string name="guard_without">Garde sans</string>
+    <string name="guard_without_indicator">GS</string>
+    <string name="guard_against">Garde contre</string>
+    <string name="guard_against_indicator">GC</string>
 
     <!-- Game -->
     <string name="new_game">Nouvelle partie</string>
@@ -22,10 +33,7 @@
     <string name="create_new_round_sheet_title">Nouveau tour</string>
     <string name="taker">Preneur</string>
     <string name="bid">Contrat</string>
-    <string name="small">Petite</string>
-    <string name="guard">Garde</string>
-    <string name="guard_without">Garde sans</string>
-    <string name="guard_against">Garde contre</string>
+
     <string name="score">Résultat</string>
     <string name="number_of_points">Nombre de points</string>
     <string name="oudlers">Bouts</string>
@@ -44,4 +52,12 @@
     <string name="clear_history">Supprimer tout l\'historique</string>
     <string name="share_history">Partager l\'historique</string>
     <string name="history_loading_message">Chargement de l\'historique</string>
+
+
+    <!-- Players -->
+    <string name="players_page_title">Joueurs</string>
+    <string name="create_new_player">Créer un nouveau joueur</string>
+    <string name="loading_players">Chargement des joueurs</string>
+
+
 </resources>

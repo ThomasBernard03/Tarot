@@ -28,6 +28,8 @@ import fr.thomasbernard03.tarot.presentation.game.GameViewModel
 import fr.thomasbernard03.tarot.presentation.history.HistoryScreen
 import fr.thomasbernard03.tarot.presentation.history.HistoryViewModel
 import fr.thomasbernard03.tarot.presentation.information.InformationScreen
+import fr.thomasbernard03.tarot.presentation.player.players.PlayersScreen
+import fr.thomasbernard03.tarot.presentation.player.players.PlayersViewModel
 import fr.thomasbernard03.tarot.presentation.round.RoundEvent
 import fr.thomasbernard03.tarot.presentation.round.RoundScreen
 import fr.thomasbernard03.tarot.presentation.round.RoundViewModel
@@ -114,6 +116,15 @@ class MainActivity(
                             }
                             composable("information") {
                                 InformationScreen()
+                            }
+                            navigation(route = "players", startDestination = "players-list") {
+                                composable("players-list") {
+                                    val viewModel : PlayersViewModel = viewModel()
+                                    val state by viewModel.state.collectAsStateWithLifecycle()
+                                    PlayersScreen(state = state) { event ->
+                                        viewModel.onEvent(event)
+                                    }
+                                }
                             }
                         }
                     }

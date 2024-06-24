@@ -3,7 +3,6 @@ package fr.thomasbernard03.tarot.presentation.game.components
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -18,7 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.MediumPadding
-import fr.thomasbernard03.tarot.commons.toColor
+import fr.thomasbernard03.tarot.commons.extensions.toColor
 import fr.thomasbernard03.tarot.domain.models.PlayerColor
 import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
 import fr.thomasbernard03.tarot.presentation.components.PreviewComponent

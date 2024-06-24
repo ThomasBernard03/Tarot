@@ -23,6 +23,7 @@ fun BottomAppBar(navController: NavController) {
             NavigationItem.Game,
             NavigationItem.History,
             NavigationItem.Information,
+            NavigationItem.Players
         )
         var selectedItem by remember { mutableIntStateOf(0) }
         var currentRoute by remember { mutableStateOf(NavigationItem.Game.route) }
@@ -41,16 +42,18 @@ fun BottomAppBar(navController: NavController) {
                     label = { Text(item.title) },
                     selected = selectedItem == index,
                     onClick = {
-                        selectedItem = index
-                        currentRoute = item.route
-                        navController.navigate(item.route) {
-                            navController.graph.startDestinationRoute?.let { route ->
-                                popUpTo(route) {
-                                    saveState = true
+                        if (selectedItem != index){
+                            selectedItem = index
+                            currentRoute = item.route
+                            navController.navigate(item.route) {
+                                navController.graph.startDestinationRoute?.let { route ->
+                                    popUpTo(route) {
+                                        saveState = true
+                                    }
                                 }
-                            }
-                            launchSingleTop = true
+                                launchSingleTop = true
 //                            restoreState = true
+                            }
                         }
                     }
                 )

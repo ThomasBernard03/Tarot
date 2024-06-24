@@ -35,7 +35,7 @@ import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.LargePadding
 import fr.thomasbernard03.tarot.commons.MAX_PLAYER
 import fr.thomasbernard03.tarot.commons.MediumPadding
-import fr.thomasbernard03.tarot.commons.toColor
+import fr.thomasbernard03.tarot.commons.extensions.toColor
 import fr.thomasbernard03.tarot.domain.models.CreatePlayerModel
 import fr.thomasbernard03.tarot.domain.models.PlayerColor
 import fr.thomasbernard03.tarot.presentation.components.PlayerIcon

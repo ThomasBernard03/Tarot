@@ -9,4 +9,8 @@ import fr.thomasbernard03.tarot.data.local.entities.PlayerEntity
 interface PlayerDao {
     @Query("SELECT * FROM PlayerEntity WHERE id = :id")
     suspend fun getPlayer(id : Long) : PlayerEntity
+
+
+    @Query("SELECT * FROM PlayerEntity")
+    suspend fun getPlayers() : List<PlayerEntity>
 }

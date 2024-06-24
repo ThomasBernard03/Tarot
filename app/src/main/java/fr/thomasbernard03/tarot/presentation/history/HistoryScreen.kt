@@ -2,15 +2,11 @@ package fr.thomasbernard03.tarot.presentation.history
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -34,7 +30,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import fr.thomasbernard03.tarot.R
-import fr.thomasbernard03.tarot.commons.toColor
+import fr.thomasbernard03.tarot.commons.extensions.toColor
 import fr.thomasbernard03.tarot.presentation.components.Loader
 import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
 

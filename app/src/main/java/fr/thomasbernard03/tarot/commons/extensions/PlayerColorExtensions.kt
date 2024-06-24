@@ -1,4 +1,4 @@
-package fr.thomasbernard03.tarot.commons
+package fr.thomasbernard03.tarot.commons.extensions
 
 import androidx.compose.ui.graphics.Color
 import fr.thomasbernard03.tarot.domain.models.PlayerColor

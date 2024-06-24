@@ -6,6 +6,7 @@ import fr.thomasbernard03.tarot.domain.models.Bid
 
 val LargePadding = 16.dp
 val MediumPadding = 8.dp
+val SmallPadding = 4.dp
 
 
 const val MAX_PLAYER = 5

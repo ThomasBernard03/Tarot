@@ -6,8 +6,10 @@ import fr.thomasbernard03.tarot.commons.helpers.NavigationHelper
 import fr.thomasbernard03.tarot.commons.helpers.implementations.NavigationHelperImpl
 import fr.thomasbernard03.tarot.data.local.ApplicationDatabase
 import fr.thomasbernard03.tarot.data.repositories.GameRepositoryImpl
+import fr.thomasbernard03.tarot.data.repositories.PlayerRepositoryImpl
 import fr.thomasbernard03.tarot.data.repositories.RoundRepositoryImpl
 import fr.thomasbernard03.tarot.domain.repositories.GameRepository
+import fr.thomasbernard03.tarot.domain.repositories.PlayerRepository
 import fr.thomasbernard03.tarot.domain.repositories.RoundRepository
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext
@@ -27,6 +29,7 @@ class ApplicationController : Application() {
         // Domain
         single<GameRepository> { GameRepositoryImpl() }
         single<RoundRepository> { RoundRepositoryImpl() }
+        single<PlayerRepository> { PlayerRepositoryImpl() }
 
         single<NavigationHelper> { NavigationHelperImpl() }
 

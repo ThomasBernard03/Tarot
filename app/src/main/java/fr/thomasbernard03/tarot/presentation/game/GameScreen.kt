@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenu
@@ -19,7 +17,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.ModalBottomSheet
@@ -36,7 +33,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -50,10 +46,14 @@ import fr.thomasbernard03.tarot.commons.MediumPadding
 import fr.thomasbernard03.tarot.commons.calculateDefenderScore
 import fr.thomasbernard03.tarot.commons.calculatePartnerScore
 import fr.thomasbernard03.tarot.commons.calculateTakerScore
-import fr.thomasbernard03.tarot.commons.toColor
+import fr.thomasbernard03.tarot.commons.extensions.toColor
+import fr.thomasbernard03.tarot.domain.models.Bid
 import fr.thomasbernard03.tarot.domain.models.GameModel
+import fr.thomasbernard03.tarot.domain.models.Oudler
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.domain.models.PlayerColor
+import fr.thomasbernard03.tarot.domain.models.RoundModel
+import fr.thomasbernard03.tarot.presentation.components.BidIndicator
 import fr.thomasbernard03.tarot.presentation.components.Loader
 import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
 import fr.thomasbernard03.tarot.presentation.components.PreviewScreen
@@ -182,7 +182,9 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
 
                     LazyVerticalGrid(
                         contentPadding = PaddingValues(LargePadding),
-                        modifier = Modifier.fillMaxSize().nestedScroll(scrollBehavior.nestedScrollConnection),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .nestedScroll(scrollBehavior.nestedScrollConnection),
                         columns = GridCells.Fixed(state.currentGame.players.size)
                     ) {
 
@@ -198,13 +200,20 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
                                     else calculateDefenderScore(takerScore, state.currentGame.players.size)
 
                                 item {
-                                    Text(
-                                        modifier = Modifier.padding(vertical = MediumPadding),
-                                        text = score.toString(),
-                                        textAlign = TextAlign.Center,
-                                        fontWeight = if (player.id == round.taker.id) FontWeight.Bold else FontWeight.Normal,
-                                        color = if (score >= 0) Green else Red
-                                    )
+                                    Column {
+                                        Text(
+                                            modifier = Modifier.padding(vertical = MediumPadding),
+                                            text = score.toString(),
+                                            textAlign = TextAlign.Center,
+                                            fontWeight = if (player.id == round.taker.id) FontWeight.Bold else FontWeight.Normal,
+                                            color = if (score >= 0) Green else Red
+                                        )
+                                        if (player.id == round.taker.id){
+                                            Row {
+                                                BidIndicator(bid = round.bid)
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -270,10 +279,20 @@ private fun GameScreenInProgressPreview() = PreviewScreen {
         finishedAt = null,
         players = listOf(
             PlayerModel(id = 1, name = "Thomas", color = PlayerColor.BLUE),
-            PlayerModel(id = 1, name = "Marianne", color = PlayerColor.RED),
-            PlayerModel(id = 1, name = "Nanou", color = PlayerColor.GREEN),
+            PlayerModel(id = 2, name = "Marianne", color = PlayerColor.RED),
+            PlayerModel(id = 3, name = "Nanou", color = PlayerColor.GREEN),
         ),
-        rounds = listOf()
+        rounds = listOf(
+            RoundModel(
+                id = 1,
+                taker = PlayerModel(id = 1, name = "Thomas", color = PlayerColor.BLUE),
+                calledPlayer = null,
+                oudlers = listOf(Oudler.GRAND),
+                bid = Bid.GUARD,
+                points = 58,
+                finishedAt = Date(),
+            ),
+        )
     )
     val state = GameState(currentGame = game, loadingGame = false)
     GameScreen(state = state, onEvent = {})
