@@ -22,8 +22,8 @@ fun BottomAppBar(navController: NavController) {
         val items = listOf(
             NavigationItem.Game,
             NavigationItem.History,
-            NavigationItem.Information,
-            NavigationItem.Players
+            NavigationItem.Players,
+            NavigationItem.Information
         )
         var selectedItem by remember { mutableIntStateOf(0) }
         var currentRoute by remember { mutableStateOf(NavigationItem.Game.route) }

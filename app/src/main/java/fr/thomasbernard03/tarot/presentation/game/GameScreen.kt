@@ -1,22 +1,33 @@
 package fr.thomasbernard03.tarot.presentation.game
 
 import android.content.res.Configuration
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.ModalBottomSheet
@@ -33,6 +44,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -40,6 +54,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.LargePadding
 import fr.thomasbernard03.tarot.commons.MediumPadding
@@ -156,67 +173,145 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
             }
             else {
                 Column {
-                    Row(
-                        modifier = Modifier
-                            .padding(horizontal = LargePadding)
-                            .padding(top = MediumPadding),
-                    ) {
-                        state.currentGame.players.forEachIndexed { index, player ->
-                            Column(
-                                modifier = Modifier.weight(1f),
-                                horizontalAlignment = Alignment.CenterHorizontally){
+//                    Row(
+//                        modifier = Modifier
+//                            .padding(horizontal = LargePadding)
+//                            .padding(top = MediumPadding),
+//                    ) {
+//                        state.currentGame.players.forEachIndexed { index, player ->
+//                            Column(
+//                                modifier = Modifier.weight(1f),
+//                                horizontalAlignment = Alignment.CenterHorizontally){
+//
+//                                PlayerIcon(
+//                                    name = player.name,
+//                                    color = player.color.toColor()
+//                                )
+//
+//                                Text(
+//                                    text = player.name,
+//                                    maxLines = 1,
+//                                    overflow = TextOverflow.Ellipsis
+//                                )
+//                            }
+//                        }
+//                    }
 
-                                PlayerIcon(
-                                    name = player.name,
-                                    color = player.color.toColor()
-                                )
-
-                                Text(
-                                    text = player.name,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis
-                                )
-                            }
-                        }
-                    }
-
-                    LazyVerticalGrid(
-                        contentPadding = PaddingValues(LargePadding),
+                    LazyColumn(
                         modifier = Modifier
                             .fillMaxSize()
                             .nestedScroll(scrollBehavior.nestedScrollConnection),
-                        columns = GridCells.Fixed(state.currentGame.players.size)
                     ) {
-
-                        state.currentGame.rounds.forEach { round ->
-                            val takerScore =
-                                calculateTakerScore(round.points, round.bid, round.oudlers.size, state.currentGame.players.size, round.taker.id == round.calledPlayer?.id)
-
-                            state.currentGame.players.forEach { player ->
-
-                                val score =
-                                    if (player.id == round.taker.id) takerScore
-                                    else if (player.id == round.calledPlayer?.id) calculatePartnerScore(takerScore)
-                                    else calculateDefenderScore(takerScore, state.currentGame.players.size)
-
-                                item {
-                                    Column {
-                                        Text(
-                                            modifier = Modifier.padding(vertical = MediumPadding),
-                                            text = score.toString(),
-                                            textAlign = TextAlign.Center,
-                                            fontWeight = if (player.id == round.taker.id) FontWeight.Bold else FontWeight.Normal,
-                                            color = if (score >= 0) Green else Red
+                        items(state.currentGame.rounds, key = { it.id }){ round ->
+                            Button(
+                                onClick = { },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color.Transparent,
+                                    contentColor = MaterialTheme.colorScheme.primary
+                                ),
+                                shape = RectangleShape,
+                                contentPadding = PaddingValues(horizontal = LargePadding, vertical = MediumPadding)
+                            ) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(MediumPadding)
+                                ) {
+                                    // Taker and called player picture
+                                    Box {
+                                        PlayerIcon(
+                                            name = round.taker.name,
+                                            color = round.taker.color.toColor()
                                         )
-                                        if (player.id == round.taker.id){
-                                            Row {
-                                                BidIndicator(bid = round.bid)
+
+                                        round.calledPlayer?.let { mate ->
+                                            Box(modifier = Modifier
+                                                .offset(x = 8.dp)
+                                                .zIndex(1f)
+                                                .align(Alignment.BottomEnd)
+                                            ){
+                                                PlayerIcon(
+                                                    modifier = Modifier
+                                                        .size(24.dp)
+                                                        .border(
+                                                            1.dp,
+                                                            MaterialTheme.colorScheme.background,
+                                                            CircleShape
+                                                        ),
+                                                    style = LocalTextStyle.current.copy(fontSize = 10.sp),
+                                                    name = mate.name,
+                                                    color = mate.color.toColor()
+                                                )
                                             }
                                         }
                                     }
+
+                                    // Oudlers
+                                    Spacer(modifier = Modifier.weight(1f))
+
+                                    // Score
+                                    val takerScore =
+                                        calculateTakerScore(round.points, round.bid, round.oudlers.size, state.currentGame.players.size, round.taker.id == round.calledPlayer?.id)
+
+                                    Column (
+                                        horizontalAlignment = Alignment.End
+                                    ){
+                                        Text(
+                                            text = "$takerScore",
+                                            color = if (takerScore >= 0) Green else Red,
+                                            fontWeight =  FontWeight.Bold
+                                        )
+
+                                        if (round.taker.id != round.calledPlayer?.id){
+
+                                            val calledPlayerScore = calculatePartnerScore(takerScore)
+
+                                            Text(
+                                                text = "$calledPlayerScore",
+                                                color = if (takerScore >= 0) Green else Red,
+                                                style = MaterialTheme.typography.bodySmall
+                                            )
+                                        }
+                                    }
+
+
+
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.chevron_right),
+                                        contentDescription = null
+                                    )
                                 }
                             }
                         }
+
+//                        state.currentGame.rounds.forEach { round ->
+//                            val takerScore =
+//                                calculateTakerScore(round.points, round.bid, round.oudlers.size, state.currentGame.players.size, round.taker.id == round.calledPlayer?.id)
+//
+//                            state.currentGame.players.forEach { player ->
+//
+//                                val score =
+//                                    if (player.id == round.taker.id) takerScore
+//                                    else if (player.id == round.calledPlayer?.id) calculatePartnerScore(takerScore)
+//                                    else calculateDefenderScore(takerScore, state.currentGame.players.size)
+//
+//                                item {
+//                                    Column {
+//                                        Text(
+//                                            modifier = Modifier.padding(vertical = MediumPadding),
+//                                            text = score.toString(),
+//                                            textAlign = TextAlign.Center,
+//                                            fontWeight = if (player.id == round.taker.id) FontWeight.Bold else FontWeight.Normal,
+//                                            color = if (score >= 0) Green else Red
+//                                        )
+//                                        if (player.id == round.taker.id){
+//                                            Row {
+//                                                BidIndicator(bid = round.bid)
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
                     }
                 }
             }

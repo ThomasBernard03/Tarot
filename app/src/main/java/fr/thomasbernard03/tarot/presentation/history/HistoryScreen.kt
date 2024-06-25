@@ -48,10 +48,6 @@ fun HistoryScreen(state : HistoryState, onEvent : (HistoryEvent) -> Unit) {
         modifier = Modifier.fillMaxSize()
     ) {
         MediumTopAppBar(
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                titleContentColor = MaterialTheme.colorScheme.primary,
-            ),
             title = {
                 Text(
                     text = stringResource(id = R.string.history_page_title),

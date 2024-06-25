@@ -81,4 +81,6 @@ dependencies {
     // Dependency injection with Koin
     implementation(libs.koin.core)
     implementation(libs.koin.android)
+
+    implementation("io.github.aghajari:LazySwipeCards:1.0.1")
 }

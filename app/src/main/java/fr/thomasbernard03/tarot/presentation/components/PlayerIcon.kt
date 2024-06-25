@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -13,28 +14,31 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import fr.thomasbernard03.tarot.presentation.theme.Blue
 import fr.thomasbernard03.tarot.presentation.theme.Green
 import fr.thomasbernard03.tarot.presentation.theme.Orange
 import fr.thomasbernard03.tarot.presentation.theme.Purple
 import fr.thomasbernard03.tarot.presentation.theme.Red
+import java.time.format.TextStyle
 
 @Composable
 fun PlayerIcon(
     modifier : Modifier = Modifier,
+    style: androidx.compose.ui.text.TextStyle = LocalTextStyle.current,
     name: String,
     color: Color,
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .background(color = color, shape = CircleShape)
             .size(44.dp)
-            .then(modifier)
     ) {
         Text(
             text = if (name.isEmpty()) "" else name.first().uppercase(),
             color = MaterialTheme.colorScheme.onPrimary,
-            modifier = Modifier.align(alignment = Alignment.Center)
+            modifier = Modifier.align(alignment = Alignment.Center),
+            style = style
         )
     }
 }
@@ -47,5 +51,10 @@ private fun PlayerIconPreview() = PreviewComponent {
     PlayerIcon(name = "Marianne", color = Blue)
     PlayerIcon(name = "Baptiste", color = Orange)
     PlayerIcon(name = "Artus", color = Green)
-    PlayerIcon(name = "Anatole", color = Purple)
+    PlayerIcon(
+        name = "Anatole",
+        color = Purple,
+        modifier = Modifier.size(24.dp),
+        style = LocalTextStyle.current.copy(fontSize = 10.sp)
+    )
 }
