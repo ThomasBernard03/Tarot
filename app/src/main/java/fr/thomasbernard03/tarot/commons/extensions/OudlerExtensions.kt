@@ -17,6 +17,18 @@ fun Oudler.toText() : String {
     return stringResource(id = resourceId)
 }
 
+@Composable
+fun Oudler.toIndicator() : String {
+    val resourceId =
+        when(this){
+            Oudler.EXCUSE -> R.string.excuse_indicator
+            Oudler.PETIT -> R.string.petit_indicator
+            Oudler.GRAND -> R.string.grand_indicator
+        }
+
+    return stringResource(id = resourceId)
+}
+
 fun List<Oudler>.getRequiredPoints() : Int {
     return when(this.size){
         0 -> 56

@@ -7,8 +7,11 @@
 
 
     <string name="excuse">Excuse</string>
+    <string name="excuse_indicator">*</string>
     <string name="petit">Petit</string>
+    <string name="petit_indicator">1</string>
     <string name="grand">21</string>
+    <string name="grand_indicator">21</string>
 
     <string name="small">Petite</string>
     <string name="small_indicator">P</string>

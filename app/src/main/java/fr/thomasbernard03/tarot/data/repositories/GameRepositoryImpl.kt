@@ -103,13 +103,14 @@ class GameRepositoryImpl(
 
                         val takerEntity = playerDao.getPlayer(it.takerId)
                         val calledPlayer = it.calledPlayerId?.let { playerDao.getPlayer(it) }
+                        val oudlers = roundDao.getRoundOudlers(it.id!!)
 
                         RoundModel(
-                            id = it.id!!,
+                            id = it.id,
                             finishedAt = it.finishedAt,
                             taker = PlayerModel(id = takerEntity.id!!, name = takerEntity.name, color = takerEntity.color),
                             bid = it.bid,
-                            oudlers = emptyList(),
+                            oudlers = oudlers,
                             points = it.points,
                             calledPlayer = calledPlayer?.let { PlayerModel(id = it.id!!, name = it.name, color = it.color) }
                         )
@@ -143,13 +144,14 @@ class GameRepositoryImpl(
 
                         val takerEntity = playerDao.getPlayer(it.takerId)
                         val calledPlayer = it.calledPlayerId?.let { playerDao.getPlayer(it) }
+                        val oudlers = roundDao.getRoundOudlers(it.id!!)
 
                         RoundModel(
-                            id = it.id!!,
+                            id = it.id,
                             finishedAt = it.finishedAt,
                             taker = PlayerModel(id = takerEntity.id!!, name = takerEntity.name, color = takerEntity.color),
                             bid = it.bid,
-                            oudlers = emptyList(),
+                            oudlers = oudlers,
                             points = it.points,
                             calledPlayer = calledPlayer?.let { PlayerModel(id = it.id!!, name = it.name, color = it.color) }
                         )

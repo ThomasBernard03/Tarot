@@ -47,36 +47,30 @@ class MainActivity(
             TarotTheme {
                 val navController = rememberNavController()
 
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-
-                    LaunchedEffect(Unit) {
-                        navigationHelper.sharedFlow.onEach { event ->
-                            when(event){
-                                is NavigationHelper.NavigationEvent.NavigateTo -> {
-                                    navController.navigate(event.screen.route) {
-                                        launchSingleTop = true
-                                        event.popupTo?.let { popUpTo(it.route) }
-                                    }
-                                }
-                                is NavigationHelper.NavigationEvent.GoBack -> {
-                                    navController.navigateUp()
+                LaunchedEffect(Unit) {
+                    navigationHelper.sharedFlow.onEach { event ->
+                        when(event){
+                            is NavigationHelper.NavigationEvent.NavigateTo -> {
+                                navController.navigate(event.screen.route) {
+                                    launchSingleTop = true
+                                    event.popupTo?.let { popUpTo(it.route) }
                                 }
                             }
-                        }.launchIn(this)
-                    }
-
-                    Scaffold(
-                        bottomBar = {
-                            BottomAppBar(navController = navController)
+                            is NavigationHelper.NavigationEvent.GoBack -> {
+                                navController.navigateUp()
+                            }
                         }
+                    }.launchIn(this)
+                }
+
+                Scaffold(
+                    bottomBar = { BottomAppBar(navController = navController) }
+                ) {
+                    Surface(
+                        modifier = Modifier.fillMaxSize().padding(it),
+                        color = MaterialTheme.colorScheme.background
                     ) {
-                        NavHost(
-                            modifier = Modifier.padding(it),
-                            navController = navController, startDestination = Screen.Game.route
-                        ){
+                        NavHost(navController = navController, startDestination = Screen.Game.route){
                             navigation(route = "game", startDestination = "current-game"){
                                 composable(route = "current-game"){
                                     val viewModel : GameViewModel = viewModel()

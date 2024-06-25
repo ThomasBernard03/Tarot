@@ -1,6 +1,7 @@
 package fr.thomasbernard03.tarot.presentation.game
 
 import android.content.res.Configuration
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -60,6 +62,7 @@ import androidx.compose.ui.zIndex
 import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.LargePadding
 import fr.thomasbernard03.tarot.commons.MediumPadding
+import fr.thomasbernard03.tarot.commons.SmallPadding
 import fr.thomasbernard03.tarot.commons.calculateDefenderScore
 import fr.thomasbernard03.tarot.commons.calculatePartnerScore
 import fr.thomasbernard03.tarot.commons.calculateTakerScore
@@ -72,6 +75,7 @@ import fr.thomasbernard03.tarot.domain.models.PlayerColor
 import fr.thomasbernard03.tarot.domain.models.RoundModel
 import fr.thomasbernard03.tarot.presentation.components.BidIndicator
 import fr.thomasbernard03.tarot.presentation.components.Loader
+import fr.thomasbernard03.tarot.presentation.components.OudlerIndicator
 import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
 import fr.thomasbernard03.tarot.presentation.components.PreviewScreen
 import fr.thomasbernard03.tarot.presentation.game.components.CreateGameSheet
@@ -173,29 +177,6 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
             }
             else {
                 Column {
-//                    Row(
-//                        modifier = Modifier
-//                            .padding(horizontal = LargePadding)
-//                            .padding(top = MediumPadding),
-//                    ) {
-//                        state.currentGame.players.forEachIndexed { index, player ->
-//                            Column(
-//                                modifier = Modifier.weight(1f),
-//                                horizontalAlignment = Alignment.CenterHorizontally){
-//
-//                                PlayerIcon(
-//                                    name = player.name,
-//                                    color = player.color.toColor()
-//                                )
-//
-//                                Text(
-//                                    text = player.name,
-//                                    maxLines = 1,
-//                                    overflow = TextOverflow.Ellipsis
-//                                )
-//                            }
-//                        }
-//                    }
 
                     LazyColumn(
                         modifier = Modifier
@@ -223,7 +204,7 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
                                             color = round.taker.color.toColor()
                                         )
 
-                                        round.calledPlayer?.let { mate ->
+                                        if (round.calledPlayer != null && round.calledPlayer.id != round.taker.id){
                                             Box(modifier = Modifier
                                                 .offset(x = 8.dp)
                                                 .zIndex(1f)
@@ -238,30 +219,36 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
                                                             CircleShape
                                                         ),
                                                     style = LocalTextStyle.current.copy(fontSize = 10.sp),
-                                                    name = mate.name,
-                                                    color = mate.color.toColor()
+                                                    name = round.calledPlayer.name,
+                                                    color = round.calledPlayer.color.toColor()
                                                 )
                                             }
                                         }
                                     }
 
-                                    // Oudlers
-                                    Spacer(modifier = Modifier.weight(1f))
+                                    Row(
+                                        modifier = Modifier.weight(1f),
+                                        horizontalArrangement = Arrangement.spacedBy(SmallPadding)
+                                    ) {
+                                        round.oudlers.forEach {
+                                            OudlerIndicator(oudler = it)
+                                        }
+                                    }
 
-                                    // Score
-                                    val takerScore =
-                                        calculateTakerScore(round.points, round.bid, round.oudlers.size, state.currentGame.players.size, round.taker.id == round.calledPlayer?.id)
 
                                     Column (
                                         horizontalAlignment = Alignment.End
                                     ){
+                                        val takerScore =
+                                            calculateTakerScore(round.points, round.bid, round.oudlers.size, state.currentGame.players.size, round.taker.id == round.calledPlayer?.id)
+
                                         Text(
                                             text = "$takerScore",
                                             color = if (takerScore >= 0) Green else Red,
                                             fontWeight =  FontWeight.Bold
                                         )
 
-                                        if (round.taker.id != round.calledPlayer?.id){
+                                        if (round.calledPlayer != null && round.taker.id != round.calledPlayer.id){
 
                                             val calledPlayerScore = calculatePartnerScore(takerScore)
 
@@ -282,36 +269,6 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
                                 }
                             }
                         }
-
-//                        state.currentGame.rounds.forEach { round ->
-//                            val takerScore =
-//                                calculateTakerScore(round.points, round.bid, round.oudlers.size, state.currentGame.players.size, round.taker.id == round.calledPlayer?.id)
-//
-//                            state.currentGame.players.forEach { player ->
-//
-//                                val score =
-//                                    if (player.id == round.taker.id) takerScore
-//                                    else if (player.id == round.calledPlayer?.id) calculatePartnerScore(takerScore)
-//                                    else calculateDefenderScore(takerScore, state.currentGame.players.size)
-//
-//                                item {
-//                                    Column {
-//                                        Text(
-//                                            modifier = Modifier.padding(vertical = MediumPadding),
-//                                            text = score.toString(),
-//                                            textAlign = TextAlign.Center,
-//                                            fontWeight = if (player.id == round.taker.id) FontWeight.Bold else FontWeight.Normal,
-//                                            color = if (score >= 0) Green else Red
-//                                        )
-//                                        if (player.id == round.taker.id){
-//                                            Row {
-//                                                BidIndicator(bid = round.bid)
-//                                            }
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
                     }
                 }
             }
@@ -381,7 +338,7 @@ private fun GameScreenInProgressPreview() = PreviewScreen {
             RoundModel(
                 id = 1,
                 taker = PlayerModel(id = 1, name = "Thomas", color = PlayerColor.BLUE),
-                calledPlayer = null,
+                calledPlayer =  PlayerModel(id = 2, name = "Marianne", color = PlayerColor.RED),
                 oudlers = listOf(Oudler.GRAND),
                 bid = Bid.GUARD,
                 points = 58,

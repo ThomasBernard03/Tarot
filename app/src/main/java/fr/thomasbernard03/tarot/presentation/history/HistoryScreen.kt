@@ -78,7 +78,8 @@ fun HistoryScreen(state : HistoryState, onEvent : (HistoryEvent) -> Unit) {
                 modifier = Modifier.fillMaxSize(),
                 message = R.string.history_loading_message
             )
-        } else {
+        }
+        else {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()

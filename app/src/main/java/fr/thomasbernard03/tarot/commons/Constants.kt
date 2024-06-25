@@ -8,7 +8,6 @@ val LargePadding = 16.dp
 val MediumPadding = 8.dp
 val SmallPadding = 4.dp
 
-
 const val MAX_PLAYER = 5
 
 fun calculateTakerScore(
@@ -40,7 +39,7 @@ fun calculateTakerScore(
 
     // Adjust score based on the number of players
     if (playerCount == 5) {
-        takerScore = (takerScore * 2.5).toInt()
+        takerScore = (takerScore * 1.5).toInt()
     }
 
     return takerScore

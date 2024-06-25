@@ -2,8 +2,11 @@ package fr.thomasbernard03.tarot.presentation.components
 
 import android.content.res.Configuration
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,6 +40,9 @@ fun BottomAppBar(navController: NavController) {
         NavigationBar {
             items.forEachIndexed { index, item ->
                 NavigationBarItem(
+                    colors = NavigationBarItemDefaults.colors(
+                        indicatorColor = MaterialTheme.colorScheme.background
+                    ),
                     alwaysShowLabel = false,
                     icon = { Icon(item.icon!!, contentDescription = item.title) },
                     label = { Text(item.title) },
@@ -46,10 +52,8 @@ fun BottomAppBar(navController: NavController) {
                             selectedItem = index
                             currentRoute = item.route
                             navController.navigate(item.route) {
-                                navController.graph.startDestinationRoute?.let { route ->
-                                    popUpTo(route) {
-                                        saveState = true
-                                    }
+                                popUpTo(navController.graph.id) {
+                                    saveState = true
                                 }
                                 launchSingleTop = true
 //                            restoreState = true
