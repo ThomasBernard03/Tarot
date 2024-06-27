@@ -61,6 +61,10 @@
     <string name="players_page_title">Joueurs</string>
     <string name="create_new_player">Créer un nouveau joueur</string>
     <string name="loading_players">Chargement des joueurs</string>
+    <string name="create_player_dialog_title">Création d\'un nouveau joueur</string>
+    <string name="create_player_dialog_confirmation">Créer</string>
+    <string name="create_player_dialog_player_name_label">Nom du joueur</string>
+    <string name="create_player_dialog_player_name_already_used_error">Nom déjà utilisé</string>
 
 
 </resources>

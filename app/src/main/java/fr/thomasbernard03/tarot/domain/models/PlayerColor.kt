@@ -5,5 +5,8 @@ enum class PlayerColor {
     BLUE,
     GREEN,
     ORANGE,
-    PURPLE
+    PURPLE,
+    YELLOW,
+    PINK,
+    BROWN
 }

@@ -3,7 +3,9 @@ package fr.thomasbernard03.tarot
 import android.app.Application
 import androidx.room.Room
 import fr.thomasbernard03.tarot.commons.helpers.NavigationHelper
+import fr.thomasbernard03.tarot.commons.helpers.ResourcesHelper
 import fr.thomasbernard03.tarot.commons.helpers.implementations.NavigationHelperImpl
+import fr.thomasbernard03.tarot.commons.helpers.implementations.ResourcesHelperImpl
 import fr.thomasbernard03.tarot.data.local.ApplicationDatabase
 import fr.thomasbernard03.tarot.data.repositories.GameRepositoryImpl
 import fr.thomasbernard03.tarot.data.repositories.PlayerRepositoryImpl
@@ -25,6 +27,7 @@ class ApplicationController : Application() {
 
     private val module = module {
         // Commons
+        single<ResourcesHelper> { ResourcesHelperImpl() }
 
         // Domain
         single<GameRepository> { GameRepositoryImpl() }

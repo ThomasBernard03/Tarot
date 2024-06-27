@@ -16,7 +16,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -35,6 +34,7 @@ import fr.thomasbernard03.tarot.commons.MediumPadding
 import fr.thomasbernard03.tarot.commons.extensions.toColor
 import fr.thomasbernard03.tarot.presentation.components.Loader
 import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
+import fr.thomasbernard03.tarot.presentation.player.player.CreatePlayerDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,6 +45,19 @@ fun PlayersScreen(state : PlayersState, onEvent: (PlayersEvent) -> Unit) {
     }
 
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+
+    if (state.showCreatePlayerDialog){
+        CreatePlayerDialog(
+            name = state.createPlayerDialogName,
+            color = state.createPlayerDialogColor,
+            loading = state.createPlayerDialogLoading,
+            errorMessage = state.createPlayerDialogMessage,
+            onNameChanged = { onEvent(PlayersEvent.OnCreatePlayerDialogNameChanged(it)) },
+            onColorSelected = { onEvent(PlayersEvent.OnCreatePlayerDialogColorSelected(it)) },
+            onDismiss = { onEvent(PlayersEvent.OnDismissCreatePlayerDialog) },
+            onCreatePlayer = { name, color -> onEvent(PlayersEvent.OnCreatePlayerDialogValidated(name, color))}
+        )
+    }
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -58,7 +71,7 @@ fun PlayersScreen(state : PlayersState, onEvent: (PlayersEvent) -> Unit) {
                 )
             },
             actions = {
-                IconButton(onClick = {  }) {
+                IconButton(onClick = { onEvent(PlayersEvent.OnShowCreatePlayerDialog) }) {
                     Icon(
                         imageVector = Icons.Filled.Add,
                         contentDescription = stringResource(id = R.string.create_new_player)
