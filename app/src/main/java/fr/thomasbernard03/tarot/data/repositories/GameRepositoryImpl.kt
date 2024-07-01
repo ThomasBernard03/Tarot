@@ -14,7 +14,6 @@ import fr.thomasbernard03.tarot.domain.models.errors.FinishGameError
 import fr.thomasbernard03.tarot.domain.models.errors.GetGameError
 import fr.thomasbernard03.tarot.domain.repositories.GameRepository
 import org.koin.java.KoinJavaComponent.get
-import kotlin.NullPointerException
 
 class GameRepositoryImpl(
     private val playerDao: PlayerDao = get(PlayerDao::class.java),

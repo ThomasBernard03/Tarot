@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -19,7 +18,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,16 +34,16 @@ import fr.thomasbernard03.tarot.commons.SmallPadding
 import fr.thomasbernard03.tarot.commons.calculatePartnerScore
 import fr.thomasbernard03.tarot.commons.calculateTakerScore
 import fr.thomasbernard03.tarot.commons.extensions.toColor
-import fr.thomasbernard03.tarot.domain.models.RoundModel
+import fr.thomasbernard03.tarot.domain.models.GameModel
 import fr.thomasbernard03.tarot.presentation.components.OudlerIndicator
 import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
 import fr.thomasbernard03.tarot.presentation.theme.Green
 import fr.thomasbernard03.tarot.presentation.theme.Red
 
 fun LazyListScope.roundList(
-    rounds: List<RoundModel>,
+    game : GameModel
 ){
-    items(rounds, key = { it.id }){ round ->
+    items(game.rounds, key = { it.id }){ round ->
         Button(
             onClick = { },
             colors = ButtonDefaults.buttonColors(
@@ -102,9 +100,8 @@ fun LazyListScope.roundList(
                 Column (
                     horizontalAlignment = Alignment.End
                 ){
-                    // TODO Change this with game players count
                     val takerScore =
-                        calculateTakerScore(round.points, round.bid, round.oudlers.size, 5, round.taker.id == round.calledPlayer?.id)
+                        calculateTakerScore(round.points, round.bid, round.oudlers.size, game.players.size, round.taker.id == round.calledPlayer?.id)
 
                     Text(
                         text = "$takerScore",

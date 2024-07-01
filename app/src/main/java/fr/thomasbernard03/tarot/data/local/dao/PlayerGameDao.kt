@@ -7,7 +7,6 @@ import androidx.room.Transaction
 import fr.thomasbernard03.tarot.data.local.entities.GameEntity
 import fr.thomasbernard03.tarot.data.local.entities.PlayerEntity
 import fr.thomasbernard03.tarot.data.local.entities.PlayerGameEntity
-import fr.thomasbernard03.tarot.domain.models.CreatePlayerModel
 import fr.thomasbernard03.tarot.domain.models.GameModel
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import java.util.Date

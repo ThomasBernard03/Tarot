@@ -1,6 +1,5 @@
 package fr.thomasbernard03.tarot.domain.repositories
 
-import fr.thomasbernard03.tarot.domain.models.CreatePlayerModel
 import fr.thomasbernard03.tarot.domain.models.GameModel
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.domain.models.Resource

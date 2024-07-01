@@ -20,7 +20,6 @@ import fr.thomasbernard03.tarot.presentation.theme.Green
 import fr.thomasbernard03.tarot.presentation.theme.Orange
 import fr.thomasbernard03.tarot.presentation.theme.Purple
 import fr.thomasbernard03.tarot.presentation.theme.Red
-import java.time.format.TextStyle
 
 @Composable
 fun PlayerIcon(

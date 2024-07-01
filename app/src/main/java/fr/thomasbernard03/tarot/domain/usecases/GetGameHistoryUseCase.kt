@@ -10,12 +10,13 @@ class GetGameHistoryUseCase(
     private val gameRepository: GameRepository = get(GameRepository::class.java)
 ) {
     suspend operator fun invoke() : Resource<List<GameModel>, GetGameError>  {
-        when(val result = gameRepository.getAllGames()){
+        return when(val result = gameRepository.getAllGames()){
             is Resource.Success -> {
-                return Resource.Success(result.data.sortedByDescending { it.finishedAt })
+                Resource.Success(result.data.sortedByDescending { it.finishedAt })
             }
+
             is Resource.Error -> {
-                return result
+                result
             }
         }
     }
