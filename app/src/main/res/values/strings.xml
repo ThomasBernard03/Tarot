@@ -68,4 +68,11 @@
     <string name="create_player_dialog_player_name_already_used_error">Nom déjà utilisé</string>
 
 
+    <!-- Settings -->
+    <string name="settings_title">Paramètres</string>
+    <string name="application_version_settings_title">Tarot pour Android</string>
+    <string name="application_version_settings_subtitle">Version %1$s</string>
+    <string name="open_source_code_settings_title">Code Open Source</string>
+    <string name="report_bug_settings_title">Remonter un Bug</string>
+
 </resources>

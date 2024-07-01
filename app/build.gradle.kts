@@ -15,6 +15,9 @@ android {
         versionCode = 1
         versionName = "1.0.0"
 
+        buildConfigField("String", "REPOSITORY_URL", "\"https://github.com/ThomasBernard03/Tarot\"")
+        buildConfigField("String", "BUG_REPORT_URL", "\"https://github.com/ThomasBernard03/Tarot/issues/new\"")
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
@@ -43,6 +46,7 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
     composeOptions {
@@ -86,6 +90,4 @@ dependencies {
     // Dependency injection with Koin
     implementation(libs.koin.core)
     implementation(libs.koin.android)
-
-    implementation("io.github.aghajari:LazySwipeCards:1.0.1")
 }

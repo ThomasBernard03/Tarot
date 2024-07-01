@@ -34,6 +34,7 @@ import fr.thomasbernard03.tarot.commons.SmallPadding
 import fr.thomasbernard03.tarot.commons.calculatePartnerScore
 import fr.thomasbernard03.tarot.commons.calculateTakerScore
 import fr.thomasbernard03.tarot.commons.extensions.toColor
+import fr.thomasbernard03.tarot.commons.extensions.toText
 import fr.thomasbernard03.tarot.domain.models.GameModel
 import fr.thomasbernard03.tarot.presentation.components.OudlerIndicator
 import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
@@ -95,6 +96,11 @@ fun LazyListScope.roundList(
                     round.oudlers.forEach {
                         OudlerIndicator(oudler = it)
                     }
+
+                    Text(
+                        modifier = Modifier.padding(start = MediumPadding),
+                        text = round.bid.toText()
+                    )
                 }
 
                 Column (

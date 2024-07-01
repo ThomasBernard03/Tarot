@@ -93,9 +93,9 @@ fun CreateGameSheet(
                             contentPadding = PaddingValues(0.dp),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = MaterialTheme.colorScheme.surface,
-                                contentColor = MaterialTheme.colorScheme.background
+                                contentColor = MaterialTheme.colorScheme.onSurface
                             ),
-                            border = if (selectedPlayers.contains(player)) BorderStroke(4.dp, MaterialTheme.colorScheme.primary) else null,
+                            border = if (selectedPlayers.contains(player)) BorderStroke(2.dp, MaterialTheme.colorScheme.primary) else null,
                             shape = RoundedCornerShape(topStart = 25.dp, bottomStart = 25.dp, topEnd = 12.dp, bottomEnd = 12.dp),
                             onClick = {
                                 if (selectedPlayers.contains(player))
@@ -112,7 +112,9 @@ fun CreateGameSheet(
                                     name = player.name,
                                     color = player.color.toColor()
                                 )
-                                Text(text = player.name)
+                                Text(
+                                    text = player.name,
+                                )
                             }
                         }
                     }
