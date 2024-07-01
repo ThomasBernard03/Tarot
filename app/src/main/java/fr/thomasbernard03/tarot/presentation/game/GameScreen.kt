@@ -71,6 +71,7 @@ import fr.thomasbernard03.tarot.presentation.components.OudlerIndicator
 import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
 import fr.thomasbernard03.tarot.presentation.components.PreviewScreen
 import fr.thomasbernard03.tarot.presentation.game.components.CreateGameSheet
+import fr.thomasbernard03.tarot.presentation.game.components.roundList
 import fr.thomasbernard03.tarot.presentation.theme.Green
 import fr.thomasbernard03.tarot.presentation.theme.Red
 import java.util.Date
@@ -159,6 +160,7 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
                     stickyHeader {
                         Row(
                             modifier = Modifier
+                                .background(MaterialTheme.colorScheme.background)
                                 .padding(horizontal = SmallPadding, vertical = MediumPadding)
                         ) {
                             state.currentGame.players.forEach { player ->
@@ -197,89 +199,7 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
                         }
                     }
 
-                    items(state.currentGame.rounds, key = { it.id }){ round ->
-                        Button(
-                            onClick = { },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color.Transparent,
-                                contentColor = MaterialTheme.colorScheme.primary
-                            ),
-                            shape = RectangleShape,
-                            contentPadding = PaddingValues(horizontal = LargePadding, vertical = MediumPadding)
-                        ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(MediumPadding)
-                            ) {
-                                // Taker and called player picture
-                                Box {
-                                    PlayerIcon(
-                                        name = round.taker.name,
-                                        color = round.taker.color.toColor()
-                                    )
-
-                                    if (round.calledPlayer != null && round.calledPlayer.id != round.taker.id){
-                                        Box(modifier = Modifier
-                                            .offset(x = 8.dp)
-                                            .zIndex(1f)
-                                            .align(Alignment.BottomEnd)
-                                        ){
-                                            PlayerIcon(
-                                                modifier = Modifier
-                                                    .size(24.dp)
-                                                    .border(
-                                                        1.dp,
-                                                        MaterialTheme.colorScheme.background,
-                                                        CircleShape
-                                                    ),
-                                                style = LocalTextStyle.current.copy(fontSize = 10.sp),
-                                                name = round.calledPlayer.name,
-                                                color = round.calledPlayer.color.toColor()
-                                            )
-                                        }
-                                    }
-                                }
-
-                                Row(
-                                    modifier = Modifier.weight(1f),
-                                    horizontalArrangement = Arrangement.spacedBy(SmallPadding)
-                                ) {
-                                    round.oudlers.forEach {
-                                        OudlerIndicator(oudler = it)
-                                    }
-                                }
-
-                                Column (
-                                    horizontalAlignment = Alignment.End
-                                ){
-                                    val takerScore =
-                                        calculateTakerScore(round.points, round.bid, round.oudlers.size, state.currentGame.players.size, round.taker.id == round.calledPlayer?.id)
-
-                                    Text(
-                                        text = "$takerScore",
-                                        color = if (takerScore >= 0) Green else Red,
-                                        fontWeight =  FontWeight.Bold
-                                    )
-
-                                    if (round.calledPlayer != null && round.taker.id != round.calledPlayer.id){
-
-                                        val calledPlayerScore = calculatePartnerScore(takerScore)
-
-                                        Text(
-                                            text = "$calledPlayerScore",
-                                            color = if (takerScore >= 0) Green else Red,
-                                            style = MaterialTheme.typography.bodySmall
-                                        )
-                                    }
-                                }
-
-                                Icon(
-                                    painter = painterResource(id = R.drawable.chevron_right),
-                                    contentDescription = null
-                                )
-                            }
-                        }
-                    }
+                   roundList(state.currentGame.rounds)
                 }
             }
 
