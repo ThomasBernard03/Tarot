@@ -25,18 +25,21 @@ import fr.thomasbernard03.tarot.commons.LargePadding
 @Composable
 fun SettingsButton(
     modifier : Modifier = Modifier,
+    enabled : Boolean = true,
     @StringRes title : Int,
     subTitle : String? = null,
     @DrawableRes icon : Int,
     onClick : () -> Unit
 ) {
     Button(
+        enabled = enabled,
         modifier = Modifier.height(70.dp),
         shape = RectangleShape,
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent,
-            contentColor = MaterialTheme.colorScheme.onBackground
+            contentColor = MaterialTheme.colorScheme.onBackground,
+            disabledContainerColor = Color.Transparent,
         )
     ) {
         Row(

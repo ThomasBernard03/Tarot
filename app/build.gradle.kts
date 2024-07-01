@@ -90,4 +90,6 @@ dependencies {
     // Dependency injection with Koin
     implementation(libs.koin.core)
     implementation(libs.koin.android)
+
+    implementation(libs.lottie)
 }

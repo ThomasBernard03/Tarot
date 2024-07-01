@@ -18,6 +18,8 @@ lifecycle-runtime-compose = "2.7.0"
 
 ksp = "1.9.10-1.0.13"
 
+lottie = "4.0.0"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -46,6 +48,8 @@ koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+
+lottie = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
