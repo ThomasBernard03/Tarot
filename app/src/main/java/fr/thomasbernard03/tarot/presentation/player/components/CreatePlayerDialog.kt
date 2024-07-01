@@ -1,8 +1,7 @@
-package fr.thomasbernard03.tarot.presentation.player.player
+package fr.thomasbernard03.tarot.presentation.player.components
 
 import android.content.res.Configuration
 import android.view.Gravity
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -24,19 +24,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -63,10 +62,6 @@ fun CreatePlayerDialog(
 
     val focusRequester = remember { FocusRequester() }
 
-    LaunchedEffect(Unit) {
-        focusRequester.requestFocus()
-    }
-
     Dialog(onDismissRequest = onDismiss,
         properties = DialogProperties(
             usePlatformDefaultWidth = false
@@ -90,7 +85,10 @@ fun CreatePlayerDialog(
             OutlinedTextField(
                 modifier = Modifier
                     .focusRequester(focusRequester)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .onGloballyPositioned {
+                        focusRequester.requestFocus()
+                    },
                 value = name,
                 onValueChange = onNameChanged,
                 label = { Text(text = stringResource(id = R.string.create_player_dialog_player_name_label)) },
@@ -157,11 +155,18 @@ fun CreatePlayerDialog(
                 }
             }
 
-            Button(
-                onClick = { onCreatePlayer(name, color!!) },
-                enabled = !loading && name.isNotBlank() && color != null
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = LargePadding),
+                horizontalArrangement = Arrangement.End
             ) {
-                Text(text = stringResource(id = R.string.create_player_dialog_confirmation))
+                Button(
+                    onClick = { onCreatePlayer(name, color!!) },
+                    enabled = !loading && name.isNotBlank() && color != null && errorMessage.isEmpty()
+                ) {
+                    Text(text = stringResource(id = R.string.create_player_dialog_confirmation))
+                }
             }
         }
     }

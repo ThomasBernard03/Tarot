@@ -36,6 +36,7 @@
     <string name="create_new_round_sheet_title">Nouveau tour</string>
     <string name="taker">Preneur</string>
     <string name="bid">Contrat</string>
+    <string name="finish_game">Terminer la partie</string>
 
     <string name="score">Résultat</string>
     <string name="number_of_points">Nombre de points</string>

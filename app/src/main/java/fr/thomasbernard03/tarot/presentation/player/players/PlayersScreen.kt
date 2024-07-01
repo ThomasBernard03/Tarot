@@ -34,7 +34,7 @@ import fr.thomasbernard03.tarot.commons.MediumPadding
 import fr.thomasbernard03.tarot.commons.extensions.toColor
 import fr.thomasbernard03.tarot.presentation.components.Loader
 import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
-import fr.thomasbernard03.tarot.presentation.player.player.CreatePlayerDialog
+import fr.thomasbernard03.tarot.presentation.player.components.CreatePlayerDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

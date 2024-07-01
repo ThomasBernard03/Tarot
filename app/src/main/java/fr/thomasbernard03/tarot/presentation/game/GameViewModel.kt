@@ -10,6 +10,7 @@ import fr.thomasbernard03.tarot.domain.models.Resource
 import fr.thomasbernard03.tarot.domain.usecases.CreateGameUseCase
 import fr.thomasbernard03.tarot.domain.usecases.FinishGameUseCase
 import fr.thomasbernard03.tarot.domain.usecases.GetCurrentGameUseCase
+import fr.thomasbernard03.tarot.domain.usecases.GetPlayersUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,6 +20,7 @@ import kotlinx.coroutines.launch
 class GameViewModel(
     private val createGameUseCase: CreateGameUseCase = CreateGameUseCase(),
     private val getCurrentGameUseCase: GetCurrentGameUseCase = GetCurrentGameUseCase(),
+    private val getPlayersUseCase: GetPlayersUseCase = GetPlayersUseCase(),
     private val finishGameUseCase: FinishGameUseCase = FinishGameUseCase()
 ) : ViewModel() {
 
@@ -28,15 +30,15 @@ class GameViewModel(
     fun onEvent(event : GameEvent){
         when(event){
             is GameEvent.OnGetCurrentGame -> onGetCurrentGame()
-            is GameEvent.OnOpenCreateDialogSheet -> _state.update { it.copy(showCreateGameSheet = true) }
-            is GameEvent.OnCloseCreateDialogSheet -> _state.update { it.copy(showCreateGameSheet = false) }
+            is GameEvent.OnOpenCreateDialogSheet -> onOpenCreateDialogSheet()
+            is GameEvent.OnCloseCreateDialogSheet -> _state.update { it.copy(showCreateGameSheet = false, players = emptyList(), loadingPlayers = false) }
             is GameEvent.OnValidateCreateGameSheet -> createGame(event.players)
             is GameEvent.OnNewRoundButtonPressed -> Unit
             is GameEvent.OnFinishGame -> onFinishGame(event.gameId)
         }
     }
 
-    private fun createGame(players : List<CreatePlayerModel>){
+    private fun createGame(players : List<PlayerModel>){
         viewModelScope.launch {
             when(val result = createGameUseCase(players)){
                 is Resource.Success -> {
@@ -72,6 +74,21 @@ class GameViewModel(
                 is Resource.Error -> {
 
 
+                }
+            }
+        }
+    }
+
+    private fun onOpenCreateDialogSheet(){
+        _state.update { it.copy(showCreateGameSheet = true, loadingPlayers = true) }
+
+        viewModelScope.launch {
+            when(val result = getPlayersUseCase()){
+                is Resource.Success -> {
+                    _state.update { it.copy(players = result.data, loadingPlayers = false) }
+                }
+                is Resource.Error -> {
+                    _state.update { it.copy(loadingPlayers = false) }
                 }
             }
         }

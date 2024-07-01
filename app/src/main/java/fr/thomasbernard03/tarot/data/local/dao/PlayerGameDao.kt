@@ -25,35 +25,25 @@ interface PlayerGameDao {
     """)
     suspend fun getPlayersForGame(gameId: Long) : List<PlayerEntity>
 
-
-
-    @Insert
-    suspend fun insertPlayers(players: List<PlayerEntity>) : List<Long>
-
     @Insert
     suspend fun createGame(game : GameEntity) : Long
 
     @Transaction
-    suspend fun createGameAndAddPlayer(
-        players : List<CreatePlayerModel>
+    suspend fun createGameAndLinkPlayers(
+        players : List<PlayerModel>
     ) : GameModel {
-        // 1) Insert players
-        val playersIds = insertPlayers(players.map { PlayerEntity(name = it.name, color = it.color) })
-        val playersWithId = players.zip(playersIds).map { PlayerModel(id = it.second, name = it.first.name, color = it.first.color) }
-
-
-        // 2) Create a game
+        // 1) Create a game
         var game = GameEntity(startedAt = Date())
         val gameId = createGame(game)
         game = game.copy(id = gameId)
 
-        // 3) Insert all players in the game
-        val playerGameEntities = playersWithId.map { PlayerGameEntity(playerId = it.id, gameId = gameId) }
+        // 2) Insert all players in the game
+        val playerGameEntities = players.map { PlayerGameEntity(playerId = it.id, gameId = gameId) }
         addPlayerToGame(playerGameEntities)
         return GameModel(
             id = gameId,
             startedAt = game.startedAt,
-            players = playersWithId.map { PlayerModel(id = it.id, name = it.name, color = it.color) },
+            players = players,
             rounds = listOf()
         )
     }

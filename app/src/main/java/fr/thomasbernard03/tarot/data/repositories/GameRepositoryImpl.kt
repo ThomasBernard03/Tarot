@@ -5,7 +5,6 @@ import fr.thomasbernard03.tarot.data.local.dao.GameDao
 import fr.thomasbernard03.tarot.data.local.dao.PlayerDao
 import fr.thomasbernard03.tarot.data.local.dao.PlayerGameDao
 import fr.thomasbernard03.tarot.data.local.dao.RoundDao
-import fr.thomasbernard03.tarot.domain.models.CreatePlayerModel
 import fr.thomasbernard03.tarot.domain.models.GameModel
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.domain.models.Resource
@@ -25,7 +24,7 @@ class GameRepositoryImpl(
 ) : GameRepository {
 
 
-    override suspend fun createGame(players: List<CreatePlayerModel>): Resource<GameModel, CreateGameError> {
+    override suspend fun createGame(players: List<PlayerModel>): Resource<GameModel, CreateGameError> {
         return try {
             val gameAlreadyInProgress = gameDao.gameAlreadyInProgress()
             if (gameAlreadyInProgress)
@@ -34,7 +33,7 @@ class GameRepositoryImpl(
             if (players.size < 3 || players.size > 5)
                 return Resource.Error(CreateGameError.InvalidNumberOfPlayers)
 
-            val game = playerGameDao.createGameAndAddPlayer(players)
+            val game = playerGameDao.createGameAndLinkPlayers(players)
 
             Resource.Success(game)
         }

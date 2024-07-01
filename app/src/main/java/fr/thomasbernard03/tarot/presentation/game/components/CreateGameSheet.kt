@@ -1,153 +1,134 @@
 package fr.thomasbernard03.tarot.presentation.game.components
 
 import android.content.res.Configuration
+import android.view.Gravity
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.window.DialogWindowProvider
 import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.LargePadding
-import fr.thomasbernard03.tarot.commons.MAX_PLAYER
 import fr.thomasbernard03.tarot.commons.MediumPadding
 import fr.thomasbernard03.tarot.commons.extensions.toColor
-import fr.thomasbernard03.tarot.domain.models.CreatePlayerModel
 import fr.thomasbernard03.tarot.domain.models.PlayerColor
+import fr.thomasbernard03.tarot.domain.models.PlayerModel
+import fr.thomasbernard03.tarot.presentation.components.Loader
 import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
 import fr.thomasbernard03.tarot.presentation.components.PreviewComponent
 
 @Composable
 fun CreateGameSheet(
-    onValidate: (List<CreatePlayerModel>) -> Unit
+    loadingPlayers : Boolean = false,
+    players : List<PlayerModel>,
+    onDismiss: () -> Unit = {},
+    onValidate: (List<PlayerModel>) -> Unit
 ) {
-    var editedPlayerIndex by remember { mutableIntStateOf(-1) }
-    val focusRequester = remember { FocusRequester() }
-    val players = remember { mutableStateListOf<CreatePlayerModel>() }
-    val context = LocalContext.current
+    val selectedPlayers = remember { mutableStateListOf<PlayerModel>() }
 
-    Column(
-        modifier = Modifier.padding(LargePadding)
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(usePlatformDefaultWidth = false)
     ) {
-        Text(
-            text = stringResource(id = R.string.create_new_game_sheet_title),
-            style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.padding(bottom = LargePadding)
-        )
+        val dialogWindowProvider = LocalView.current.parent as DialogWindowProvider
+        dialogWindowProvider.window.setGravity(Gravity.BOTTOM)
 
         Column(
-            verticalArrangement = Arrangement.spacedBy(MediumPadding)
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.background)
+                .padding(vertical = LargePadding)
+                .fillMaxWidth()
         ) {
-            players.forEachIndexed { index, player ->
-                Row(
+            Text(
+                text = stringResource(id = R.string.create_new_game_sheet_title),
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(LargePadding)
+            )
+
+            if (loadingPlayers){
+                Loader(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    message = R.string.loading_players
+                )
+            }
+            else {
+                LazyVerticalGrid(
+                    modifier = Modifier
+                        .heightIn(min = 200.dp, max = 400.dp)
+                        .fillMaxWidth(),
+                    columns = GridCells.Adaptive(minSize = 120.dp),
+                    contentPadding = PaddingValues(LargePadding),
                     horizontalArrangement = Arrangement.spacedBy(MediumPadding),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalArrangement = Arrangement.spacedBy(MediumPadding)
                 ) {
-
-                    if (editedPlayerIndex == index){
-
-                        LaunchedEffect(Unit) {
-                            focusRequester.requestFocus()
+                    items(players, key = { it.id }) { player ->
+                        Button(
+                            contentPadding = PaddingValues(0.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.surface,
+                                contentColor = MaterialTheme.colorScheme.background
+                            ),
+                            border = if (selectedPlayers.contains(player)) BorderStroke(4.dp, MaterialTheme.colorScheme.primary) else null,
+                            shape = RoundedCornerShape(topStart = 25.dp, bottomStart = 25.dp, topEnd = 12.dp, bottomEnd = 12.dp),
+                            onClick = {
+                                if (selectedPlayers.contains(player))
+                                    selectedPlayers.remove(player)
+                                else
+                                    selectedPlayers.add(player)
+                            }) {
+                            Row(
+                                modifier = Modifier.weight(1f),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(MediumPadding)
+                            ) {
+                                PlayerIcon(
+                                    name = player.name,
+                                    color = player.color.toColor()
+                                )
+                                Text(text = player.name)
+                            }
                         }
-
-                        PlayerIcon(name = player.name, color =  player.color.toColor())
-
-                        OutlinedTextField(
-                            modifier = Modifier.focusRequester(focusRequester),
-                            value = player.name,
-                            onValueChange = { players[index] = player.copy(name = it) },
-                            keyboardOptions = KeyboardOptions.Default.copy(
-                                imeAction = ImeAction.Done,
-                                capitalization = KeyboardCapitalization.Words
-                            ),
-                            keyboardActions = KeyboardActions(
-                                onDone = {
-                                    editedPlayerIndex = -1
-                                    focusRequester.freeFocus()
-                                }
-                            ),
-                            singleLine = true
-                        )
-                    }
-                    else {
-                        PlayerIcon(name = player.name, color = player.color.toColor())
-
-                        Text(
-                            text = player.name,
-                            modifier = Modifier.weight(1f)
-                        )
-                    }
-
-                    TextButton(onClick = { editedPlayerIndex = index }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.edit),
-                            contentDescription = stringResource(id = R.string.create_new_game_sheet_edit_player)
-                        )
-                    }
-
-                    TextButton(onClick = {
-                        players.removeAt(index)
-                        editedPlayerIndex = -1
-                    }
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.delete),
-                            contentDescription = stringResource(id = R.string.create_new_game_sheet_delete_player)
-                        )
                     }
                 }
-                HorizontalDivider()
             }
-        }
 
-        TextButton(
-            enabled = players.size < MAX_PLAYER,
-            onClick = {
-                players.add(
-                    CreatePlayerModel(
-                        name = "${context.getString(R.string.create_new_game_sheet_default_player_name)} ${players.size + 1}",
-                        color = PlayerColor.entries.shuffled().first()
-                    )
-                )
-                editedPlayerIndex = -1
-            }
-        ) {
-            Text(text = stringResource(id = R.string.create_new_game_sheet_add_new_player))
-        }
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
-        ) {
-            TextButton(
-                onClick = { onValidate(players) },
-                enabled = players.size == 5
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
             ) {
-                Text(text = stringResource(id = R.string.create_new_game_sheet_validate))
+                TextButton(
+                    onClick = { onValidate(selectedPlayers) },
+                    enabled = selectedPlayers.size == 5
+                ) {
+                    Text(text = stringResource(id = R.string.create_new_game_sheet_validate))
+                }
             }
         }
     }
@@ -157,7 +138,13 @@ fun CreateGameSheet(
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 private fun CreateGameSheetPreview() = PreviewComponent {
-    CreateGameSheet { _ ->
+    CreateGameSheet(
+        players = listOf(
+            PlayerModel(id = 1, name = "Player 1", color = PlayerColor.RED),
+            PlayerModel(id = 2, name = "Player 2", color = PlayerColor.BLUE),
+            PlayerModel(id = 3, name = "Player 3", color = PlayerColor.GREEN),
+        )
+    ) { _ ->
 
     }
 }
