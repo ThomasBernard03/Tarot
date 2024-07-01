@@ -2,6 +2,7 @@ package fr.thomasbernard03.tarot.data.local.entities
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 
 @Entity(
     primaryKeys = ["playerId", "gameId"],
@@ -19,6 +20,10 @@ import androidx.room.ForeignKey
             onDelete = ForeignKey.CASCADE
         )
 
+    ],
+    indices = [
+        Index(value = ["playerId"]),
+        Index(value = ["gameId"])
     ]
 )
 data class PlayerGameEntity(

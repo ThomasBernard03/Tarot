@@ -2,6 +2,7 @@ package fr.thomasbernard03.tarot.data.local.entities
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import fr.thomasbernard03.tarot.domain.models.Bid
 import java.util.Date
@@ -26,6 +27,11 @@ import java.util.Date
             childColumns = ["calledPlayerId"],
             onDelete = ForeignKey.CASCADE
         )
+    ],
+    indices = [
+        Index(value = ["gameId"]),
+        Index(value = ["takerId"]),
+        Index(value = ["calledPlayerId"])
     ]
 )
 data class RoundEntity(

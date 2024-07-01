@@ -6,7 +6,7 @@ import fr.thomasbernard03.tarot.domain.models.Oudler
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
-class FivePlayerGameUnitTest {
+class CalculateTakerScoreUnitTest {
     @Test
     fun checkTakerPointSmallOne(){
 
@@ -15,10 +15,8 @@ class FivePlayerGameUnitTest {
         val oudlers : List<Oudler> = listOf()
         val players = 5
 
-
         val score = calculateTakerScore(points, bid, oudlers.size, players, false)
 
-        // Score must be 100
         assertEquals(52, score)
     }
 
