@@ -74,5 +74,6 @@
     <string name="application_version_settings_subtitle">Version %1$s</string>
     <string name="open_source_code_settings_title">Code Open Source</string>
     <string name="report_bug_settings_title">Remonter un Bug</string>
+    <string name="official_rules_settings_title">Règles officielles</string>
 
 </resources>

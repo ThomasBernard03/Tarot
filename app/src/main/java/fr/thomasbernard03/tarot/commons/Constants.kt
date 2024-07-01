@@ -9,6 +9,7 @@ val MediumPadding = 8.dp
 val SmallPadding = 4.dp
 
 const val MAX_PLAYER = 5
+const val PLAYER_NAME_MAX_LENGTH = 20
 
 fun calculateTakerScore(
     @IntRange(from = 0, to = 91) points: Int,
@@ -17,32 +18,28 @@ fun calculateTakerScore(
     @IntRange(from = 3, to = 5) playerCount: Int,
     isCalledPlayerTaker: Boolean
 ): Int {
-    val pointsToAchieve = when (oudlers) {
-        0 -> 56
-        1 -> 51
-        2 -> 41
-        3 -> 36
-        else -> throw IllegalArgumentException("Number of oudlers must be between 0 and 3")
-    }
-
-    val pointDifference = points - pointsToAchieve
-    val baseScore = if (pointDifference >= 0) pointDifference + 25 else pointDifference - 25
-
-    val multiplier = when (bid) {
+    // Thresholds for the number of points needed based on the number of oudlers
+    val bidMultiplier = when(bid){
         Bid.SMALL -> 1
         Bid.GUARD -> 2
         Bid.GUARD_WITHOUT -> 4
         Bid.GUARD_AGAINST -> 6
     }
 
-    var takerScore = baseScore * multiplier
-
-    // Adjust score based on the number of players
-    if (playerCount == 5) {
-        takerScore = (takerScore * 1.5).toInt()
+    val pointGoal = when(oudlers){
+        0 -> 56
+        1 -> 51
+        2 -> 41
+        3 -> 36
+        else -> throw IllegalArgumentException("Invalid number of oudlers")
     }
 
-    return takerScore
+    val score = when {
+        (points - pointGoal >= 0) -> (points - pointGoal + 25) * bidMultiplier
+        else -> (points - pointGoal - 25) * bidMultiplier
+    }
+
+    return score * 2
 }
 
 fun calculatePartnerScore(takerScore: Int): Int {

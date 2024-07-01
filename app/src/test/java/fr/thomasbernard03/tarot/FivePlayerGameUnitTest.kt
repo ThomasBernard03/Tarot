@@ -19,7 +19,7 @@ class FivePlayerGameUnitTest {
         val score = calculateTakerScore(points, bid, oudlers.size, players, false)
 
         // Score must be 100
-        assertEquals(100, score)
+        assertEquals(52, score)
     }
 
     @Test
@@ -43,5 +43,27 @@ class FivePlayerGameUnitTest {
 
         val score = calculateTakerScore(points, bid, oudlers.size, players, false)
         assertEquals(140, score)
+    }
+
+    @Test
+    fun checkTakerPointGuardWithoutOne(){
+        val points = 63
+        val bid = Bid.GUARD_WITHOUT
+        val oudlers : List<Oudler> = listOf(Oudler.PETIT, Oudler.EXCUSE)
+        val players = 5
+
+        val score = calculateTakerScore(points, bid, oudlers.size, players, false)
+        assertEquals(376, score)
+    }
+
+    @Test
+    fun checkTakerPointGuardWithoutTwo(){
+        val points = 71
+        val bid = Bid.GUARD_WITHOUT
+        val oudlers : List<Oudler> = listOf(Oudler.PETIT, Oudler.EXCUSE, Oudler.GRAND)
+        val players = 5
+
+        val score = calculateTakerScore(points, bid, oudlers.size, players, false)
+        assertEquals(480, score)
     }
 }

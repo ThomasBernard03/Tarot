@@ -159,6 +159,37 @@ fun RoundScreen(
                 }
             }
 
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(id = R.string.bid),
+                textAlign = TextAlign.Center
+            )
+
+            LazyRow(
+                contentPadding = PaddingValues(horizontal = LargePadding),
+                horizontalArrangement = Arrangement.spacedBy(MediumPadding),
+            ) {
+                items(items = Bid.entries, key = { it.ordinal }) {
+                    FilterChip(
+                        colors = FilterChipDefaults.filterChipColors(
+                            selectedContainerColor = MaterialTheme.colorScheme.primary,
+                            selectedLabelColor = MaterialTheme.colorScheme.onPrimary
+                        ),
+                        selected = state.bid == it,
+                        onClick = {
+                            val bid = if (state.bid == it) null else it
+                            onEvent(RoundEvent.OnBidChanged(bid))
+                        },
+                        label = {
+                            Text(
+                                modifier = Modifier.padding(12.dp),
+                                text = it.toText()
+                            )
+                        }
+                    )
+                }
+            }
+
             AnimatedVisibility(visible = state.players.size == 5) {
                 Column {
                     Text(
@@ -198,37 +229,6 @@ fun RoundScreen(
                             }
                         }
                     }
-                }
-            }
-
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.bid),
-                textAlign = TextAlign.Center
-            )
-
-            LazyRow(
-                contentPadding = PaddingValues(horizontal = LargePadding),
-                horizontalArrangement = Arrangement.spacedBy(MediumPadding),
-            ) {
-                items(items = Bid.entries, key = { it.ordinal }) {
-                    FilterChip(
-                        colors = FilterChipDefaults.filterChipColors(
-                            selectedContainerColor = MaterialTheme.colorScheme.primary,
-                            selectedLabelColor = MaterialTheme.colorScheme.onPrimary
-                        ),
-                        selected = state.bid == it,
-                        onClick = {
-                            val bid = if (state.bid == it) null else it
-                            onEvent(RoundEvent.OnBidChanged(bid))
-                        },
-                        label = {
-                            Text(
-                                modifier = Modifier.padding(12.dp),
-                                text = it.toText()
-                            )
-                        }
-                    )
                 }
             }
 

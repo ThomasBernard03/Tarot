@@ -17,6 +17,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
@@ -32,8 +33,6 @@ import fr.thomasbernard03.tarot.presentation.information.components.SettingsButt
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InformationScreen() {
-
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     var showConfetti by remember { mutableStateOf(false) }
     val preloaderLottieComposition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.confetti))
 
@@ -58,7 +57,6 @@ fun InformationScreen() {
                         overflow = TextOverflow.Ellipsis
                     )
                 },
-                scrollBehavior = scrollBehavior
             )
         }
     ) {
@@ -67,6 +65,15 @@ fun InformationScreen() {
         ) {
             Column {
                 val uriHandler = LocalUriHandler.current
+
+                SettingsButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = R.string.official_rules_settings_title,
+                    icon = R.drawable.book,
+                    onClick = {
+                        uriHandler.openUri(BuildConfig.TAROT_OFFICIAL_RULES_URL)
+                    }
+                )
 
                 SettingsButton(
                     modifier = Modifier.fillMaxWidth(),

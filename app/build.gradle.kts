@@ -17,6 +17,7 @@ android {
 
         buildConfigField("String", "REPOSITORY_URL", "\"https://github.com/ThomasBernard03/Tarot\"")
         buildConfigField("String", "BUG_REPORT_URL", "\"https://github.com/ThomasBernard03/Tarot/issues/new\"")
+        buildConfigField("String", "TAROT_OFFICIAL_RULES_URL", "\"https://www.fftarot.fr/assets/documents/R-RO201206.pdf\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

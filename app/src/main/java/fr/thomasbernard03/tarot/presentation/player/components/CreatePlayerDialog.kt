@@ -43,6 +43,7 @@ import androidx.compose.ui.window.DialogWindowProvider
 import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.LargePadding
 import fr.thomasbernard03.tarot.commons.MediumPadding
+import fr.thomasbernard03.tarot.commons.PLAYER_NAME_MAX_LENGTH
 import fr.thomasbernard03.tarot.commons.extensions.toColor
 import fr.thomasbernard03.tarot.domain.models.PlayerColor
 import fr.thomasbernard03.tarot.presentation.components.PreviewScreen
@@ -90,7 +91,10 @@ fun CreatePlayerDialog(
                         focusRequester.requestFocus()
                     },
                 value = name,
-                onValueChange = onNameChanged,
+                onValueChange = {
+                    if (it.length <= PLAYER_NAME_MAX_LENGTH)
+                        onNameChanged(it)
+                },
                 label = { Text(text = stringResource(id = R.string.create_player_dialog_player_name_label)) },
                 keyboardOptions = KeyboardOptions.Default.copy(
                     imeAction = ImeAction.Done,
