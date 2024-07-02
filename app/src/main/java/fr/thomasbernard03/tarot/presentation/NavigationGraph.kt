@@ -15,7 +15,7 @@ import fr.thomasbernard03.tarot.presentation.game.GameScreen
 import fr.thomasbernard03.tarot.presentation.game.GameViewModel
 import fr.thomasbernard03.tarot.presentation.history.HistoryScreen
 import fr.thomasbernard03.tarot.presentation.history.HistoryViewModel
-import fr.thomasbernard03.tarot.presentation.information.InformationScreen
+import fr.thomasbernard03.tarot.presentation.settings.InformationScreen
 import fr.thomasbernard03.tarot.presentation.player.players.PlayersScreen
 import fr.thomasbernard03.tarot.presentation.player.players.PlayersViewModel
 import fr.thomasbernard03.tarot.presentation.round.RoundEvent
