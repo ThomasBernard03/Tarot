@@ -36,6 +36,15 @@ fun BottomAppBar(navController: NavController) {
             }
         }
 
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            items.firstOrNull {
+                it.route == destination.route || destination.parent?.route == it.route
+            }?.let {
+                currentRoute = destination.route!!
+                selectedItem = items.indexOf(it)
+            }
+        }
+
         NavigationBar {
             items.forEachIndexed { index, item ->
                 NavigationBarItem(
@@ -48,8 +57,6 @@ fun BottomAppBar(navController: NavController) {
                     selected = selectedItem == index,
                     onClick = {
                         if (selectedItem != index){
-                            selectedItem = index
-                            currentRoute = item.route
                             navController.navigate(item.route) {
                                 popUpTo(navController.graph.id) {
                                     saveState = true
