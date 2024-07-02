@@ -2,16 +2,22 @@ package fr.thomasbernard03.tarot.presentation.history
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import fr.thomasbernard03.tarot.commons.helpers.NavigationHelper
 import fr.thomasbernard03.tarot.domain.models.Resource
+import fr.thomasbernard03.tarot.domain.models.Screen
 import fr.thomasbernard03.tarot.domain.usecases.GetGameHistoryUseCase
+import fr.thomasbernard03.tarot.domain.usecases.ResumeGameUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.koin.java.KoinJavaComponent.get
 
 class HistoryViewModel(
-    private val getGameHistoryUseCase: GetGameHistoryUseCase = GetGameHistoryUseCase()
+    private val getGameHistoryUseCase: GetGameHistoryUseCase = GetGameHistoryUseCase(),
+    private val resumeGameUseCase: ResumeGameUseCase = ResumeGameUseCase(),
+    private val navigationHelper: NavigationHelper = get(NavigationHelper::class.java)
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HistoryState())
@@ -20,6 +26,7 @@ class HistoryViewModel(
     fun onEvent(event : HistoryEvent){
         when(event){
             is HistoryEvent.OnGetGames -> onGetGames()
+            is HistoryEvent.OnResumeGame -> onResumeGame(event.gameId)
         }
     }
 
@@ -33,6 +40,19 @@ class HistoryViewModel(
 
                 is Resource.Error -> {
                     _state.update { it.copy(loading = false) }
+                }
+            }
+        }
+    }
+
+    private fun onResumeGame(id : Long){
+        viewModelScope.launch {
+            when(val result = resumeGameUseCase(id)){
+                is Resource.Success -> {
+                    navigationHelper.navigateTo(Screen.Game, popupTo = Screen.History)
+                }
+                is Resource.Error -> {
+
                 }
             }
         }

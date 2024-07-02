@@ -148,7 +148,7 @@ fun RoundScreen(
                         },
                         shape = RoundedCornerShape(8.dp),
                         border = ButtonDefaults.outlinedButtonBorder,
-                        enabled = editable
+                        enabled = roundId == null || editable
                     ) {
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -177,7 +177,7 @@ fun RoundScreen(
             ) {
                 items(items = Bid.entries, key = { it.ordinal }) {
                     FilterChip(
-                        enabled = editable,
+                        enabled = roundId == null || editable,
                         colors = FilterChipDefaults.filterChipColors(
                             selectedContainerColor = MaterialTheme.colorScheme.primary,
                             selectedLabelColor = MaterialTheme.colorScheme.onPrimary
@@ -221,7 +221,7 @@ fun RoundScreen(
                                 },
                                 shape = RoundedCornerShape(8.dp),
                                 border = ButtonDefaults.outlinedButtonBorder,
-                                enabled = editable
+                                enabled = roundId == null || editable
                             ) {
                                 Row(
                                     horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -252,7 +252,7 @@ fun RoundScreen(
             ) {
                 items(items = Oudler.entries, key = { it.name }) {
                     FilterChip(
-                        enabled = editable,
+                        enabled = roundId == null || editable,
                         colors = FilterChipDefaults.filterChipColors(
                             selectedContainerColor = MaterialTheme.colorScheme.primary,
                             selectedLabelColor = MaterialTheme.colorScheme.onPrimary
@@ -327,7 +327,7 @@ fun RoundScreen(
                 Row(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    if (editable){
+                    if (roundId == null || editable){
                         IconButton(onClick = { onEvent(RoundEvent.OnNumberOfPointsChanged(state.numberOfPoints - 1)) }) {
                             Icon(
                                 modifier = Modifier.size(22.dp),
@@ -342,7 +342,7 @@ fun RoundScreen(
                             .padding(horizontal = LargePadding)
                     ) {
                         Slider(
-                            enabled = editable,
+                            enabled = roundId == null || editable,
                             value = state.numberOfPoints.toFloat(),
                             onValueChange = { onEvent(RoundEvent.OnNumberOfPointsChanged(it.toInt()))},
                             valueRange = 0f..91f,
@@ -354,7 +354,7 @@ fun RoundScreen(
                         )
                     }
 
-                    if (editable){
+                    if (roundId == null || editable){
                         IconButton(onClick = { onEvent(RoundEvent.OnNumberOfPointsChanged(state.numberOfPoints + 1)) }) {
                             Icon(Icons.Filled.Add, contentDescription = null)
                         }

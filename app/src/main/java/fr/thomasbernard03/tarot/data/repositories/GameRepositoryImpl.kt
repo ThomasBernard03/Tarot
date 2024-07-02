@@ -12,6 +12,7 @@ import fr.thomasbernard03.tarot.domain.models.RoundModel
 import fr.thomasbernard03.tarot.domain.models.errors.CreateGameError
 import fr.thomasbernard03.tarot.domain.models.errors.FinishGameError
 import fr.thomasbernard03.tarot.domain.models.errors.GetGameError
+import fr.thomasbernard03.tarot.domain.models.errors.ResumeGameError
 import fr.thomasbernard03.tarot.domain.repositories.GameRepository
 import org.koin.java.KoinJavaComponent.get
 
@@ -49,7 +50,7 @@ class GameRepositoryImpl(
             if (game.finishedAt != null)
                 return Resource.Error(FinishGameError.GameAlreadyFinished)
 
-            gameDao.gameFinished(id)
+            gameDao.changeFinishedAt(id)
 
             Resource.Success(Unit)
         }
@@ -88,6 +89,10 @@ class GameRepositoryImpl(
     override suspend fun getCurrentGame(): Resource<GameModel, GetGameError> {
         return try {
             val game = gameDao.getCurrentGame()
+
+            if (game == null)
+                return Resource.Error(GetGameError.GameNotFound)
+
             val rounds = roundDao.getGameRounds(game.id!!)
 
             return Resource.Success(
@@ -115,10 +120,6 @@ class GameRepositoryImpl(
                     }
                 )
             )
-        }
-        catch (e : NullPointerException){
-            Log.e(e.message, e.stackTraceToString())
-            Resource.Error(GetGameError.GameNotFound)
         }
         catch (e : Exception){
             Log.e(e.message, e.stackTraceToString())
@@ -160,6 +161,21 @@ class GameRepositoryImpl(
         catch (e : Exception){
             Log.e(e.message, e.stackTraceToString())
             Resource.Error(GetGameError.UnknownError)
+        }
+    }
+
+    override suspend fun resumeGame(id: Long): Resource<Unit, ResumeGameError> {
+        return try {
+            gameDao.getCurrentGame()?.let {
+                gameDao.changeFinishedAt(it.id!!)
+            }
+
+            gameDao.changeFinishedAt(id, null)
+            return Resource.Success(Unit)
+        }
+        catch (e : Exception){
+            Log.e(e.message, e.stackTraceToString())
+            Resource.Error(ResumeGameError.UnknownError)
         }
     }
 }
