@@ -32,6 +32,9 @@ fun NavGraphBuilder.navigationGraph(navController : NavController){
                 if (event is GameEvent.OnNewRoundButtonPressed){
                     navController.navigate("round/${event.gameId}")
                 }
+                else if (event is GameEvent.OnEditRound){
+                    navController.navigate("round/${event.gameId}?roundId=${event.roundId}")
+                }
 
                 viewModel.onEvent(event)
             }
@@ -41,13 +44,26 @@ fun NavGraphBuilder.navigationGraph(navController : NavController){
             arguments = listOf(
                 navArgument(name = "gameId"){
                     type = NavType.LongType
+                },
+                navArgument(name = "roundId"){
+                    type = NavType.StringType
+                    nullable = true
                 }
             )
         ){
             val gameId = it.arguments?.getLong("gameId") ?: 0
+            val roundId = it.arguments?.getString("roundId")?.let {
+                if (it == "0")  null
+                else it.toLong()
+            }
+
             val viewModel : RoundViewModel = viewModel()
             val state by viewModel.state.collectAsStateWithLifecycle()
-            RoundScreen(gameId = gameId, state = state){ event ->
+            RoundScreen(
+                gameId = gameId,
+                roundId = roundId,
+                state = state
+            ){ event ->
                 if (event is RoundEvent.OnGoBack)
                     navController.navigateUp()
 

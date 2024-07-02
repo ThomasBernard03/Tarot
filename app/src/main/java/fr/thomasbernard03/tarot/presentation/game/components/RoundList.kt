@@ -50,13 +50,14 @@ import fr.thomasbernard03.tarot.presentation.theme.Red
 @OptIn(ExperimentalFoundationApi::class)
 fun LazyListScope.roundList(
     game : GameModel,
+    onRoundPressed : (Long) -> Unit,
     onRoundLongPressed : (Long) -> Unit
 ){
     items(game.rounds, key = { it.id }){ round ->
         Row(
             modifier = Modifier.combinedClickable(
                 onClick = {
-
+                    onRoundPressed(round.id)
                 },
                 onLongClick = {
                     onRoundLongPressed(round.id)
@@ -117,7 +118,7 @@ fun LazyListScope.roundList(
                     horizontalAlignment = Alignment.End
                 ){
                     val takerScore =
-                        calculateTakerScore(round.points, round.bid, round.oudlers.size, game.players.size)
+                        calculateTakerScore(round.points, round.bid, round.oudlers.size)
 
 
                     val partnerScore = calculatePartnerScore(takerScore)

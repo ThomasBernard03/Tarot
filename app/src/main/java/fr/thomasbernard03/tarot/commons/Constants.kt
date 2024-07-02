@@ -15,7 +15,6 @@ fun calculateTakerScore(
     @IntRange(from = 0, to = 91) points: Int,
     bid: Bid,
     @IntRange(from = 0, to = 3) oudlers: Int,
-    @IntRange(from = 3, to = 5) playerCount: Int,
 ): Int {
     // Thresholds for the number of points needed based on the number of oudlers
     val bidMultiplier = when(bid){

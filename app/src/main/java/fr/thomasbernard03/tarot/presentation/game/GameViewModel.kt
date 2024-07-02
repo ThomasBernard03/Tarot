@@ -41,6 +41,7 @@ class GameViewModel(
             is GameEvent.OnFinishGame -> onFinishGame(event.gameId)
             is GameEvent.OnDeleteRound -> onDeleteRound(event.roundId)
             is GameEvent.OnDismissMessage -> _state.update { it.copy(message = "") }
+            is GameEvent.OnEditRound -> Unit
         }
     }
 

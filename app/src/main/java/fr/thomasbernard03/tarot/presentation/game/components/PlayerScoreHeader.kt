@@ -43,7 +43,6 @@ fun LazyListScope.playersScoreHeader(
                             points = it.points,
                             bid = it.bid,
                             oudlers = it.oudlers.size,
-                            playerCount = game.players.size,
                         )
 
                         val partnerScore = calculatePartnerScore(takerScore)

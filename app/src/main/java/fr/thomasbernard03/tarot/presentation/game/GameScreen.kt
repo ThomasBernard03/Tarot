@@ -71,7 +71,7 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
     val sheetScope = rememberCoroutineScope()
     val haptics = LocalHapticFeedback.current
     var selectedRoundId by remember { mutableStateOf<Long?>(null) }
-    var roundSheetState = rememberModalBottomSheetState()
+    val roundSheetState = rememberModalBottomSheetState()
 
     LaunchedEffect(Unit) {
         onEvent(GameEvent.OnGetCurrentGame)
@@ -114,6 +114,7 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
                     icon = R.drawable.edit,
                     onClick = {
                         sheetScope.launch {
+                            onEvent(GameEvent.OnEditRound(gameId = state.currentGame!!.id, roundId = selectedRoundId!!))
                             roundSheetState.hide()
                             selectedRoundId = null
                         }
@@ -206,6 +207,9 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
 
                     roundList(
                         game = state.currentGame,
+                        onRoundPressed = {
+                            onEvent(GameEvent.OnEditRound(gameId = state.currentGame.id, roundId = it))
+                        },
                         onRoundLongPressed = {
                             haptics.performHapticFeedback(HapticFeedbackType.LongPress)
                             selectedRoundId = it

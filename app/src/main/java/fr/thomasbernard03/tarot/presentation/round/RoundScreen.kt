@@ -68,6 +68,7 @@ import fr.thomasbernard03.tarot.presentation.theme.Red
 @Composable
 fun RoundScreen(
     gameId : Long,
+    roundId : Long? = null,
     state : RoundState,
     onEvent: (RoundEvent) -> Unit
 ){
@@ -80,7 +81,7 @@ fun RoundScreen(
     val score by remember(state.bid, state.oudlers.size, state.numberOfPoints) {
         derivedStateOf {
             state.bid?.let {
-                calculateTakerScore(state.numberOfPoints, state.bid, state.oudlers.size, playerCount = state.players.size)
+                calculateTakerScore(state.numberOfPoints, state.bid, state.oudlers.size)
             }
         }
     }
@@ -98,7 +99,7 @@ fun RoundScreen(
                         horizontalArrangement = Arrangement.spacedBy(LargePadding)
                     ) {
                         Text(
-                            text = stringResource(id = R.string.create_new_round_sheet_title),
+                            text = if (roundId == null) stringResource(id = R.string.create_new_round_sheet_title) else stringResource(id = R.string.round),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
