@@ -380,7 +380,6 @@ fun RoundScreen(
                 }
             }
             else if (editable){
-
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -389,6 +388,7 @@ fun RoundScreen(
                 ) {
                     TextButton(
                         onClick = {
+                            onEvent(RoundEvent.OnEditRound(roundId, state.taker!!, state.bid!!, state.oudlers, state.numberOfPoints, state.calledPlayer))
                         }
                     ) {
                         Text(text = stringResource(id = R.string.edit_round))

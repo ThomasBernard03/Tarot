@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import fr.thomasbernard03.tarot.data.local.entities.RoundEntity
 import fr.thomasbernard03.tarot.data.local.entities.RoundOudlerEntity
 import fr.thomasbernard03.tarot.domain.models.Bid
@@ -33,6 +34,9 @@ interface RoundDao {
 
     @Query("DELETE FROM RoundEntity WHERE id = :roundId")
     suspend fun deleteRound(roundId : Long) : Int
+
+    @Update
+    suspend fun update(round : RoundEntity)
 
     @Transaction
     suspend fun createRound(

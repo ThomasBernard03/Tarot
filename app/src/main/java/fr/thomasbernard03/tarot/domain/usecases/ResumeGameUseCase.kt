@@ -1,11 +1,8 @@
 package fr.thomasbernard03.tarot.domain.usecases
 
-import fr.thomasbernard03.tarot.domain.models.GameModel
 import fr.thomasbernard03.tarot.domain.models.Resource
-import fr.thomasbernard03.tarot.domain.models.errors.GetGameError
 import fr.thomasbernard03.tarot.domain.models.errors.ResumeGameError
 import fr.thomasbernard03.tarot.domain.repositories.GameRepository
-import org.koin.java.KoinJavaComponent
 import org.koin.java.KoinJavaComponent.get
 
 class ResumeGameUseCase(

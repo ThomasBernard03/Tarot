@@ -1,12 +1,14 @@
 package fr.thomasbernard03.tarot.domain.repositories
 
 import fr.thomasbernard03.tarot.domain.models.Bid
+import fr.thomasbernard03.tarot.domain.models.EditRoundModel
 import fr.thomasbernard03.tarot.domain.models.Oudler
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.domain.models.Resource
 import fr.thomasbernard03.tarot.domain.models.RoundModel
 import fr.thomasbernard03.tarot.domain.models.errors.CreateRoundError
 import fr.thomasbernard03.tarot.domain.models.errors.DeleteRoundError
+import fr.thomasbernard03.tarot.domain.models.errors.EditRoundError
 import fr.thomasbernard03.tarot.domain.models.errors.GetRoundError
 
 interface RoundRepository {
@@ -23,4 +25,5 @@ interface RoundRepository {
     suspend fun deleteRound(roundId : Long) : Resource<Unit, DeleteRoundError>
 
     suspend fun getRound(gameId : Long, roundId : Long) : Resource<RoundModel, GetRoundError>
+    suspend fun editRound(round : EditRoundModel) : Resource<Unit, EditRoundError>
 }

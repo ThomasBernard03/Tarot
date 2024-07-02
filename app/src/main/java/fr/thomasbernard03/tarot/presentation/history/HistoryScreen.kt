@@ -1,25 +1,21 @@
 package fr.thomasbernard03.tarot.presentation.history
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
@@ -33,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -40,14 +37,16 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.LargePadding
 import fr.thomasbernard03.tarot.commons.extensions.toColor
+import fr.thomasbernard03.tarot.commons.extensions.toPrettyDate
+import fr.thomasbernard03.tarot.commons.extensions.toPrettyTime
 import fr.thomasbernard03.tarot.presentation.components.ActionButton
 import fr.thomasbernard03.tarot.presentation.components.Loader
 import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
-import fr.thomasbernard03.tarot.presentation.game.GameEvent
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -72,6 +71,7 @@ fun HistoryScreen(state : HistoryState, onEvent : (HistoryEvent) -> Unit) {
                 modifier = Modifier.padding(bottom = LargePadding)
             ) {
                 ActionButton(
+                    enabled = state.games.firstOrNull { it.id == selectedGameId }?.finishedAt != null,
                     modifier = Modifier.fillMaxWidth(),
                     title = R.string.resume_game,
                     icon = R.drawable.card,
@@ -139,12 +139,18 @@ fun HistoryScreen(state : HistoryState, onEvent : (HistoryEvent) -> Unit) {
                     .nestedScroll(scrollBehavior.nestedScrollConnection)
             ) {
                 items(state.games, key = { it.id }) { game ->
+
+                    var expanded by rememberSaveable { mutableStateOf(false) }
+                    val offsetX by animateDpAsState(targetValue = if (expanded) 0.dp else 16.dp)
+                    val offsetY by animateDpAsState(targetValue = if (expanded) 36.dp else 0.dp)
+
                     Surface(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .height(200.dp)
                             .combinedClickable(
                                 onClick = {
-
+                                    expanded = !expanded
                                 },
                                 onLongClick = {
                                     selectedGameId = game.id
@@ -155,17 +161,27 @@ fun HistoryScreen(state : HistoryState, onEvent : (HistoryEvent) -> Unit) {
                             modifier= Modifier.padding(LargePadding)
                         ) {
                             Text(text = "${game.rounds.size}")
+                            Text(text = "Commencée le ${game.startedAt.toPrettyDate()} à ${game.startedAt.toPrettyTime()}")
+
+                            if (game.finishedAt != null){
+                                Text(text = "Terminée le ${game.finishedAt.toPrettyDate()} à ${game.finishedAt.toPrettyTime()}")
+                            }
+                            else {
+                                Text(text = "En cours")
+                            }
                             Box {
                                 game.players.forEachIndexed { index, player ->
                                     Box(
                                         modifier = Modifier
-                                            .offset(x = 24.dp * index)
+                                            .offset(x = offsetX * index, y = offsetY * index)
                                             .zIndex(game.players.size - index.toFloat())
                                             .shadow(1.dp, shape = CircleShape, clip = true)
                                     ) {
                                         PlayerIcon(
+                                            modifier = Modifier.size(28.dp),
                                             name = player.name,
-                                            color = player.color.toColor()
+                                            color = player.color.toColor(),
+                                            style = LocalTextStyle.current.copy(fontSize = 12.sp)
                                         )
                                     }
                                 }

@@ -2,15 +2,17 @@ package fr.thomasbernard03.tarot.data.repositories
 
 import android.util.Log
 import fr.thomasbernard03.tarot.data.local.dao.PlayerDao
-import fr.thomasbernard03.tarot.data.local.dao.PlayerGameDao
 import fr.thomasbernard03.tarot.data.local.dao.RoundDao
+import fr.thomasbernard03.tarot.data.local.entities.RoundEntity
 import fr.thomasbernard03.tarot.domain.models.Bid
+import fr.thomasbernard03.tarot.domain.models.EditRoundModel
 import fr.thomasbernard03.tarot.domain.models.Oudler
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.domain.models.Resource
 import fr.thomasbernard03.tarot.domain.models.RoundModel
 import fr.thomasbernard03.tarot.domain.models.errors.CreateRoundError
 import fr.thomasbernard03.tarot.domain.models.errors.DeleteRoundError
+import fr.thomasbernard03.tarot.domain.models.errors.EditRoundError
 import fr.thomasbernard03.tarot.domain.models.errors.GetRoundError
 import fr.thomasbernard03.tarot.domain.repositories.RoundRepository
 import org.koin.java.KoinJavaComponent.get
@@ -49,7 +51,7 @@ class RoundRepositoryImpl(
         }
         catch (e : Exception){
             Log.e(e.message, e.stackTraceToString())
-            Resource.Error(DeleteRoundError.UnkownError)
+            Resource.Error(DeleteRoundError.UnknownError)
         }
     }
 
@@ -81,6 +83,24 @@ class RoundRepositoryImpl(
         catch (e : Exception){
             Log.e(e.message, e.stackTraceToString())
             Resource.Error(GetRoundError.UnknownError)
+        }
+    }
+
+    override suspend fun editRound(round: EditRoundModel): Resource<Unit, EditRoundError> {
+        return try {
+            val existingRound = roundDao.getRound(round.id)
+
+            val entity = RoundEntity(gameId = existingRound.gameId, id = round.id, takerId = round.taker.id, bid = round.bid, points = round.points, calledPlayerId = round.calledPlayer?.id, finishedAt = existingRound.finishedAt)
+            roundDao.update(entity)
+
+            return Resource.Success(Unit)
+        }
+        catch (e : NullPointerException){
+            Resource.Error(EditRoundError.RoundNotFound(round.id))
+        }
+        catch (e : Exception){
+            Log.e(e.message, e.stackTraceToString())
+            Resource.Error(EditRoundError.UnknownError)
         }
     }
 }

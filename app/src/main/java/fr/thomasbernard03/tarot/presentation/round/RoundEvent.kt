@@ -10,7 +10,9 @@ sealed class RoundEvent {
 
 
     data object OnGoBack : RoundEvent()
+
     data class OnCreateRound(val gameId : Long, val taker : PlayerModel, val bid: Bid, val oudlers : List<Oudler>, val points : Int, val calledPlayer : PlayerModel?) : RoundEvent()
+    data class OnEditRound(val roundId : Long, val taker : PlayerModel, val bid: Bid, val oudlers : List<Oudler>, val points : Int, val calledPlayer : PlayerModel?) : RoundEvent()
 
 
     data class OnTakerChanged(val player : PlayerModel?) : RoundEvent()

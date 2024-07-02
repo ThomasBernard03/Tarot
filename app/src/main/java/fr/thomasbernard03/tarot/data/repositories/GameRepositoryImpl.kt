@@ -75,7 +75,8 @@ class GameRepositoryImpl(
                     id = it.id,
                     startedAt = it.startedAt,
                     players = players,
-                    rounds = listOf()
+                    rounds = listOf(),
+                    finishedAt = it.finishedAt
                 )
             }
 

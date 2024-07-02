@@ -114,7 +114,7 @@ class GameViewModel(
                     val messageId =
                         when(result.data){
                             is DeleteRoundError.RoundNotFound -> R.string.error_round_not_found
-                            is DeleteRoundError.UnkownError -> R.string.error_unknown
+                            is DeleteRoundError.UnknownError -> R.string.error_unknown
                         }
 
                     _state.update { it.copy(message = resourcesHelper.getString(messageId)) }

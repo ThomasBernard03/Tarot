@@ -12,9 +12,9 @@ class GetGameHistoryUseCase(
     suspend operator fun invoke() : Resource<List<GameModel>, GetGameError>  {
         return when(val result = gameRepository.getAllGames()){
             is Resource.Success -> {
-                Resource.Success(result.data.sortedByDescending { it.finishedAt })
+                val sortedGames = result.data.sortedWith(compareBy<GameModel> { it.finishedAt != null }.thenByDescending { it.finishedAt })
+                Resource.Success(sortedGames)
             }
-
             is Resource.Error -> {
                 result
             }

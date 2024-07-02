@@ -5,7 +5,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
@@ -16,12 +15,12 @@ import fr.thomasbernard03.tarot.presentation.game.GameScreen
 import fr.thomasbernard03.tarot.presentation.game.GameViewModel
 import fr.thomasbernard03.tarot.presentation.history.HistoryScreen
 import fr.thomasbernard03.tarot.presentation.history.HistoryViewModel
-import fr.thomasbernard03.tarot.presentation.settings.InformationScreen
 import fr.thomasbernard03.tarot.presentation.player.players.PlayersScreen
 import fr.thomasbernard03.tarot.presentation.player.players.PlayersViewModel
 import fr.thomasbernard03.tarot.presentation.round.RoundEvent
 import fr.thomasbernard03.tarot.presentation.round.RoundScreen
 import fr.thomasbernard03.tarot.presentation.round.RoundViewModel
+import fr.thomasbernard03.tarot.presentation.settings.InformationScreen
 
 fun NavGraphBuilder.navigationGraph(navController : NavController){
     navigation(route = "game", startDestination = "current-game"){

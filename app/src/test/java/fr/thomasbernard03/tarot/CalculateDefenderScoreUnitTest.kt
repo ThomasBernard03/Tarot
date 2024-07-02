@@ -1,7 +1,6 @@
 package fr.thomasbernard03.tarot
 
 import fr.thomasbernard03.tarot.commons.calculateDefenderScore
-import fr.thomasbernard03.tarot.commons.calculatePartnerScore
 import junit.framework.TestCase
 import org.junit.Test
 

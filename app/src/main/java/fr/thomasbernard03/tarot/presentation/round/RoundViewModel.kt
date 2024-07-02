@@ -4,11 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.thomasbernard03.tarot.commons.helpers.NavigationHelper
 import fr.thomasbernard03.tarot.domain.models.Bid
+import fr.thomasbernard03.tarot.domain.models.EditRoundModel
 import fr.thomasbernard03.tarot.domain.models.Oudler
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.domain.models.Resource
 import fr.thomasbernard03.tarot.domain.usecases.CreateRoundUseCase
-import fr.thomasbernard03.tarot.domain.usecases.DeleteRoundUseCase
+import fr.thomasbernard03.tarot.domain.usecases.EditRoundUseCase
 import fr.thomasbernard03.tarot.domain.usecases.GetGameUseCase
 import fr.thomasbernard03.tarot.domain.usecases.GetRoundUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,6 +23,7 @@ class RoundViewModel(
     private val getGameUseCase: GetGameUseCase = GetGameUseCase(),
     private val getRoundUseCase: GetRoundUseCase = GetRoundUseCase(),
     private val createRoundUseCase: CreateRoundUseCase = CreateRoundUseCase(),
+    private val editRoundUseCase: EditRoundUseCase = EditRoundUseCase(),
     private val navigationHelper: NavigationHelper = get(NavigationHelper::class.java)
 ) : ViewModel() {
 
@@ -40,12 +42,26 @@ class RoundViewModel(
             is RoundEvent.OnCalledPlayerChanged -> _state.update { it.copy(calledPlayer = event.player) }
             is RoundEvent.OnCreateRound -> onCreateRound(event.gameId, event.taker, event.bid, event.oudlers, event.points, event.calledPlayer)
             is RoundEvent.OnGetRound -> onGetRound(event.gameId, event.roundId)
+            is RoundEvent.OnEditRound -> onEditRound(event.roundId, event.taker, event.bid, event.oudlers, event.points, event.calledPlayer)
         }
     }
 
     private fun onCreateRound(gameId : Long, taker : PlayerModel, bid : Bid, oudlers : List<Oudler>, points: Int, calledPlayer : PlayerModel?) {
         viewModelScope.launch {
             when(val result = createRoundUseCase(gameId, taker, calledPlayer, bid, oudlers, points)){
+                is Resource.Success -> {
+                    navigationHelper.goBack()
+                }
+                is Resource.Error -> {
+                }
+            }
+        }
+    }
+
+    private fun onEditRound(roundId : Long, taker : PlayerModel, bid : Bid, oudlers : List<Oudler>, points: Int, calledPlayer : PlayerModel?) {
+        viewModelScope.launch {
+            val round = EditRoundModel(id = roundId, taker = taker, bid = bid, oudlers = oudlers, points = points, calledPlayer = calledPlayer)
+            when(val result = editRoundUseCase(round)){
                 is Resource.Success -> {
                     navigationHelper.goBack()
                 }
