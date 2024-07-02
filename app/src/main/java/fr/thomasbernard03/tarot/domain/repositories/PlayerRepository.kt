@@ -9,6 +9,5 @@ import fr.thomasbernard03.tarot.domain.models.errors.GetPlayersError
 interface PlayerRepository {
     suspend fun getPlayers() : Resource<List<PlayerModel>, GetPlayersError>
 
-
     suspend fun createPlayer(player: CreatePlayerModel) : Resource<PlayerModel, CreatePlayerError>
 }

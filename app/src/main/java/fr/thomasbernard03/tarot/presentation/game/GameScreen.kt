@@ -208,7 +208,7 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
                     roundList(
                         game = state.currentGame,
                         onRoundPressed = {
-                            onEvent(GameEvent.OnEditRound(gameId = state.currentGame.id, roundId = it))
+                            onEvent(GameEvent.OnGoToRoundDetail(gameId = state.currentGame.id, roundId = it))
                         },
                         onRoundLongPressed = {
                             haptics.performHapticFeedback(HapticFeedbackType.LongPress)

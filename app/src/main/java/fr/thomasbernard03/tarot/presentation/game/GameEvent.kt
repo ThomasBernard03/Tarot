@@ -18,4 +18,5 @@ sealed class GameEvent {
 
     data object OnDismissMessage : GameEvent()
     data class OnEditRound(val gameId : Long, val roundId : Long) : GameEvent()
+    data class OnGoToRoundDetail(val gameId : Long, val roundId : Long) : GameEvent()
 }

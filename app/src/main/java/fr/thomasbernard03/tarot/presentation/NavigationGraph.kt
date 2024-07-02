@@ -5,6 +5,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
@@ -32,8 +33,11 @@ fun NavGraphBuilder.navigationGraph(navController : NavController){
                 if (event is GameEvent.OnNewRoundButtonPressed){
                     navController.navigate("round/${event.gameId}")
                 }
-                else if (event is GameEvent.OnEditRound){
+                else if (event is GameEvent.OnGoToRoundDetail){
                     navController.navigate("round/${event.gameId}?roundId=${event.roundId}")
+                }
+                else if (event is GameEvent.OnEditRound){
+                    navController.navigate("round/${event.gameId}?roundId=${event.roundId}&editable=true")
                 }
 
                 viewModel.onEvent(event)
@@ -48,6 +52,10 @@ fun NavGraphBuilder.navigationGraph(navController : NavController){
                 navArgument(name = "roundId"){
                     type = NavType.StringType
                     nullable = true
+                },
+                navArgument(name = "editable"){
+                    type = NavType.BoolType
+                    defaultValue = false
                 }
             )
         ){
@@ -56,12 +64,14 @@ fun NavGraphBuilder.navigationGraph(navController : NavController){
                 if (it == "0")  null
                 else it.toLong()
             }
+            val editable = it.arguments?.getBoolean("editable") ?: false
 
             val viewModel : RoundViewModel = viewModel()
             val state by viewModel.state.collectAsStateWithLifecycle()
             RoundScreen(
                 gameId = gameId,
                 roundId = roundId,
+                editable = editable,
                 state = state
             ){ event ->
                 if (event is RoundEvent.OnGoBack)

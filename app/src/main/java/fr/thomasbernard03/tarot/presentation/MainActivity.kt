@@ -1,6 +1,7 @@
 package fr.thomasbernard03.tarot.presentation
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,6 +29,10 @@ class MainActivity(
         setContent {
             TarotTheme {
                 val navController = rememberNavController()
+
+                navController.addOnDestinationChangedListener { _, destination, _ ->
+                    Log.i("Navigation", "Navigating to : ${destination.route}")
+                }
 
                 LaunchedEffect(Unit) {
                     navigationHelper.sharedFlow.onEach { event ->

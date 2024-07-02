@@ -4,7 +4,7 @@ sealed class Screen(val route : String) {
     data object Game : Screen(route = "game")
     data class Round(val gameId : Long) : Screen(route = "round/$gameId") {
         companion object {
-            const val PATH = "round/{gameId}?roundId={roundId}"
+            const val PATH = "round/{gameId}?roundId={roundId}&editable={editable}"
         }
     }
 }

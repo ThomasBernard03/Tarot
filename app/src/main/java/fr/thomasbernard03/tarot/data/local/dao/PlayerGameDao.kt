@@ -13,6 +13,7 @@ import java.util.Date
 
 @Dao
 interface PlayerGameDao {
+
     @Insert
     suspend fun addPlayerToGame(playersGameEntity: List<PlayerGameEntity>) : List<Long>
 

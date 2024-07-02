@@ -10,6 +10,7 @@ import fr.thomasbernard03.tarot.domain.models.Resource
 import fr.thomasbernard03.tarot.domain.usecases.CreateRoundUseCase
 import fr.thomasbernard03.tarot.domain.usecases.DeleteRoundUseCase
 import fr.thomasbernard03.tarot.domain.usecases.GetGameUseCase
+import fr.thomasbernard03.tarot.domain.usecases.GetRoundUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,6 +20,7 @@ import org.koin.java.KoinJavaComponent.get
 
 class RoundViewModel(
     private val getGameUseCase: GetGameUseCase = GetGameUseCase(),
+    private val getRoundUseCase: GetRoundUseCase = GetRoundUseCase(),
     private val createRoundUseCase: CreateRoundUseCase = CreateRoundUseCase(),
     private val navigationHelper: NavigationHelper = get(NavigationHelper::class.java)
 ) : ViewModel() {
@@ -37,6 +39,7 @@ class RoundViewModel(
             is RoundEvent.OnOudlerSelected -> onOudlerSelected(event.oudler)
             is RoundEvent.OnCalledPlayerChanged -> _state.update { it.copy(calledPlayer = event.player) }
             is RoundEvent.OnCreateRound -> onCreateRound(event.gameId, event.taker, event.bid, event.oudlers, event.points, event.calledPlayer)
+            is RoundEvent.OnGetRound -> onGetRound(event.gameId, event.roundId)
         }
     }
 
@@ -75,6 +78,26 @@ class RoundViewModel(
             _state.update { it.copy(oudlers = _state.value.oudlers - oudler) }
         } else {
             _state.update { it.copy(oudlers = _state.value.oudlers + oudler) }
+        }
+    }
+
+    private fun onGetRound(gameId: Long, roundId: Long) {
+        viewModelScope.launch {
+            when(val result = getRoundUseCase(gameId, roundId)){
+                is Resource.Success -> {
+                    _state.update {
+                        it.copy(
+                            taker = result.data.taker,
+                            bid = result.data.bid,
+                            oudlers = result.data.oudlers,
+                            calledPlayer = result.data.calledPlayer,
+                            numberOfPoints = result.data.points
+                        )
+                    }
+                }
+                is Resource.Error -> {
+                }
+            }
         }
     }
 }

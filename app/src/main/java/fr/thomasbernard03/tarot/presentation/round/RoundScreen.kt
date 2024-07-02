@@ -69,6 +69,7 @@ import fr.thomasbernard03.tarot.presentation.theme.Red
 fun RoundScreen(
     gameId : Long,
     roundId : Long? = null,
+    editable : Boolean = false,
     state : RoundState,
     onEvent: (RoundEvent) -> Unit
 ){
@@ -76,6 +77,9 @@ fun RoundScreen(
 
     LaunchedEffect(gameId) {
         onEvent(RoundEvent.OnGetPlayers(gameId))
+
+        if (roundId != null)
+            onEvent(RoundEvent.OnGetRound(gameId, roundId))
     }
 
     val score by remember(state.bid, state.oudlers.size, state.numberOfPoints) {
@@ -143,7 +147,8 @@ fun RoundScreen(
                             onEvent(RoundEvent.OnTakerChanged(taker))
                         },
                         shape = RoundedCornerShape(8.dp),
-                        border = ButtonDefaults.outlinedButtonBorder
+                        border = ButtonDefaults.outlinedButtonBorder,
+                        enabled = editable
                     ) {
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -172,6 +177,7 @@ fun RoundScreen(
             ) {
                 items(items = Bid.entries, key = { it.ordinal }) {
                     FilterChip(
+                        enabled = editable,
                         colors = FilterChipDefaults.filterChipColors(
                             selectedContainerColor = MaterialTheme.colorScheme.primary,
                             selectedLabelColor = MaterialTheme.colorScheme.onPrimary
@@ -214,7 +220,8 @@ fun RoundScreen(
                                     onEvent(RoundEvent.OnCalledPlayerChanged(calledPlayer))
                                 },
                                 shape = RoundedCornerShape(8.dp),
-                                border = ButtonDefaults.outlinedButtonBorder
+                                border = ButtonDefaults.outlinedButtonBorder,
+                                enabled = editable
                             ) {
                                 Row(
                                     horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -245,6 +252,7 @@ fun RoundScreen(
             ) {
                 items(items = Oudler.entries, key = { it.name }) {
                     FilterChip(
+                        enabled = editable,
                         colors = FilterChipDefaults.filterChipColors(
                             selectedContainerColor = MaterialTheme.colorScheme.primary,
                             selectedLabelColor = MaterialTheme.colorScheme.onPrimary
@@ -319,11 +327,13 @@ fun RoundScreen(
                 Row(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    IconButton(onClick = { onEvent(RoundEvent.OnNumberOfPointsChanged(state.numberOfPoints - 1)) }) {
-                        Icon(
-                            modifier = Modifier.size(22.dp),
-                            painter = painterResource(id = R.drawable.minus),
-                            contentDescription = null)
+                    if (editable){
+                        IconButton(onClick = { onEvent(RoundEvent.OnNumberOfPointsChanged(state.numberOfPoints - 1)) }) {
+                            Icon(
+                                modifier = Modifier.size(22.dp),
+                                painter = painterResource(id = R.drawable.minus),
+                                contentDescription = null)
+                        }
                     }
 
                     Row(
@@ -332,6 +342,7 @@ fun RoundScreen(
                             .padding(horizontal = LargePadding)
                     ) {
                         Slider(
+                            enabled = editable,
                             value = state.numberOfPoints.toFloat(),
                             onValueChange = { onEvent(RoundEvent.OnNumberOfPointsChanged(it.toInt()))},
                             valueRange = 0f..91f,
@@ -343,25 +354,45 @@ fun RoundScreen(
                         )
                     }
 
-                    IconButton(onClick = { onEvent(RoundEvent.OnNumberOfPointsChanged(state.numberOfPoints + 1)) }) {
-                        Icon(Icons.Filled.Add, contentDescription = null)
+                    if (editable){
+                        IconButton(onClick = { onEvent(RoundEvent.OnNumberOfPointsChanged(state.numberOfPoints + 1)) }) {
+                            Icon(Icons.Filled.Add, contentDescription = null)
+                        }
                     }
                 }
             }
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(LargePadding),
-                horizontalArrangement = Arrangement.End
-            ) {
-                TextButton(
-                    onClick = {
-                        onEvent(RoundEvent.OnCreateRound(gameId, state.taker!!, state.bid!!, state.oudlers, state.numberOfPoints, state.calledPlayer))
-                    },
-                    enabled = state.taker != null && state.bid != null && (state.players.size != 5 || state.calledPlayer != null)
+            if (roundId == null){
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(LargePadding),
+                    horizontalArrangement = Arrangement.End
                 ) {
-                    Text(text = stringResource(id = R.string.add_turn))
+                    TextButton(
+                        onClick = {
+                            onEvent(RoundEvent.OnCreateRound(gameId, state.taker!!, state.bid!!, state.oudlers, state.numberOfPoints, state.calledPlayer))
+                        },
+                        enabled = state.taker != null && state.bid != null && (state.players.size != 5 || state.calledPlayer != null)
+                    ) {
+                        Text(text = stringResource(id = R.string.add_turn))
+                    }
+                }
+            }
+            else if (editable){
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(LargePadding),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    TextButton(
+                        onClick = {
+                        }
+                    ) {
+                        Text(text = stringResource(id = R.string.edit_round))
+                    }
                 }
             }
         }

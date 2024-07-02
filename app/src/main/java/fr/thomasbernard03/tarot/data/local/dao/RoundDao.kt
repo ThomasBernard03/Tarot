@@ -24,6 +24,10 @@ interface RoundDao {
     @Query("SELECT * FROM RoundEntity WHERE gameId = :gameId")
     suspend fun getGameRounds(gameId : Long) : List<RoundEntity>
 
+
+    @Query("SELECT * FROM RoundEntity WHERE id = :roundId")
+    suspend fun getRound(roundId : Long) : RoundEntity
+
     @Query("SELECT oudler FROM RoundOudlerEntity WHERE roundId = :roundId")
     suspend fun getRoundOudlers(roundId : Long) : List<Oudler>
 
