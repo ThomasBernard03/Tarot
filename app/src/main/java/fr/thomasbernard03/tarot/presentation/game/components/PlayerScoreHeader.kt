@@ -40,18 +40,23 @@ fun LazyListScope.playersScoreHeader(
                             points = it.points,
                             bid = it.bid,
                             oudlers = it.oudlers.size,
+                            calledHimSelf = it.calledPlayer == it.taker
                         )
 
                         val partnerScore = calculatePartnerScore(takerScore)
 
                         if (it.taker == player)
-                            takerScore + if(it.calledPlayer == it.taker) partnerScore else 0
+                            takerScore
                         else if (it.calledPlayer == player)
                             partnerScore
                         else {
-                            val numberOfDefenders = game.players.size - if (it.calledPlayer == null || it.calledPlayer == it.taker) 1 else 2
-                            val attackScore = takerScore + if (it.calledPlayer == null || it.calledPlayer == it.taker) 0 else partnerScore
-                            calculateDefenderScore(attackScore, numberOfDefenders)
+                            if (it.taker == it.calledPlayer){
+                                calculateDefenderScore(takerScore, 4)
+                            }
+                            else {
+                                val attackScore = takerScore + partnerScore
+                                calculateDefenderScore(attackScore, 3)
+                            }
                         }
                     }
         }

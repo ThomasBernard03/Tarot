@@ -15,6 +15,7 @@ fun calculateTakerScore(
     @IntRange(from = 0, to = 91) points: Int,
     bid: Bid,
     @IntRange(from = 0, to = 3) oudlers: Int,
+    calledHimSelf : Boolean = false
 ): Int {
     // Thresholds for the number of points needed based on the number of oudlers
     val bidMultiplier = when(bid){
@@ -32,9 +33,13 @@ fun calculateTakerScore(
         else -> throw IllegalArgumentException("Invalid number of oudlers")
     }
 
-    val score = when {
+    var score = when {
         (points - pointGoal >= 0) -> (points - pointGoal + 25) * bidMultiplier
         else -> (points - pointGoal - 25) * bidMultiplier
+    }
+
+    if(calledHimSelf){
+        score *= 2
     }
 
     return score * 2

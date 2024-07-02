@@ -21,4 +21,12 @@ class CalculateDefenderScoreUnitTest {
 
         TestCase.assertEquals(defendersScore, 40)
     }
+
+    @Test
+    fun calculateDefendersScoreThree(){
+        val takerScore = -224
+        val defendersScore = calculateDefenderScore(takerScore, numberOfDefenders = 4)
+
+        TestCase.assertEquals(56, defendersScore)
+    }
 }
