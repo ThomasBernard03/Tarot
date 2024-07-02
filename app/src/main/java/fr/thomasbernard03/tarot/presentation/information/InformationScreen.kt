@@ -25,7 +25,7 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import fr.thomasbernard03.tarot.BuildConfig
 import fr.thomasbernard03.tarot.R
-import fr.thomasbernard03.tarot.presentation.information.components.SettingsButton
+import fr.thomasbernard03.tarot.presentation.components.ActionButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,7 +63,7 @@ fun InformationScreen() {
             Column {
                 val uriHandler = LocalUriHandler.current
 
-                SettingsButton(
+                ActionButton(
                     modifier = Modifier.fillMaxWidth(),
                     title = R.string.official_rules_settings_title,
                     icon = R.drawable.book,
@@ -72,7 +72,7 @@ fun InformationScreen() {
                     }
                 )
 
-                SettingsButton(
+                ActionButton(
                     modifier = Modifier.fillMaxWidth(),
                     title = R.string.open_source_code_settings_title,
                     icon = R.drawable.github,
@@ -81,7 +81,7 @@ fun InformationScreen() {
                     }
                 )
 
-                SettingsButton(
+                ActionButton(
                     modifier = Modifier.fillMaxWidth(),
                     title = R.string.report_bug_settings_title,
                     icon = R.drawable.bug,
@@ -90,7 +90,7 @@ fun InformationScreen() {
                     }
                 )
 
-                SettingsButton(
+                ActionButton(
                     enabled = !showConfetti,
                     modifier = Modifier.fillMaxWidth(),
                     title = R.string.application_version_settings_title,

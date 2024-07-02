@@ -3,8 +3,10 @@ package fr.thomasbernard03.tarot.presentation.game
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -17,11 +19,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,7 +36,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -47,12 +53,12 @@ import fr.thomasbernard03.tarot.domain.models.Oudler
 import fr.thomasbernard03.tarot.domain.models.PlayerColor
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.domain.models.RoundModel
-import fr.thomasbernard03.tarot.domain.models.errors.DeleteRoundError
 import fr.thomasbernard03.tarot.presentation.components.Loader
 import fr.thomasbernard03.tarot.presentation.components.PreviewScreen
 import fr.thomasbernard03.tarot.presentation.game.components.CreateGameSheet
 import fr.thomasbernard03.tarot.presentation.game.components.playersScoreHeader
 import fr.thomasbernard03.tarot.presentation.game.components.roundList
+import fr.thomasbernard03.tarot.presentation.components.ActionButton
 import kotlinx.coroutines.launch
 import java.util.Date
 
@@ -61,14 +67,18 @@ import java.util.Date
 fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     val snackbarHostState = remember { SnackbarHostState() }
-    val scope = rememberCoroutineScope()
+    val errorScope = rememberCoroutineScope()
+    val sheetScope = rememberCoroutineScope()
+    val haptics = LocalHapticFeedback.current
+    var selectedRoundId by remember { mutableStateOf<Long?>(null) }
+    var roundSheetState = rememberModalBottomSheetState()
 
     LaunchedEffect(Unit) {
         onEvent(GameEvent.OnGetCurrentGame)
     }
 
     fun onError(message : String){
-        scope.launch {
+        errorScope.launch {
             if (snackbarHostState.currentSnackbarData != null)
                 snackbarHostState.currentSnackbarData!!.dismiss()
 
@@ -89,6 +99,41 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
             onDismiss = { onEvent(GameEvent.OnCloseCreateDialogSheet) },
             onValidate = { onEvent(GameEvent.OnValidateCreateGameSheet(it)) },
         )
+    }
+    else if (selectedRoundId != null){
+        ModalBottomSheet(
+            sheetState = roundSheetState,
+            onDismissRequest = { selectedRoundId = null },
+        ) {
+            Column(
+                modifier = Modifier.padding(bottom = LargePadding)
+            ) {
+                ActionButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = R.string.edit_round,
+                    icon = R.drawable.edit,
+                    onClick = {
+                        sheetScope.launch {
+                            roundSheetState.hide()
+                            selectedRoundId = null
+                        }
+                    }
+                )
+
+                ActionButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = R.string.delete_round,
+                    icon = R.drawable.bin,
+                    onClick = {
+                        onEvent(GameEvent.OnDeleteRound(selectedRoundId!!))
+                        sheetScope.launch {
+                            roundSheetState.hide()
+                            selectedRoundId = null
+                        }
+                    }
+                )
+            }
+        }
     }
 
     Scaffold(
@@ -151,17 +196,6 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
                 )
             }
             else {
-
-                var roundIdOptionMenu by remember { mutableStateOf<Long?>(null) }
-
-                DropdownMenu(
-                    expanded = roundIdOptionMenu != null,
-                    onDismissRequest = { roundIdOptionMenu = null }
-                ) {
-                    DropdownMenuItem(text = { Text(text = "Supprimer") }, onClick = { onEvent(GameEvent.OnDeleteRound(roundIdOptionMenu!!)) })
-
-                }
-
                 LazyColumn(
                     contentPadding = PaddingValues(bottom = 70.dp),
                     modifier = Modifier
@@ -173,7 +207,8 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
                     roundList(
                         game = state.currentGame,
                         onRoundLongPressed = {
-                            roundIdOptionMenu = it
+                            haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                            selectedRoundId = it
                         }
                     )
                 }

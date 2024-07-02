@@ -9,7 +9,6 @@ import org.junit.Test
 class CalculateTakerScoreUnitTest {
     @Test
     fun checkTakerPointSmallOne(){
-
         val points = 57
         val bid = Bid.SMALL
         val oudlers : List<Oudler> = listOf()

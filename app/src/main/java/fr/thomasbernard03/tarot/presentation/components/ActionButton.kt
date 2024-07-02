@@ -1,4 +1,4 @@
-package fr.thomasbernard03.tarot.presentation.information.components
+package fr.thomasbernard03.tarot.presentation.components
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import fr.thomasbernard03.tarot.commons.LargePadding
 
 @Composable
-fun SettingsButton(
+fun ActionButton(
     modifier : Modifier = Modifier,
     enabled : Boolean = true,
     @StringRes title : Int,
@@ -32,7 +32,7 @@ fun SettingsButton(
 ) {
     Button(
         enabled = enabled,
-        modifier = Modifier.height(70.dp),
+        modifier = Modifier.height(65.dp),
         shape = RectangleShape,
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(

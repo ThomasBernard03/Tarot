@@ -3,7 +3,10 @@ package fr.thomasbernard03.tarot.presentation.components
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -14,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import fr.thomasbernard03.tarot.commons.SmallPadding
 import fr.thomasbernard03.tarot.commons.extensions.toIndicator
 import fr.thomasbernard03.tarot.domain.models.Oudler
 
@@ -30,7 +34,10 @@ fun OudlerIndicator(
         )
     ) {
         Box(
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier
+                .height(24.dp)
+                .padding(horizontal = SmallPadding)
+                .widthIn(min = 24.dp)
         ) {
             Text(
                 modifier = Modifier.align(Alignment.Center),

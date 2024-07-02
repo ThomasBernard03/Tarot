@@ -88,7 +88,7 @@ fun LazyListScope.playersScoreHeader(
                                 MaterialTheme.colorScheme.background,
                                 CircleShape
                             )
-                            .padding(SmallPadding)
+                            .padding(horizontal = MediumPadding, vertical = SmallPadding)
                         ){
                             Text(
                                 modifier = Modifier.align(Alignment.Center),

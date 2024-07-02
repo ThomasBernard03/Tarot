@@ -48,6 +48,8 @@
     <string name="attack">Attaque</string>
     <string name="defense">Défense</string>
     <string name="player_called">Joueur appelé</string>
+    <string name="delete_round">Supprimer</string>
+    <string name="edit_round">Modifier</string>
 
 
 
