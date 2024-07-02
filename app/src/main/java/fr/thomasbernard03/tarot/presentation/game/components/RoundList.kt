@@ -107,10 +107,14 @@ fun LazyListScope.roundList(
                     horizontalAlignment = Alignment.End
                 ){
                     val takerScore =
-                        calculateTakerScore(round.points, round.bid, round.oudlers.size, game.players.size, round.taker.id == round.calledPlayer?.id)
+                        calculateTakerScore(round.points, round.bid, round.oudlers.size, game.players.size)
+
+
+                    val partnerScore = calculatePartnerScore(takerScore)
+
 
                     Text(
-                        text = "$takerScore",
+                        text = "${takerScore + if (round.calledPlayer?.id == round.taker.id) partnerScore else 0}",
                         color = if (takerScore >= 0) Green else Red,
                         fontWeight =  FontWeight.Bold
                     )

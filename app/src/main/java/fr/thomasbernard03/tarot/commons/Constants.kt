@@ -16,7 +16,6 @@ fun calculateTakerScore(
     bid: Bid,
     @IntRange(from = 0, to = 3) oudlers: Int,
     @IntRange(from = 3, to = 5) playerCount: Int,
-    isCalledPlayerTaker: Boolean
 ): Int {
     // Thresholds for the number of points needed based on the number of oudlers
     val bidMultiplier = when(bid){
@@ -46,6 +45,6 @@ fun calculatePartnerScore(takerScore: Int): Int {
     return takerScore / 2
 }
 
-fun calculateDefenderScore(takerScore: Int, numberOfDefenders: Int): Int {
-    return -takerScore / numberOfDefenders
+fun calculateDefenderScore(attackScore: Int, numberOfDefenders: Int): Int {
+    return -attackScore / numberOfDefenders
 }

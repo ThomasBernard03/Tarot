@@ -13,6 +13,7 @@ class CalculatePartnerScoreUnitTest {
 
         TestCase.assertEquals(partnerScore, -40)
     }
+
     @Test
     fun calculatePartnerScoreGuardOne(){
         val takerScore = 200

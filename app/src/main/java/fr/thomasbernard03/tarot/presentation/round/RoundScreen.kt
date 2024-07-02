@@ -80,7 +80,7 @@ fun RoundScreen(
     val score by remember(state.bid, state.oudlers.size, state.numberOfPoints) {
         derivedStateOf {
             state.bid?.let {
-                calculateTakerScore(state.numberOfPoints, state.bid, state.oudlers.size, playerCount = state.players.size, isCalledPlayerTaker = state.calledPlayer == state.taker)
+                calculateTakerScore(state.numberOfPoints, state.bid, state.oudlers.size, playerCount = state.players.size)
             }
         }
     }

@@ -15,7 +15,7 @@ class CalculateTakerScoreUnitTest {
         val oudlers : List<Oudler> = listOf()
         val players = 5
 
-        val score = calculateTakerScore(points, bid, oudlers.size, players, false)
+        val score = calculateTakerScore(points, bid, oudlers.size, players)
 
         assertEquals(52, score)
     }
@@ -27,7 +27,7 @@ class CalculateTakerScoreUnitTest {
         val oudlers : List<Oudler> = listOf()
         val players = 5
 
-        val score = calculateTakerScore(points, bid, oudlers.size, players, false)
+        val score = calculateTakerScore(points, bid, oudlers.size, players)
         assertEquals(-114, score)
     }
 
@@ -39,7 +39,7 @@ class CalculateTakerScoreUnitTest {
         val oudlers : List<Oudler> = listOf(Oudler.EXCUSE)
         val players = 5
 
-        val score = calculateTakerScore(points, bid, oudlers.size, players, false)
+        val score = calculateTakerScore(points, bid, oudlers.size, players)
         assertEquals(140, score)
     }
 
@@ -50,7 +50,7 @@ class CalculateTakerScoreUnitTest {
         val oudlers : List<Oudler> = listOf(Oudler.PETIT, Oudler.EXCUSE)
         val players = 5
 
-        val score = calculateTakerScore(points, bid, oudlers.size, players, false)
+        val score = calculateTakerScore(points, bid, oudlers.size, players)
         assertEquals(376, score)
     }
 
@@ -61,7 +61,7 @@ class CalculateTakerScoreUnitTest {
         val oudlers : List<Oudler> = listOf(Oudler.PETIT, Oudler.EXCUSE, Oudler.GRAND)
         val players = 5
 
-        val score = calculateTakerScore(points, bid, oudlers.size, players, false)
+        val score = calculateTakerScore(points, bid, oudlers.size, players)
         assertEquals(480, score)
     }
 }
