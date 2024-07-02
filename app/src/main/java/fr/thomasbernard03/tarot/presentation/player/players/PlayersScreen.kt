@@ -1,12 +1,15 @@
 package fr.thomasbernard03.tarot.presentation.player.players
 
 import android.content.res.Configuration
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -20,11 +23,19 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,12 +50,15 @@ import fr.thomasbernard03.tarot.commons.MediumPadding
 import fr.thomasbernard03.tarot.commons.extensions.toColor
 import fr.thomasbernard03.tarot.domain.models.PlayerColor
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
+import fr.thomasbernard03.tarot.presentation.components.ActionButton
 import fr.thomasbernard03.tarot.presentation.components.Loader
 import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
 import fr.thomasbernard03.tarot.presentation.components.PreviewScreen
+import fr.thomasbernard03.tarot.presentation.history.HistoryEvent
 import fr.thomasbernard03.tarot.presentation.player.components.CreatePlayerDialog
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun PlayersScreen(state : PlayersState, onEvent: (PlayersEvent) -> Unit) {
 
@@ -53,6 +67,11 @@ fun PlayersScreen(state : PlayersState, onEvent: (PlayersEvent) -> Unit) {
     }
 
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+
+    var selectedPlayerId by remember { mutableStateOf<Long?>(null) }
+    val playerSheetState = rememberModalBottomSheetState()
+    val sheetScope = rememberCoroutineScope()
+
 
     if (state.showCreatePlayerDialog){
         CreatePlayerDialog(
@@ -65,6 +84,41 @@ fun PlayersScreen(state : PlayersState, onEvent: (PlayersEvent) -> Unit) {
             onDismiss = { onEvent(PlayersEvent.OnDismissCreatePlayerDialog) },
             onCreatePlayer = { name, color -> onEvent(PlayersEvent.OnCreatePlayerDialogValidated(name, color))}
         )
+    }
+
+    if (selectedPlayerId != null){
+        ModalBottomSheet(
+            sheetState = playerSheetState,
+            onDismissRequest = { selectedPlayerId = null },
+        ) {
+            Column(
+                modifier = Modifier.padding(bottom = LargePadding)
+            ) {
+                ActionButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = R.string.edit_player,
+                    icon = R.drawable.edit,
+                    onClick = {
+                        sheetScope.launch {
+                            playerSheetState.hide()
+                            selectedPlayerId = null
+                        }
+                    }
+                )
+
+                ActionButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = R.string.delete_player,
+                    icon = R.drawable.bin,
+                    onClick = {
+                        sheetScope.launch {
+                            playerSheetState.hide()
+                            selectedPlayerId = null
+                        }
+                    }
+                )
+            }
+        }
     }
 
     Column(
@@ -107,13 +161,10 @@ fun PlayersScreen(state : PlayersState, onEvent: (PlayersEvent) -> Unit) {
                 verticalArrangement = Arrangement.spacedBy(MediumPadding)
             ) {
                 items(state.players, key = { it.id }) { player ->
-                    Button(
-                        contentPadding = PaddingValues(MediumPadding),
-                        shape = RoundedCornerShape(8.dp),
-                        onClick = { },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.Transparent,
-                            contentColor = MaterialTheme.colorScheme.onBackground
+                    Row(
+                        modifier = Modifier.combinedClickable(
+                            onClick = { },
+                            onLongClick = { selectedPlayerId = player.id }
                         )
                     ) {
                         Row(
@@ -127,7 +178,6 @@ fun PlayersScreen(state : PlayersState, onEvent: (PlayersEvent) -> Unit) {
                             )
                             Text(text = player.name)
                         }
-
                     }
                 }
             }

@@ -32,7 +32,6 @@ fun LazyListScope.playersScoreHeader(
     game : GameModel
 ) {
     stickyHeader {
-
         val playersWithScore = game.players.map { player ->
             player to
                     game.rounds.sumOf {

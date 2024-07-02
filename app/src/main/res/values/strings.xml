@@ -70,6 +70,8 @@
     <string name="create_player_dialog_confirmation">Créer</string>
     <string name="create_player_dialog_player_name_label">Nom du joueur</string>
     <string name="create_player_dialog_player_name_already_used_error">Nom déjà utilisé</string>
+    <string name="delete_player">Supprimer</string>
+    <string name="edit_player">Modifier</string>
 
 
     <!-- Settings -->
