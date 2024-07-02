@@ -27,6 +27,9 @@ interface RoundDao {
     @Query("SELECT oudler FROM RoundOudlerEntity WHERE roundId = :roundId")
     suspend fun getRoundOudlers(roundId : Long) : List<Oudler>
 
+    @Query("DELETE FROM RoundEntity WHERE id = :roundId")
+    suspend fun deleteRound(roundId : Long) : Int
+
     @Transaction
     suspend fun createRound(
         gameId : Long,

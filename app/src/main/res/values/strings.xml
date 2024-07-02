@@ -76,4 +76,8 @@
     <string name="report_bug_settings_title">Remonter un Bug</string>
     <string name="official_rules_settings_title">Règles officielles</string>
 
+
+    <!-- Errors -->
+    <string name="error_unknown">Une erreur inconnue s\'est produite</string>
+    <string name="error_round_not_found">Ce tour est introuvable</string>
 </resources>

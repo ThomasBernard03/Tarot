@@ -12,4 +12,9 @@ sealed class GameEvent {
     data class OnValidateCreateGameSheet(val players : List<PlayerModel>) : GameEvent()
 
     data class OnNewRoundButtonPressed(val gameId : Long) : GameEvent()
+
+    data class OnDeleteRound(val roundId : Long) : GameEvent()
+
+
+    data object OnDismissMessage : GameEvent()
 }

@@ -1,6 +1,8 @@
 package fr.thomasbernard03.tarot.presentation.game.components
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +20,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,20 +47,24 @@ import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
 import fr.thomasbernard03.tarot.presentation.theme.Green
 import fr.thomasbernard03.tarot.presentation.theme.Red
 
+@OptIn(ExperimentalFoundationApi::class)
 fun LazyListScope.roundList(
-    game : GameModel
+    game : GameModel,
+    onRoundLongPressed : (Long) -> Unit
 ){
     items(game.rounds, key = { it.id }){ round ->
-        Button(
-            onClick = { },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Transparent,
-                contentColor = MaterialTheme.colorScheme.primary
-            ),
-            shape = RectangleShape,
-            contentPadding = PaddingValues(horizontal = LargePadding, vertical = MediumPadding)
+        Row(
+            modifier = Modifier.combinedClickable(
+                onClick = {
+
+                },
+                onLongClick = {
+                    onRoundLongPressed(round.id)
+                }
+            )
         ) {
             Row(
+                modifier = Modifier.padding(horizontal = LargePadding, vertical = MediumPadding),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(MediumPadding)
             ) {

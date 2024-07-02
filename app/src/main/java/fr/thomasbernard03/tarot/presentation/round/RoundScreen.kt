@@ -355,8 +355,10 @@ fun RoundScreen(
                 horizontalArrangement = Arrangement.End
             ) {
                 TextButton(
-                    onClick = { onEvent(RoundEvent.OnCreateRound(gameId, state.taker!!, state.bid!!, state.oudlers, state.numberOfPoints, state.calledPlayer)) },
-                    enabled = state.taker != null && state.bid != null
+                    onClick = {
+                        onEvent(RoundEvent.OnCreateRound(gameId, state.taker!!, state.bid!!, state.oudlers, state.numberOfPoints, state.calledPlayer))
+                    },
+                    enabled = state.taker != null && state.bid != null && (state.players.size != 5 || state.calledPlayer != null)
                 ) {
                     Text(text = stringResource(id = R.string.add_turn))
                 }

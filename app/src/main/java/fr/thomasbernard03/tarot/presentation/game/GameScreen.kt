@@ -18,6 +18,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -26,6 +28,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,20 +47,39 @@ import fr.thomasbernard03.tarot.domain.models.Oudler
 import fr.thomasbernard03.tarot.domain.models.PlayerColor
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.domain.models.RoundModel
+import fr.thomasbernard03.tarot.domain.models.errors.DeleteRoundError
 import fr.thomasbernard03.tarot.presentation.components.Loader
 import fr.thomasbernard03.tarot.presentation.components.PreviewScreen
 import fr.thomasbernard03.tarot.presentation.game.components.CreateGameSheet
 import fr.thomasbernard03.tarot.presentation.game.components.playersScoreHeader
 import fr.thomasbernard03.tarot.presentation.game.components.roundList
+import kotlinx.coroutines.launch
 import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         onEvent(GameEvent.OnGetCurrentGame)
+    }
+
+    fun onError(message : String){
+        scope.launch {
+            if (snackbarHostState.currentSnackbarData != null)
+                snackbarHostState.currentSnackbarData!!.dismiss()
+
+            snackbarHostState.showSnackbar(message, withDismissAction = true)
+            onEvent(GameEvent.OnDismissMessage)
+        }
+    }
+
+    LaunchedEffect(state.message) {
+        if (state.message.isNotBlank())
+            onError(state.message)
     }
 
     if (state.showCreateGameSheet){
@@ -71,7 +93,6 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
 
     Scaffold(
         topBar = {
-
             var expanded by remember { mutableStateOf(false) }
 
             MediumTopAppBar(
@@ -107,7 +128,8 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
                 },
                 scrollBehavior = scrollBehavior
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) {
         Box(modifier = Modifier
             .fillMaxSize()
@@ -129,6 +151,17 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
                 )
             }
             else {
+
+                var roundIdOptionMenu by remember { mutableStateOf<Long?>(null) }
+
+                DropdownMenu(
+                    expanded = roundIdOptionMenu != null,
+                    onDismissRequest = { roundIdOptionMenu = null }
+                ) {
+                    DropdownMenuItem(text = { Text(text = "Supprimer") }, onClick = { onEvent(GameEvent.OnDeleteRound(roundIdOptionMenu!!)) })
+
+                }
+
                 LazyColumn(
                     contentPadding = PaddingValues(bottom = 70.dp),
                     modifier = Modifier
@@ -137,7 +170,12 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
                 ) {
                     playersScoreHeader(state.currentGame)
 
-                    roundList(state.currentGame)
+                    roundList(
+                        game = state.currentGame,
+                        onRoundLongPressed = {
+                            roundIdOptionMenu = it
+                        }
+                    )
                 }
             }
 

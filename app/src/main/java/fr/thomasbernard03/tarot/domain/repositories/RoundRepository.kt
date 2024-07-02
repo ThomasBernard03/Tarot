@@ -6,6 +6,7 @@ import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.domain.models.Resource
 import fr.thomasbernard03.tarot.domain.models.RoundModel
 import fr.thomasbernard03.tarot.domain.models.errors.CreateRoundError
+import fr.thomasbernard03.tarot.domain.models.errors.DeleteRoundError
 
 interface RoundRepository {
 
@@ -16,4 +17,7 @@ interface RoundRepository {
         bid : Bid,
         oudlers : List<Oudler>,
         points : Int) : Resource<RoundModel, CreateRoundError>
+
+
+    suspend fun deleteRound(roundId : Long) : Resource<Unit, DeleteRoundError>
 }
