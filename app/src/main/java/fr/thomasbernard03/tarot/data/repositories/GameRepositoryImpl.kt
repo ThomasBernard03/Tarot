@@ -10,6 +10,7 @@ import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.domain.models.Resource
 import fr.thomasbernard03.tarot.domain.models.RoundModel
 import fr.thomasbernard03.tarot.domain.models.errors.CreateGameError
+import fr.thomasbernard03.tarot.domain.models.errors.DeleteGameError
 import fr.thomasbernard03.tarot.domain.models.errors.FinishGameError
 import fr.thomasbernard03.tarot.domain.models.errors.GetGameError
 import fr.thomasbernard03.tarot.domain.models.errors.ResumeGameError
@@ -22,6 +23,21 @@ class GameRepositoryImpl(
     private val gameDao: GameDao = get(GameDao::class.java),
     private val roundDao: RoundDao = get(RoundDao::class.java)
 ) : GameRepository {
+
+    override suspend fun deleteGame(id: Long): Resource<Unit, DeleteGameError> {
+       return try {
+           val entity =  gameDao.getGame(id)
+           gameDao.deleteGame(entity.id!!)
+           return Resource.Success(Unit)
+       }
+       catch (e : NullPointerException){
+           Resource.Error(DeleteGameError.GameNotFound)
+       }
+       catch (e : Exception){
+              Log.e(e.message, e.stackTraceToString())
+              Resource.Error(DeleteGameError.UnknownError)
+       }
+    }
 
 
     override suspend fun createGame(players: List<PlayerModel>): Resource<GameModel, CreateGameError> {

@@ -38,13 +38,12 @@ import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.presentation.components.ActionButton
 import fr.thomasbernard03.tarot.presentation.components.Loader
 import fr.thomasbernard03.tarot.presentation.components.PreviewScreen
+import fr.thomasbernard03.tarot.presentation.history.components.HistoryOptionSheet
 import fr.thomasbernard03.tarot.presentation.history.components.historyList
 import kotlinx.coroutines.launch
 import java.util.Date
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
-    ExperimentalLayoutApi::class
-)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryScreen(state : HistoryState, onEvent : (HistoryEvent) -> Unit) {
 
@@ -55,55 +54,25 @@ fun HistoryScreen(state : HistoryState, onEvent : (HistoryEvent) -> Unit) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     var selectedGameId by remember { mutableStateOf<Long?>(null) }
     val gameSheetState = rememberModalBottomSheetState()
-    val sheetScope = rememberCoroutineScope()
-
 
     if (selectedGameId != null){
         ModalBottomSheet(
             sheetState = gameSheetState,
             onDismissRequest = { selectedGameId = null },
         ) {
-            Column(
-                modifier = Modifier.padding(bottom = LargePadding)
-            ) {
-                ActionButton(
-                    enabled = state.games.firstOrNull { it.id == selectedGameId }?.finishedAt != null,
-                    modifier = Modifier.fillMaxWidth(),
-                    title = R.string.resume_game,
-                    icon = R.drawable.card,
-                    onClick = {
-                        sheetScope.launch {
-                            onEvent(HistoryEvent.OnResumeGame(selectedGameId!!))
-                            gameSheetState.hide()
-                            selectedGameId = null
-                        }
-                    }
-                )
-
-                ActionButton(
-                    modifier = Modifier.fillMaxWidth(),
-                    title = R.string.edit_round,
-                    icon = R.drawable.edit,
-                    onClick = {
-                        sheetScope.launch {
-                            gameSheetState.hide()
-                            selectedGameId = null
-                        }
-                    }
-                )
-
-                ActionButton(
-                    modifier = Modifier.fillMaxWidth(),
-                    title = R.string.delete_round,
-                    icon = R.drawable.bin,
-                    onClick = {
-                        sheetScope.launch {
-                            gameSheetState.hide()
-                            selectedGameId = null
-                        }
-                    }
-                )
-            }
+            HistoryOptionSheet(
+                canResumeGame = state.games.firstOrNull { it.id == selectedGameId }?.finishedAt != null,
+                onResumeGame = {
+                    onEvent(HistoryEvent.OnResumeGame(selectedGameId!!))
+                    gameSheetState.hide()
+                    selectedGameId = null
+                },
+                onDeleteGame = {
+                    onEvent(HistoryEvent.OnDeleteGame(selectedGameId!!))
+                    gameSheetState.hide()
+                    selectedGameId = null
+                }
+            )
         }
     }
 
@@ -169,7 +138,8 @@ private fun HistoryScreenPreview() = PreviewScreen {
                     PlayerModel(id = 1, name = "Thomas", color = PlayerColor.GREEN),
                     PlayerModel(id = 2, name = "Marianne", color = PlayerColor.RED),
                     PlayerModel(id = 4, name = "Thibaut", color = PlayerColor.BLUE),
-                )
+                ),
+                finishedAt = Date()
             ),
             GameModel(
                 id = 2,
@@ -180,7 +150,8 @@ private fun HistoryScreenPreview() = PreviewScreen {
                     PlayerModel(id = 1, name = "Thomas", color = PlayerColor.GREEN),
                     PlayerModel(id = 2, name = "Marianne", color = PlayerColor.RED),
                     PlayerModel(id = 4, name = "Thibaut", color = PlayerColor.BLUE),
-                )
+                ),
+                finishedAt = Date()
             ),
             GameModel(
                 id = 3,
@@ -190,7 +161,8 @@ private fun HistoryScreenPreview() = PreviewScreen {
                     PlayerModel(id = 1, name = "Thomas", color = PlayerColor.GREEN),
                     PlayerModel(id = 2, name = "Marianne", color = PlayerColor.RED),
                     PlayerModel(id = 4, name = "Thibaut", color = PlayerColor.BLUE),
-                )
+                ),
+                finishedAt = Date()
             ),
         )
     )

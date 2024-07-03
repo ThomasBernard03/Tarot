@@ -4,6 +4,7 @@ import fr.thomasbernard03.tarot.domain.models.GameModel
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.domain.models.Resource
 import fr.thomasbernard03.tarot.domain.models.errors.CreateGameError
+import fr.thomasbernard03.tarot.domain.models.errors.DeleteGameError
 import fr.thomasbernard03.tarot.domain.models.errors.FinishGameError
 import fr.thomasbernard03.tarot.domain.models.errors.GetGameError
 import fr.thomasbernard03.tarot.domain.models.errors.ResumeGameError
@@ -13,6 +14,8 @@ interface GameRepository {
     suspend fun finishGame(id : Long) : Resource<Unit, FinishGameError>
 
     suspend fun getAllGames() : Resource<List<GameModel>, GetGameError>
+
+    suspend fun deleteGame(id : Long) : Resource<Unit, DeleteGameError>
 
 
     suspend fun getCurrentGame() : Resource<GameModel, GetGameError>
