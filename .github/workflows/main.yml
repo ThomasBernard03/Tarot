@@ -46,3 +46,20 @@ jobs:
         path: |
           **/*.apk
           **/*.aab
+  
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 17
+
+      - name: Run Unit Tests
+        run: ./gradlew test
