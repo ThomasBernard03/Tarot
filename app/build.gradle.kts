@@ -36,7 +36,7 @@ android {
 
     buildTypes {
         release {
-            signingConfigs.getByName("release")
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
@@ -46,7 +46,6 @@ android {
         }
         debug {
             applicationIdSuffix = ".debug"
-
         }
     }
     compileOptions {
@@ -71,7 +70,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
