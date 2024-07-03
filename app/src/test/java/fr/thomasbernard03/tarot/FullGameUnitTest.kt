@@ -105,5 +105,85 @@ class FullGameUnitTest {
         TestCase.assertEquals(136, player3Score)
         TestCase.assertEquals(238, player4Score)
         TestCase.assertEquals(-158, player5Score)
+
+        rounds.add(
+            RoundModel(
+                id = 4,
+                taker = player2,
+                bid = Bid.GUARD_WITHOUT,
+                oudlers = listOf(Oudler.EXCUSE, Oudler.PETIT),
+                points = 70,
+                calledPlayer = player5,
+                finishedAt = Date()
+            )
+        )
+
+
+        game = game.copy(rounds = rounds)
+        val playersScoreRound4 = game.calculateScore()
+        player1Score = playersScoreRound4.find { it.first == player1 }?.second
+        player2Score = playersScoreRound4.find { it.first == player2 }?.second
+        player3Score = playersScoreRound4.find { it.first == player3 }?.second
+        player4Score = playersScoreRound4.find { it.first == player4 }?.second
+        player5Score = playersScoreRound4.find { it.first == player5 }?.second
+
+        TestCase.assertEquals(-194, player1Score)
+        TestCase.assertEquals(194, player2Score)
+        TestCase.assertEquals(-80, player3Score)
+        TestCase.assertEquals(22, player4Score)
+        TestCase.assertEquals(58, player5Score)
+
+        rounds.add(
+            RoundModel(
+                id = 5,
+                taker = player3,
+                bid = Bid.GUARD,
+                oudlers = listOf(Oudler.EXCUSE),
+                points = 62,
+                calledPlayer = player3,
+                finishedAt = Date()
+            )
+        )
+
+        game = game.copy(rounds = rounds)
+        val playersScoreRound5 = game.calculateScore()
+        player1Score = playersScoreRound5.find { it.first == player1 }?.second
+        player2Score = playersScoreRound5.find { it.first == player2 }?.second
+        player3Score = playersScoreRound5.find { it.first == player3 }?.second
+        player4Score = playersScoreRound5.find { it.first == player4 }?.second
+        player5Score = playersScoreRound5.find { it.first == player5 }?.second
+
+        TestCase.assertEquals(-266, player1Score)
+        TestCase.assertEquals(122, player2Score)
+        TestCase.assertEquals(208, player3Score)
+        TestCase.assertEquals(-50, player4Score)
+        TestCase.assertEquals(-14, player5Score)
+
+
+        rounds.add(
+            RoundModel(
+                id = 6,
+                taker = player1,
+                bid = Bid.GUARD_AGAINST,
+                oudlers = listOf(Oudler.EXCUSE, Oudler.PETIT),
+                points = 8,
+                calledPlayer = player4,
+                finishedAt = Date()
+            )
+        )
+
+        game = game.copy(rounds = rounds)
+        val playersScoreRound6 = game.calculateScore()
+        player1Score = playersScoreRound6.find { it.first == player1 }?.second
+        player2Score = playersScoreRound6.find { it.first == player2 }?.second
+        player3Score = playersScoreRound6.find { it.first == player3 }?.second
+        player4Score = playersScoreRound6.find { it.first == player4 }?.second
+        player5Score = playersScoreRound6.find { it.first == player5 }?.second
+
+        TestCase.assertEquals(-962, player1Score)
+        TestCase.assertEquals(470, player2Score)
+        TestCase.assertEquals(556, player3Score)
+        TestCase.assertEquals(-398, player4Score)
+        TestCase.assertEquals(334, player5Score)
     }
 }
