@@ -6,11 +6,10 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checking out branch
+    - name: Checkout branch
       uses: actions/checkout@v4
     
     - name: Setup Java
@@ -19,47 +18,55 @@ jobs:
         distribution: 'temurin'
         java-version: 17
 
-
     - name: Decode Keystore
       env:
         ENCODED_STRING: ${{ secrets.KEYSTORE_BASE_64 }}
         KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
         KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }} 
-
       run: |
         echo $ENCODED_STRING > keystore-b64.txt
         base64 -d keystore-b64.txt > Keystore
 
-    - name: Build Release apk
+    - name: Build Release apk and aab
       env:
         KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
         KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
       run: ./gradlew assembleRelease bundleRelease --stacktrace
 
+    - name: Find APK and AAB files
+      id: find_files
+      run: |
+        APK_PATH=$(find . -name "app-release.apk" | head -n 1)
+        AAB_PATH=$(find . -name "app-release.aab" | head -n 1)
+        echo "APK_PATH=$APK_PATH" >> $GITHUB_ENV
+        echo "AAB_PATH=$AAB_PATH" >> $GITHUB_ENV
 
-    - name: Upload Release Build to Artifacts
+    - name: Upload APK to Artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: release-artifacts
-        path: |
-          **/*.apk
-          **/*.aab
-  
+        name: app-release.apk
+        path: ${{ env.APK_PATH }}
+
+    - name: Upload AAB to Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: app-release.aab
+        path: ${{ env.AAB_PATH }}
 
   test:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Checkout branch
-        uses: actions/checkout@v4
+    - name: Checkout branch
+      uses: actions/checkout@v4
 
-      - name: Setup Java
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: 17
+    - name: Setup Java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: 17
 
-      - name: Run Unit Tests
-        run: ./gradlew test
+    - name: Run Unit Tests
+      run: ./gradlew test
