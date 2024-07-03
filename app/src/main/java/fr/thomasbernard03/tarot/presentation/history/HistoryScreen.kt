@@ -1,6 +1,8 @@
 package fr.thomasbernard03.tarot.presentation.history
 
 import android.content.res.Configuration
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -9,6 +11,8 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -25,6 +29,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
@@ -49,6 +54,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -62,6 +68,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.LargePadding
 import fr.thomasbernard03.tarot.commons.MediumPadding
+import fr.thomasbernard03.tarot.commons.SmallPadding
 import fr.thomasbernard03.tarot.commons.extensions.toColor
 import fr.thomasbernard03.tarot.commons.extensions.toPrettyDate
 import fr.thomasbernard03.tarot.commons.extensions.toPrettyTime
@@ -76,7 +83,9 @@ import kotlinx.coroutines.launch
 import java.util.Date
 import java.util.Locale
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
+    ExperimentalLayoutApi::class
+)
 @Composable
 fun HistoryScreen(state : HistoryState, onEvent : (HistoryEvent) -> Unit) {
 
@@ -199,14 +208,23 @@ fun HistoryScreen(state : HistoryState, onEvent : (HistoryEvent) -> Unit) {
                                     .weight(1f)
                                     .padding(LargePadding)
                             ) {
-                                Box {
-                                    game.players.forEachIndexed { index, player ->
-                                        Box(
-                                            modifier = Modifier
-                                                .offset(x = offsetX * index, y = offsetY * index)
-                                                .zIndex(game.players.size - index.toFloat())
-                                                .shadow(1.dp, shape = CircleShape, clip = true)
-                                        ) {
+                                if (!expanded){
+                                    Row(
+                                        horizontalArrangement = Arrangement.spacedBy(SmallPadding)
+                                    ) {
+                                        game.players.forEach { player ->
+                                            PlayerIcon(
+                                                name = player.name,
+                                                color = player.color.toColor(),
+                                                modifier = Modifier.size(28.dp),
+                                                style = LocalTextStyle.current.copy(fontSize = 14.sp)
+                                            )
+                                        }
+                                    }
+                                }
+                                else {
+                                    Column(verticalArrangement = Arrangement.spacedBy(SmallPadding)) {
+                                        game.players.forEach { player ->
                                             PlayerIcon(
                                                 name = player.name,
                                                 color = player.color.toColor(),
@@ -215,14 +233,18 @@ fun HistoryScreen(state : HistoryState, onEvent : (HistoryEvent) -> Unit) {
                                     }
                                 }
 
-                                Column {
-                                    Text(text = "${game.rounds.size} tours")
+                                if (!expanded){
+                                    Text(
+                                        modifier = Modifier.padding(horizontal = MediumPadding),
+                                        text = "${game.rounds.size} tours"
+                                    )
                                 }
+
                             }
 
                             Box(
                                 modifier = Modifier
-                                    .width(64.dp)
+                                    .width(70.dp)
                                     .background(MaterialTheme.colorScheme.tertiary)
                                     .fillMaxHeight()
                             ) {
@@ -231,16 +253,48 @@ fun HistoryScreen(state : HistoryState, onEvent : (HistoryEvent) -> Unit) {
                                         horizontalAlignment = Alignment.CenterHorizontally,
                                         modifier = Modifier.align(Alignment.Center)
                                     ) {
-                                        Text(
-                                            text = game.startedAt.day.toString(),
-                                            style = MaterialTheme.typography.titleLarge,
-                                            color = MaterialTheme.colorScheme.onTertiary
-                                        )
+                                        Column(
+                                            modifier = Modifier.weight(1f),
+                                            verticalArrangement = Arrangement.Center,
+                                            horizontalAlignment = Alignment.CenterHorizontally
+                                        ) {
+                                            Text(
+                                                text = game.startedAt.day.toString(),
+                                                style = MaterialTheme.typography.titleLarge,
+                                                color = MaterialTheme.colorScheme.onTertiary
+                                            )
 
-                                        Text(
-                                            text = String.format(Locale.getDefault(), "%tB", game.startedAt),
-                                            color = MaterialTheme.colorScheme.onTertiary
-                                        )
+                                            Text(
+                                                text = String.format(Locale.getDefault(), "%tB", game.startedAt),
+                                                color = MaterialTheme.colorScheme.onTertiary,
+                                                style = MaterialTheme.typography.bodySmall
+                                            )
+                                        }
+
+                                        if (expanded){
+                                            HorizontalDivider()
+                                        }
+
+                                        if(expanded) {
+                                            Column(
+                                                modifier = Modifier
+                                                    .padding(vertical = LargePadding),
+                                                verticalArrangement = Arrangement.Center,
+                                                horizontalAlignment = Alignment.CenterHorizontally
+                                            ) {
+                                                Text(
+                                                    text = "${game.rounds.size}",
+                                                    color = MaterialTheme.colorScheme.onTertiary,
+                                                    textAlign = TextAlign.Center
+                                                )
+                                                Text(
+                                                    text = "Rounds",
+                                                    color = MaterialTheme.colorScheme.onTertiary,
+                                                    textAlign = TextAlign.Center,
+                                                    style = MaterialTheme.typography.bodySmall
+                                                )
+                                            }
+                                        }
                                     }
                                 }
                                 else {
