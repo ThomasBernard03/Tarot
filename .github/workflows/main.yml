@@ -33,9 +33,9 @@ jobs:
 
     - name: Build Release apk
       env:
-        RELEASE_KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-        RELEASE_KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
-        RELEASE_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
       run: ./gradlew assembleRelease bundleRelease --stacktrace
 
 
