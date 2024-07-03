@@ -59,7 +59,6 @@ fun LazyListScope.historyList(
 
         var expanded by rememberSaveable { mutableStateOf(false) }
 
-
         Surface(
             modifier = Modifier
                 .fillMaxWidth(),
