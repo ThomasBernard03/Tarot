@@ -1,21 +1,32 @@
 package fr.thomasbernard03.tarot.presentation.history
 
+import android.content.res.Configuration
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
@@ -31,23 +42,39 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.LargePadding
+import fr.thomasbernard03.tarot.commons.MediumPadding
 import fr.thomasbernard03.tarot.commons.extensions.toColor
 import fr.thomasbernard03.tarot.commons.extensions.toPrettyDate
 import fr.thomasbernard03.tarot.commons.extensions.toPrettyTime
+import fr.thomasbernard03.tarot.domain.models.GameModel
+import fr.thomasbernard03.tarot.domain.models.PlayerColor
+import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.presentation.components.ActionButton
 import fr.thomasbernard03.tarot.presentation.components.Loader
 import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
+import fr.thomasbernard03.tarot.presentation.components.PreviewScreen
 import kotlinx.coroutines.launch
+import java.util.Date
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -61,6 +88,12 @@ fun HistoryScreen(state : HistoryState, onEvent : (HistoryEvent) -> Unit) {
     var selectedGameId by remember { mutableStateOf<Long?>(null) }
     val gameSheetState = rememberModalBottomSheetState()
     val sheetScope = rememberCoroutineScope()
+
+    val preloaderLottieComposition by rememberLottieComposition(
+        LottieCompositionSpec.RawRes(R.raw.cards))
+    val preloaderProgress by animateLottieCompositionAsState(
+        composition = preloaderLottieComposition,
+    )
 
     if (selectedGameId != null){
         ModalBottomSheet(
@@ -136,61 +169,147 @@ fun HistoryScreen(state : HistoryState, onEvent : (HistoryEvent) -> Unit) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
-                    .nestedScroll(scrollBehavior.nestedScrollConnection)
+                    .nestedScroll(scrollBehavior.nestedScrollConnection),
+                contentPadding = PaddingValues(LargePadding),
+                verticalArrangement = Arrangement.spacedBy(MediumPadding)
             ) {
                 items(state.games, key = { it.id }) { game ->
 
                     var expanded by rememberSaveable { mutableStateOf(false) }
-                    val offsetX by animateDpAsState(targetValue = if (expanded) 0.dp else 16.dp)
-                    val offsetY by animateDpAsState(targetValue = if (expanded) 36.dp else 0.dp)
+                    val offsetX by animateDpAsState(targetValue = if (expanded) 0.dp else 24.dp)
+                    val offsetY by animateDpAsState(targetValue = if (expanded) 48.dp else 0.dp)
+
 
                     Surface(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .height(200.dp)
-                            .combinedClickable(
-                                onClick = {
-                                    expanded = !expanded
-                                },
-                                onLongClick = {
-                                    selectedGameId = game.id
-                                }
-                            )
+                            .fillMaxWidth(),
+                        shape = RoundedCornerShape(8.dp),
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)),
                     ) {
-                        Column(
-                            modifier= Modifier.padding(LargePadding)
+                        Row(
+                            modifier = Modifier
+                                .height(IntrinsicSize.Min)
+                                .combinedClickable(
+                                    onClick = { expanded = !expanded },
+                                    onLongClick = { selectedGameId = game.id }
+                                )
                         ) {
-                            Text(text = "${game.rounds.size}")
-                            Text(text = "Commencée le ${game.startedAt.toPrettyDate()} à ${game.startedAt.toPrettyTime()}")
+                            Row(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(LargePadding)
+                            ) {
+                                Box {
+                                    game.players.forEachIndexed { index, player ->
+                                        Box(
+                                            modifier = Modifier
+                                                .offset(x = offsetX * index, y = offsetY * index)
+                                                .zIndex(game.players.size - index.toFloat())
+                                                .shadow(1.dp, shape = CircleShape, clip = true)
+                                        ) {
+                                            PlayerIcon(
+                                                name = player.name,
+                                                color = player.color.toColor(),
+                                            )
+                                        }
+                                    }
+                                }
 
-                            if (game.finishedAt != null){
-                                Text(text = "Terminée le ${game.finishedAt.toPrettyDate()} à ${game.finishedAt.toPrettyTime()}")
+                                Column {
+                                    Text(text = "${game.rounds.size} tours")
+                                }
                             }
-                            else {
-                                Text(text = "En cours")
-                            }
-                            Box {
-                                game.players.forEachIndexed { index, player ->
-                                    Box(
-                                        modifier = Modifier
-                                            .offset(x = offsetX * index, y = offsetY * index)
-                                            .zIndex(game.players.size - index.toFloat())
-                                            .shadow(1.dp, shape = CircleShape, clip = true)
+
+                            Box(
+                                modifier = Modifier
+                                    .width(64.dp)
+                                    .background(MaterialTheme.colorScheme.tertiary)
+                                    .fillMaxHeight()
+                            ) {
+                                if (game.finishedAt != null){
+                                    Column(
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        modifier = Modifier.align(Alignment.Center)
                                     ) {
-                                        PlayerIcon(
-                                            modifier = Modifier.size(28.dp),
-                                            name = player.name,
-                                            color = player.color.toColor(),
-                                            style = LocalTextStyle.current.copy(fontSize = 12.sp)
+                                        Text(
+                                            text = game.startedAt.day.toString(),
+                                            style = MaterialTheme.typography.titleLarge,
+                                            color = MaterialTheme.colorScheme.onTertiary
+                                        )
+
+                                        Text(
+                                            text = String.format(Locale.getDefault(), "%tB", game.startedAt),
+                                            color = MaterialTheme.colorScheme.onTertiary
                                         )
                                     }
                                 }
+                                else {
+                                    LottieAnimation(
+                                        composition = preloaderLottieComposition,
+                                        progress = preloaderProgress,
+                                        modifier = Modifier
+                                            .align(Alignment.Center)
+                                            .offset(y = 12.dp),
+                                        contentScale = ContentScale.Crop
+                                    )
+                                }
                             }
                         }
-
                     }
                 }
             }
         }
     }
+}
+
+
+@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun HistoryScreenLoadingPreview() = PreviewScreen {
+    val state = HistoryState(loading = true)
+    HistoryScreen(state = state, onEvent = {})
+}
+
+@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun HistoryScreenPreview() = PreviewScreen {
+    val state = HistoryState(
+        loading = false,
+        games = listOf(
+            GameModel(
+                id = 1,
+                startedAt = Date(),
+                rounds = listOf(),
+                players = listOf(
+                    PlayerModel(id = 1, name = "Thomas", color = PlayerColor.GREEN),
+                    PlayerModel(id = 2, name = "Marianne", color = PlayerColor.RED),
+                    PlayerModel(id = 4, name = "Thibaut", color = PlayerColor.BLUE),
+                )
+            ),
+            GameModel(
+                id = 2,
+                startedAt = Date(),
+                rounds = listOf(),
+
+                players = listOf(
+                    PlayerModel(id = 1, name = "Thomas", color = PlayerColor.GREEN),
+                    PlayerModel(id = 2, name = "Marianne", color = PlayerColor.RED),
+                    PlayerModel(id = 4, name = "Thibaut", color = PlayerColor.BLUE),
+                )
+            ),
+            GameModel(
+                id = 3,
+                startedAt = Date(),
+                rounds = listOf(),
+                players = listOf(
+                    PlayerModel(id = 1, name = "Thomas", color = PlayerColor.GREEN),
+                    PlayerModel(id = 2, name = "Marianne", color = PlayerColor.RED),
+                    PlayerModel(id = 4, name = "Thibaut", color = PlayerColor.BLUE),
+                )
+            ),
+        )
+    )
+    HistoryScreen(state = state, onEvent = {})
 }
