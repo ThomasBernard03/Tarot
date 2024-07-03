@@ -45,6 +45,7 @@ import fr.thomasbernard03.tarot.commons.SmallPadding
 import fr.thomasbernard03.tarot.commons.calculateDefenderScore
 import fr.thomasbernard03.tarot.commons.calculatePartnerScore
 import fr.thomasbernard03.tarot.commons.calculateTakerScore
+import fr.thomasbernard03.tarot.commons.extensions.calculateScore
 import fr.thomasbernard03.tarot.commons.extensions.toColor
 import fr.thomasbernard03.tarot.domain.models.GameModel
 import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
@@ -94,36 +95,11 @@ fun LazyListScope.historyList(
                     }
                     else {
                         Column(verticalArrangement = Arrangement.spacedBy(SmallPadding)) {
-                            game.players.forEach { player ->
+                            game.calculateScore().forEach { (player, score) ->
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically,
                                     horizontalArrangement = Arrangement.spacedBy(LargePadding)
                                 ) {
-                                    val score = game.rounds.sumOf {
-                                        val takerScore = calculateTakerScore(
-                                            points = it.points,
-                                            bid = it.bid,
-                                            oudlers = it.oudlers.size,
-                                            calledHimSelf = it.calledPlayer == it.taker
-                                        )
-
-                                        val partnerScore = calculatePartnerScore(takerScore)
-
-                                        if (it.taker == player)
-                                            takerScore
-                                        else if (it.calledPlayer == player)
-                                            partnerScore
-                                        else {
-                                            if (it.taker == it.calledPlayer){
-                                                calculateDefenderScore(takerScore, 4)
-                                            }
-                                            else {
-                                                val attackScore = takerScore + partnerScore
-                                                calculateDefenderScore(attackScore, 3)
-                                            }
-                                        }
-                                    }
-
                                     PlayerIcon(
                                         name = player.name,
                                         color = player.color.toColor(),
@@ -131,7 +107,6 @@ fun LazyListScope.historyList(
 
                                     Text(text = score.toString())
                                 }
-
                             }
                         }
                     }
