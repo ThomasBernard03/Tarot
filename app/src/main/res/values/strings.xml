@@ -94,4 +94,5 @@
     <string name="error_round_not_found">Ce tour est introuvable</string>
     <string name="error_delete_player_has_game">Impossible de supprimer ce joueur, il a participé à des parties</string>
     <string name="error_player_not_found">Erreur, joueur introuvable</string>
+    <string name="error_player_name_already_used">Erreur, un joueur avec ce nom existe déjà</string>
 </resources>

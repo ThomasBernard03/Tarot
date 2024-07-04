@@ -8,6 +8,8 @@ import fr.thomasbernard03.tarot.commons.helpers.ResourcesHelper
 import fr.thomasbernard03.tarot.domain.models.PlayerColor
 import fr.thomasbernard03.tarot.domain.models.Resource
 import fr.thomasbernard03.tarot.domain.models.errors.player.DeletePlayerError
+import fr.thomasbernard03.tarot.domain.models.errors.player.EditPlayerError
+import fr.thomasbernard03.tarot.domain.models.errors.player.GetPlayerError
 import fr.thomasbernard03.tarot.domain.usecases.player.DeletePlayerUseCase
 import fr.thomasbernard03.tarot.domain.usecases.player.EditPlayerUseCase
 import fr.thomasbernard03.tarot.domain.usecases.player.GetPlayerUseCase
@@ -75,6 +77,20 @@ class PlayerViewModel(
 
     private fun onEditPlayer(id : Long, name : String, color : PlayerColor){
         viewModelScope.launch {
+            when(val result =  editPlayerUseCase(id, name, color)){
+                is Resource.Success -> {
+                    _state.update { it.copy(player = result.data) }
+                }
+                is Resource.Error -> {
+                    val messageId = when(result.data){
+                        EditPlayerError.NameAlreadyTaken -> R.string.error_player_name_already_used
+                        EditPlayerError.PlayerNotFound -> R.string.error_player_not_found
+                        EditPlayerError.UnknownError -> R.string.error_unknown
+                    }
+
+                    _state.update { it.copy(message = resourcesHelper.getString(messageId)) }
+                }
+            }
         }
     }
 }
