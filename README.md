@@ -8,7 +8,8 @@
 - Round
   - [ ] New Design for round screen
 - Users
-  - [ ] Modify and delete player
+  - [ ] Delete player
+  - [x] Modify player
 
 - [ ] Migration to KMP (For iOS version)
 - [ ] Play store publication

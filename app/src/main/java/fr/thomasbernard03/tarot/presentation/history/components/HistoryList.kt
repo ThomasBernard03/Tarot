@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LocalTextStyle
@@ -49,6 +50,8 @@ import fr.thomasbernard03.tarot.commons.extensions.calculateScore
 import fr.thomasbernard03.tarot.commons.extensions.toColor
 import fr.thomasbernard03.tarot.domain.models.GameModel
 import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
+import fr.thomasbernard03.tarot.presentation.theme.Green
+import fr.thomasbernard03.tarot.presentation.theme.Red
 import java.util.Locale
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -71,7 +74,7 @@ fun LazyListScope.historyList(
                     .height(IntrinsicSize.Min)
                     .combinedClickable(
                         onClick = { expanded = !expanded },
-                        onLongClick = { onGameLongPressed(game.id)}
+                        onLongClick = { onGameLongPressed(game.id) }
                     )
             ) {
                 Row(
@@ -100,12 +103,26 @@ fun LazyListScope.historyList(
                                     verticalAlignment = Alignment.CenterVertically,
                                     horizontalArrangement = Arrangement.spacedBy(LargePadding)
                                 ) {
-                                    PlayerIcon(
-                                        name = player.name,
-                                        color = player.color.toColor(),
-                                    )
+                                    Row(
+                                        modifier = Modifier.weight(1f),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.spacedBy(MediumPadding)
+                                    ) {
+                                        Box(
+                                            modifier = Modifier
+                                                .size(8.dp)
+                                                .background(player.color.toColor(), shape = CircleShape)
+                                        )
 
-                                    Text(text = score.toString())
+                                        Text(text = player.name)
+                                    }
+
+
+                                    Text(
+                                        modifier = Modifier.weight(1f),
+                                        text = score.toString(),
+                                        color = if (score >= 0) Green else Red,
+                                    )
                                 }
                             }
                         }
