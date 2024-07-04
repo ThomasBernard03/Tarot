@@ -13,3 +13,9 @@
 
 - [ ] Migration to KMP (For iOS version)
 - [ ] Play store publication
+
+
+
+Resources :
+https://medium.com/@vontonnie/automating-success-github-actions-workflow-for-android-app-deployment-908095d53b97
+https://medium.com/@vontonnie/setting-up-a-service-account-on-google-cloud-for-android-app-deployment-c6e16d8fc57b

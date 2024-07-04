@@ -32,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -122,6 +123,7 @@ fun LazyListScope.historyList(
                                         modifier = Modifier.weight(1f),
                                         text = score.toString(),
                                         color = if (score >= 0) Green else Red,
+                                        fontWeight = FontWeight.Bold
                                     )
                                 }
                             }
