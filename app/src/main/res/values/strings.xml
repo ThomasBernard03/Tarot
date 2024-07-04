@@ -4,6 +4,8 @@
     <string name="counter">Compteur</string>
 
     <string name="go_back">Retour en arrière</string>
+    <string name="cancel">Annuler</string>
+    <string name="validate">Valider</string>
 
 
     <string name="excuse">Excuse</string>

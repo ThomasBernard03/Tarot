@@ -5,10 +5,12 @@ import android.util.Log
 import fr.thomasbernard03.tarot.data.local.dao.PlayerDao
 import fr.thomasbernard03.tarot.data.local.entities.PlayerEntity
 import fr.thomasbernard03.tarot.domain.models.CreatePlayerModel
+import fr.thomasbernard03.tarot.domain.models.PlayerColor
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.domain.models.Resource
-import fr.thomasbernard03.tarot.domain.models.errors.CreatePlayerError
+import fr.thomasbernard03.tarot.domain.models.errors.player.CreatePlayerError
 import fr.thomasbernard03.tarot.domain.models.errors.player.DeletePlayerError
+import fr.thomasbernard03.tarot.domain.models.errors.player.EditPlayerError
 import fr.thomasbernard03.tarot.domain.models.errors.player.GetPlayerError
 import fr.thomasbernard03.tarot.domain.models.errors.player.GetPlayersError
 import fr.thomasbernard03.tarot.domain.repositories.PlayerRepository
@@ -88,6 +90,32 @@ class PlayerRepositoryImpl(
         catch (e : Exception){
             Log.e(e.message, e.stackTraceToString())
             Resource.Error(GetPlayerError.UnknownError)
+        }
+    }
+
+    override suspend fun editPlayer(
+        id: Long,
+        name: String,
+        color: PlayerColor
+    ): Resource<PlayerModel, EditPlayerError> {
+        return try {
+            val player = playerDao.getPlayer(id)
+            val editedPlayer = player.copy(name = name, color = color)
+            playerDao.updatePlayer(editedPlayer)
+
+            Resource.Success(PlayerModel(id = player.id!!, name = player.name, color = player.color))
+        }
+        catch (e : SQLiteConstraintException){
+            Log.e(e.message, e.stackTraceToString())
+            Resource.Error(EditPlayerError.NameAlreadyTaken)
+        }
+        catch (e : NullPointerException){
+            Log.e(e.message, e.stackTraceToString())
+            Resource.Error(EditPlayerError.PlayerNotFound)
+        }
+        catch (e : Exception){
+            Log.e(e.message, e.stackTraceToString())
+            Resource.Error(EditPlayerError.UnknownError)
         }
     }
 }
