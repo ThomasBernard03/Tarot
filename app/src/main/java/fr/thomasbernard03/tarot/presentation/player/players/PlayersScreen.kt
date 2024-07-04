@@ -20,6 +20,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -44,10 +47,12 @@ import fr.thomasbernard03.tarot.commons.MediumPadding
 import fr.thomasbernard03.tarot.commons.extensions.toColor
 import fr.thomasbernard03.tarot.domain.models.PlayerColor
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
+import fr.thomasbernard03.tarot.domain.models.errors.player.DeletePlayerError
 import fr.thomasbernard03.tarot.presentation.components.ActionButton
 import fr.thomasbernard03.tarot.presentation.components.Loader
 import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
 import fr.thomasbernard03.tarot.presentation.components.PreviewScreen
+import fr.thomasbernard03.tarot.presentation.game.GameEvent
 import fr.thomasbernard03.tarot.presentation.player.components.CreatePlayerDialog
 import kotlinx.coroutines.launch
 
@@ -64,7 +69,25 @@ fun PlayersScreen(state : PlayersState, onEvent: (PlayersEvent) -> Unit) {
     var selectedPlayerId by remember { mutableStateOf<Long?>(null) }
     val playerSheetState = rememberModalBottomSheetState()
     val sheetScope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val errorScope = rememberCoroutineScope()
 
+    fun onError(message : String){
+        errorScope.launch {
+            if (snackbarHostState.currentSnackbarData != null)
+                snackbarHostState.currentSnackbarData!!.dismiss()
+
+            snackbarHostState.showSnackbar(message, withDismissAction = true)
+            onEvent(PlayersEvent.OnDismissMessage)
+        }
+    }
+
+
+    LaunchedEffect(state.message) {
+        if (state.message.isNotBlank()) {
+            onError(state.message)
+        }
+    }
 
     if (state.showCreatePlayerDialog){
         CreatePlayerDialog(
@@ -105,6 +128,7 @@ fun PlayersScreen(state : PlayersState, onEvent: (PlayersEvent) -> Unit) {
                     icon = R.drawable.bin,
                     onClick = {
                         sheetScope.launch {
+                            onEvent(PlayersEvent.OnDeletePlayer(selectedPlayerId!!))
                             playerSheetState.hide()
                             selectedPlayerId = null
                         }
@@ -114,62 +138,69 @@ fun PlayersScreen(state : PlayersState, onEvent: (PlayersEvent) -> Unit) {
         }
     }
 
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        MediumTopAppBar(
-            title = {
-                Text(
-                    text = stringResource(id = R.string.players_page_title),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            },
-            actions = {
-                IconButton(onClick = { onEvent(PlayersEvent.OnShowCreatePlayerDialog) }) {
-                    Icon(
-                        imageVector = Icons.Filled.Add,
-                        contentDescription = stringResource(id = R.string.create_new_player)
+    Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+        topBar = {
+            MediumTopAppBar(
+                title = {
+                    Text(
+                        text = stringResource(id = R.string.players_page_title),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
-                }
-            },
-            scrollBehavior = scrollBehavior
-        )
-
-        if (state.loadingPlayers) {
-            Loader(
-                modifier = Modifier.fillMaxSize(),
-                message = R.string.loading_players
+                },
+                actions = {
+                    IconButton(onClick = { onEvent(PlayersEvent.OnShowCreatePlayerDialog) }) {
+                        Icon(
+                            imageVector = Icons.Filled.Add,
+                            contentDescription = stringResource(id = R.string.create_new_player)
+                        )
+                    }
+                },
+                scrollBehavior = scrollBehavior
             )
         }
-        else {
-            LazyVerticalGrid(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .nestedScroll(scrollBehavior.nestedScrollConnection),
-                columns = GridCells.Adaptive(minSize = 150.dp),
-                contentPadding = PaddingValues(LargePadding),
-                horizontalArrangement = Arrangement.spacedBy(MediumPadding),
-                verticalArrangement = Arrangement.spacedBy(MediumPadding)
-            ) {
-                items(state.players, key = { it.id }) { player ->
-                    Row(
-                        modifier = Modifier.combinedClickable(
-                            onClick = { },
-                            onLongClick = { selectedPlayerId = player.id }
-                        )
-                    ) {
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it)
+        ) {
+            if (state.loadingPlayers) {
+                Loader(
+                    modifier = Modifier.fillMaxSize(),
+                    message = R.string.loading_players
+                )
+            }
+            else {
+                LazyVerticalGrid(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                        .nestedScroll(scrollBehavior.nestedScrollConnection),
+                    columns = GridCells.Adaptive(minSize = 150.dp),
+                    contentPadding = PaddingValues(LargePadding),
+                    horizontalArrangement = Arrangement.spacedBy(MediumPadding),
+                    verticalArrangement = Arrangement.spacedBy(MediumPadding)
+                ) {
+                    items(state.players, key = { it.id }) { player ->
                         Row(
-                            modifier = Modifier.weight(1f),
-                            horizontalArrangement = Arrangement.spacedBy(MediumPadding),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            PlayerIcon(
-                                name = player.name,
-                                color = player.color.toColor()
+                            modifier = Modifier.combinedClickable(
+                                onClick = { },
+                                onLongClick = { selectedPlayerId = player.id }
                             )
-                            Text(text = player.name)
+                        ) {
+                            Row(
+                                modifier = Modifier.weight(1f),
+                                horizontalArrangement = Arrangement.spacedBy(MediumPadding),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                PlayerIcon(
+                                    name = player.name,
+                                    color = player.color.toColor()
+                                )
+                                Text(text = player.name)
+                            }
                         }
                     }
                 }

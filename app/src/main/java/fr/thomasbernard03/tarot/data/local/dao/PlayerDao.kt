@@ -16,4 +16,8 @@ interface PlayerDao {
 
     @Insert
     suspend fun insertPlayer(playerEntity: PlayerEntity) : Long
+
+
+    @Query("DELETE FROM PlayerEntity WHERE id = :id")
+    suspend fun deletePlayer(id : Long)
 }

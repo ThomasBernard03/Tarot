@@ -86,4 +86,6 @@
     <!-- Errors -->
     <string name="error_unknown">Une erreur inconnue s\'est produite</string>
     <string name="error_round_not_found">Ce tour est introuvable</string>
+    <string name="error_delete_player_has_game">Impossible de supprimer ce joueur, il a participé à des parties</string>
+    <string name="error_player_not_found">Erreur, joueur introuvable</string>
 </resources>

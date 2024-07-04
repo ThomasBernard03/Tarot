@@ -14,4 +14,8 @@ sealed class PlayersEvent {
     data class OnCreatePlayerDialogColorSelected(val color: PlayerColor?) : PlayersEvent()
     data object OnDismissCreatePlayerDialog : PlayersEvent()
     data class OnCreatePlayerDialogValidated(val name: String, val color: PlayerColor) : PlayersEvent()
+
+
+    data class OnDeletePlayer(val playerId: Long) : PlayersEvent()
+    data object OnDismissMessage : PlayersEvent()
 }

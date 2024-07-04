@@ -8,7 +8,8 @@ import fr.thomasbernard03.tarot.domain.models.CreatePlayerModel
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.domain.models.Resource
 import fr.thomasbernard03.tarot.domain.models.errors.CreatePlayerError
-import fr.thomasbernard03.tarot.domain.models.errors.GetPlayersError
+import fr.thomasbernard03.tarot.domain.models.errors.player.DeletePlayerError
+import fr.thomasbernard03.tarot.domain.models.errors.player.GetPlayersError
 import fr.thomasbernard03.tarot.domain.repositories.PlayerRepository
 import org.koin.java.KoinJavaComponent.get
 
@@ -51,6 +52,26 @@ class PlayerRepositoryImpl(
         catch (e : Exception){
             Log.e(e.message, e.stackTraceToString())
             Resource.Error(CreatePlayerError.UnknownError)
+        }
+    }
+
+    override suspend fun deletePlayer(id: Long): Resource<Unit, DeletePlayerError> {
+        return try {
+            val player = playerDao.getPlayer(id)
+            playerDao.deletePlayer(player.id!!)
+            Resource.Success(Unit)
+        }
+        catch (e : NullPointerException){
+            Log.e(e.message, e.stackTraceToString())
+            Resource.Error(DeletePlayerError.PlayerNotFound(id))
+        }
+        catch (e : SQLiteConstraintException){
+            Log.e(e.message, e.stackTraceToString())
+            Resource.Error(DeletePlayerError.PlayerHasGames)
+        }
+        catch (e : Exception){
+            Log.e(e.message, e.stackTraceToString())
+            Resource.Error(DeletePlayerError.UnknownError)
         }
     }
 }

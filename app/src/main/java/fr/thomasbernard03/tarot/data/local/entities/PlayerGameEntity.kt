@@ -11,7 +11,7 @@ import androidx.room.Index
             entity = PlayerEntity::class,
             parentColumns = ["id"],
             childColumns = ["playerId"],
-            onDelete = ForeignKey.CASCADE
+            onDelete = ForeignKey.RESTRICT
         ),
         ForeignKey(
             entity = GameEntity::class,
