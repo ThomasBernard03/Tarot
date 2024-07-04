@@ -1,0 +1,1 @@
+In the Tarot application, no personal data is collected
