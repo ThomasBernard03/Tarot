@@ -1,4 +1,9 @@
-# Tarot
+<p align="center">
+  <img width="300" alt="Android tools logo" src= "./doc/banner-light.png#gh-light-mode-only"/>
+  <img width="300" alt="Android tools logo" src= "./doc/banner-dark.png#gh-dark-mode-only"/>
+</p>
+
+---
 
 [![Android CI](https://github.com/ThomasBernard03/Tarot/actions/workflows/main.yml/badge.svg)](https://github.com/ThomasBernard03/Tarot/actions/workflows/main.yml)
 
