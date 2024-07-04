@@ -2,41 +2,30 @@ package fr.thomasbernard03.tarot.presentation.player.components
 
 import android.content.res.Configuration
 import android.view.Gravity
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
@@ -44,7 +33,6 @@ import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.LargePadding
 import fr.thomasbernard03.tarot.commons.MediumPadding
 import fr.thomasbernard03.tarot.commons.PLAYER_NAME_MAX_LENGTH
-import fr.thomasbernard03.tarot.commons.extensions.toColor
 import fr.thomasbernard03.tarot.domain.models.PlayerColor
 import fr.thomasbernard03.tarot.presentation.components.PreviewScreen
 
@@ -117,47 +105,7 @@ fun CreatePlayerDialog(
                 }
             )
 
-            FlowRow(
-                horizontalArrangement = Arrangement.spacedBy(MediumPadding),
-                verticalArrangement = Arrangement.spacedBy(MediumPadding)
-            ) {
-                PlayerColor.entries.forEach {
-                    Box {
-                        Button(
-                            contentPadding = PaddingValues(0.dp),
-                            shape = CircleShape,
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = it.toColor(),
-                                contentColor = MaterialTheme.colorScheme.background
-                            ),
-                            onClick = {
-                                if (color == it) onColorSelected(null)
-                                else onColorSelected(it)
-                            },
-                            border = if (color == it) BorderStroke(4.dp, MaterialTheme.colorScheme.primary) else null,
-                            modifier = Modifier.size(48.dp)
-                        ) { }
-
-                        if (color == it) {
-                            Box(
-                                modifier = Modifier
-                                    .size(24.dp)
-                                    .background(MaterialTheme.colorScheme.primary, CircleShape)
-                                    .align(Alignment.BottomEnd)
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.check),
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.background,
-                                    modifier = Modifier
-                                        .size(16.dp)
-                                        .align(Alignment.Center)
-                                )
-                            }
-                        }
-                    }
-                }
-            }
+            PlayerColorPicker(color = color, onColorSelected = onColorSelected)
 
             Row(
                 modifier = Modifier

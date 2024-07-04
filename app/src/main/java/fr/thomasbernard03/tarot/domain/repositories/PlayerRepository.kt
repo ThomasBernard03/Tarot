@@ -5,6 +5,7 @@ import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.domain.models.Resource
 import fr.thomasbernard03.tarot.domain.models.errors.CreatePlayerError
 import fr.thomasbernard03.tarot.domain.models.errors.player.DeletePlayerError
+import fr.thomasbernard03.tarot.domain.models.errors.player.GetPlayerError
 import fr.thomasbernard03.tarot.domain.models.errors.player.GetPlayersError
 
 interface PlayerRepository {
@@ -14,4 +15,5 @@ interface PlayerRepository {
 
 
     suspend fun deletePlayer(id: Long) : Resource<Unit, DeletePlayerError>
+    suspend fun getPlayer(id: Long) : Resource<PlayerModel, GetPlayerError>
 }

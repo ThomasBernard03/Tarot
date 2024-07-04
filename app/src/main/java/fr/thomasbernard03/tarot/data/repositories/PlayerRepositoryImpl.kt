@@ -9,6 +9,7 @@ import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.domain.models.Resource
 import fr.thomasbernard03.tarot.domain.models.errors.CreatePlayerError
 import fr.thomasbernard03.tarot.domain.models.errors.player.DeletePlayerError
+import fr.thomasbernard03.tarot.domain.models.errors.player.GetPlayerError
 import fr.thomasbernard03.tarot.domain.models.errors.player.GetPlayersError
 import fr.thomasbernard03.tarot.domain.repositories.PlayerRepository
 import org.koin.java.KoinJavaComponent.get
@@ -72,6 +73,21 @@ class PlayerRepositoryImpl(
         catch (e : Exception){
             Log.e(e.message, e.stackTraceToString())
             Resource.Error(DeletePlayerError.UnknownError)
+        }
+    }
+
+    override suspend fun getPlayer(id: Long): Resource<PlayerModel, GetPlayerError> {
+        return try {
+            val player = playerDao.getPlayer(id)
+            Resource.Success(PlayerModel(id = player.id!!, name = player.name, color = player.color))
+        }
+        catch (e : NullPointerException){
+            Log.e(e.message, e.stackTraceToString())
+            Resource.Error(GetPlayerError.PlayerNotFound)
+        }
+        catch (e : Exception){
+            Log.e(e.message, e.stackTraceToString())
+            Resource.Error(GetPlayerError.UnknownError)
         }
     }
 }

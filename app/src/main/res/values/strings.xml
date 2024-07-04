@@ -73,6 +73,10 @@
     <string name="delete_player">Supprimer</string>
     <string name="edit_player">Modifier</string>
 
+    <!-- Player -->
+    <string name="player_page_title">Joueur</string>
+    <string name="loading_player">Chargement du joueur</string>
+
 
     <!-- Settings -->
     <string name="settings_title">Paramètres</string>

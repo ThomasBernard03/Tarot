@@ -15,6 +15,10 @@ import fr.thomasbernard03.tarot.presentation.game.GameScreen
 import fr.thomasbernard03.tarot.presentation.game.GameViewModel
 import fr.thomasbernard03.tarot.presentation.history.HistoryScreen
 import fr.thomasbernard03.tarot.presentation.history.HistoryViewModel
+import fr.thomasbernard03.tarot.presentation.player.player.PlayerEvent
+import fr.thomasbernard03.tarot.presentation.player.player.PlayerScreen
+import fr.thomasbernard03.tarot.presentation.player.player.PlayerViewModel
+import fr.thomasbernard03.tarot.presentation.player.players.PlayersEvent
 import fr.thomasbernard03.tarot.presentation.player.players.PlayersScreen
 import fr.thomasbernard03.tarot.presentation.player.players.PlayersViewModel
 import fr.thomasbernard03.tarot.presentation.round.RoundEvent
@@ -23,8 +27,8 @@ import fr.thomasbernard03.tarot.presentation.round.RoundViewModel
 import fr.thomasbernard03.tarot.presentation.settings.InformationScreen
 
 fun NavGraphBuilder.navigationGraph(navController : NavController){
-    navigation(route = "game", startDestination = "current-game"){
-        composable(route = "current-game"){
+    navigation(route = "game", startDestination = "current"){
+        composable(route = "current"){
             val viewModel : GameViewModel = viewModel()
             val state by viewModel.state.collectAsStateWithLifecycle()
             GameScreen(state = state){ event ->
@@ -88,11 +92,35 @@ fun NavGraphBuilder.navigationGraph(navController : NavController){
     composable("information") {
         InformationScreen()
     }
-    navigation(route = "players", startDestination = "players-list") {
-        composable("players-list") {
+    navigation(route = "players", startDestination = "list") {
+        composable("list") {
             val viewModel : PlayersViewModel = viewModel()
             val state by viewModel.state.collectAsStateWithLifecycle()
             PlayersScreen(state = state) { event ->
+                if (event is PlayersEvent.OnPlayerSelected){
+                    navController.navigate("player/${event.player.id  }")
+                }
+
+                viewModel.onEvent(event)
+            }
+        }
+        composable(
+            route = "player/{playerId}",
+            arguments = listOf(
+                navArgument(name = "playerId"){
+                    type = NavType.LongType
+                }
+            )
+        ){
+            val viewModel : PlayerViewModel = viewModel()
+            val state by viewModel.state.collectAsStateWithLifecycle()
+            val playerId = it.arguments?.getLong("playerId") ?: 0
+
+            PlayerScreen(id = playerId, state = state) { event ->
+
+                if (event is PlayerEvent.OnGoBack)
+                    navController.navigateUp()
+
                 viewModel.onEvent(event)
             }
         }
