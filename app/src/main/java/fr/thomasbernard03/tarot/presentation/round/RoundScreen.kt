@@ -332,7 +332,7 @@ fun RoundScreen(
                             Icon(
                                 modifier = Modifier.size(22.dp),
                                 painter = painterResource(id = R.drawable.minus),
-                                contentDescription = null)
+                                contentDescription = stringResource(id = R.string.remove_point))
                         }
                     }
 
@@ -356,7 +356,7 @@ fun RoundScreen(
 
                     if (roundId == null || editable){
                         IconButton(onClick = { onEvent(RoundEvent.OnNumberOfPointsChanged(state.numberOfPoints + 1)) }) {
-                            Icon(Icons.Filled.Add, contentDescription = null)
+                            Icon(Icons.Filled.Add, contentDescription = stringResource(id = R.string.add_point))
                         }
                     }
                 }

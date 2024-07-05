@@ -44,6 +44,7 @@
     <string name="number_of_points">Nombre de points</string>
     <string name="oudlers">Bouts</string>
     <string name="current_game">Partie en cours</string>
+    <string name="show_options">Afficher les options</string>
 
     <!-- Round -->
     <string name="add_turn">Ajouter le tour</string>
@@ -53,6 +54,8 @@
     <string name="delete_round">Supprimer</string>
     <string name="edit_round">Modifier</string>
     <string name="round">Tour</string>
+    <string name="add_point">Ajouter un point</string>
+    <string name="remove_point">Retirer un point</string>
 
 
 

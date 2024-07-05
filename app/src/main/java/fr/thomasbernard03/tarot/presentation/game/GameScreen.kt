@@ -154,7 +154,7 @@ fun GameScreen(state : GameState, onEvent : (GameEvent) -> Unit){
                         IconButton(onClick = { expanded = true }) {
                             Icon(
                                 imageVector = Icons.Filled.MoreVert,
-                                contentDescription = null
+                                contentDescription = stringResource(id = R.string.show_options)
                             )
                         }
                     }

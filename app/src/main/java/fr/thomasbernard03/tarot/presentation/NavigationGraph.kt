@@ -100,23 +100,31 @@ fun NavGraphBuilder.navigationGraph(navController : NavController){
                 if (event is PlayersEvent.OnPlayerSelected){
                     navController.navigate("player/${event.player.id  }")
                 }
+                else if (event is PlayersEvent.OnEditPlayer){
+                    navController.navigate("player/${event.playerId}?editing=true")
+                }
 
                 viewModel.onEvent(event)
             }
         }
         composable(
-            route = "player/{playerId}",
+            route = "player/{playerId}?editing={editing}",
             arguments = listOf(
                 navArgument(name = "playerId"){
                     type = NavType.LongType
+                },
+                navArgument(name = "editing"){
+                    type = NavType.BoolType
+                    defaultValue = false
                 }
             )
         ){
             val viewModel : PlayerViewModel = viewModel()
             val state by viewModel.state.collectAsStateWithLifecycle()
             val playerId = it.arguments?.getLong("playerId") ?: 0
+            val editing = it.arguments?.getBoolean("editing") ?: false
 
-            PlayerScreen(id = playerId, state = state) { event ->
+            PlayerScreen(id = playerId, editing = editing, state = state) { event ->
 
                 if (event is PlayerEvent.OnGoBack)
                     navController.navigateUp()

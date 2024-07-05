@@ -17,5 +17,7 @@ sealed class PlayersEvent {
 
 
     data class OnDeletePlayer(val playerId: Long) : PlayersEvent()
+    data class OnEditPlayer(val playerId : Long) : PlayersEvent()
+
     data object OnDismissMessage : PlayersEvent()
 }
