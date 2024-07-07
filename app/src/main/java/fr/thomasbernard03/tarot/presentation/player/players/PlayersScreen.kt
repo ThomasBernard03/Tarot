@@ -127,6 +127,7 @@ fun PlayersScreen(state : PlayersState, onEvent: (PlayersEvent) -> Unit) {
                     icon = R.drawable.edit,
                     onClick = {
                         sheetScope.launch {
+                            onEvent(PlayersEvent.OnEditPlayer(selectedPlayerId!!))
                             playerSheetState.hide()
                             selectedPlayerId = null
                         }

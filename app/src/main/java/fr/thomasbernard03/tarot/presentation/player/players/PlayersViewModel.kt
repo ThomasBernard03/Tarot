@@ -30,9 +30,6 @@ class PlayersViewModel(
     fun onEvent(event : PlayersEvent){
         when(event){
             is PlayersEvent.OnLoadPlayers -> onLoadPlayers()
-            is PlayersEvent.OnPlayerSelected -> {
-
-            }
             is PlayersEvent.OnCreatePlayerDialogColorSelected -> _state.update { it.copy(createPlayerDialogColor = event.color) }
             is PlayersEvent.OnCreatePlayerDialogNameChanged -> onCreatePlayerDialogNameChanged(event.name)
             is PlayersEvent.OnDismissCreatePlayerDialog -> _state.update { it.copy(showCreatePlayerDialog = false, createPlayerDialogMessage = "", createPlayerDialogName = "", createPlayerDialogColor = null) }
@@ -40,6 +37,8 @@ class PlayersViewModel(
             is PlayersEvent.OnCreatePlayerDialogValidated -> onCreatePlayer(event.name, event.color)
             is PlayersEvent.OnDeletePlayer -> onDeletePlayer(event.playerId)
             is PlayersEvent.OnDismissMessage -> _state.update { it.copy(message = "") }
+            is PlayersEvent.OnEditPlayer -> Unit
+            is PlayersEvent.OnPlayerSelected -> Unit
         }
     }
 

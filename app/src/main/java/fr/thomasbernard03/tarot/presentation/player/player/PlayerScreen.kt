@@ -54,13 +54,14 @@ import kotlinx.coroutines.launch
 @Composable
 fun PlayerScreen(
     id : Long,
+    editing : Boolean,
     state : PlayerState,
     onEvent : (PlayerEvent) -> Unit
 ) {
     val errorScope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    var editing by remember { mutableStateOf(false) }
+    var editing by remember { mutableStateOf(editing) }
     var editPlayerColor by remember(state.player) { mutableStateOf<PlayerColor?>(state.player?.color) }
     var editPlayerName by remember(state.player) { mutableStateOf(state.player?.name ?: "") }
 
