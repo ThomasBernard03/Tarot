@@ -39,6 +39,7 @@ import fr.thomasbernard03.tarot.commons.extensions.toColor
 import fr.thomasbernard03.tarot.domain.models.PlayerColor
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.presentation.components.Loader
+import fr.thomasbernard03.tarot.presentation.components.PlayerChip
 import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
 import fr.thomasbernard03.tarot.presentation.components.PreviewComponent
 
@@ -89,34 +90,17 @@ fun CreateGameSheet(
                     verticalArrangement = Arrangement.spacedBy(MediumPadding)
                 ) {
                     items(players, key = { it.id }) { player ->
-                        Button(
-                            contentPadding = PaddingValues(0.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.surface,
-                                contentColor = MaterialTheme.colorScheme.onSurface
-                            ),
-                            border = if (selectedPlayers.contains(player)) BorderStroke(2.dp, MaterialTheme.colorScheme.primary) else null,
-                            shape = RoundedCornerShape(topStart = 25.dp, bottomStart = 25.dp, topEnd = 12.dp, bottomEnd = 12.dp),
+                        PlayerChip(
+                            name = player.name,
+                            color = player.color.toColor(),
                             onClick = {
                                 if (selectedPlayers.contains(player))
                                     selectedPlayers.remove(player)
                                 else
                                     selectedPlayers.add(player)
-                            }) {
-                            Row(
-                                modifier = Modifier.weight(1f),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(MediumPadding)
-                            ) {
-                                PlayerIcon(
-                                    name = player.name,
-                                    color = player.color.toColor()
-                                )
-                                Text(
-                                    text = player.name,
-                                )
-                            }
-                        }
+                            },
+                            selected = selectedPlayers.contains(player)
+                        )
                     }
                 }
             }

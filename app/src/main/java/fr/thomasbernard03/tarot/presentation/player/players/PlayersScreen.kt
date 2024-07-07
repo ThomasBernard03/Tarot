@@ -62,6 +62,7 @@ import fr.thomasbernard03.tarot.domain.models.PlayerColor
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.presentation.components.ActionButton
 import fr.thomasbernard03.tarot.presentation.components.Loader
+import fr.thomasbernard03.tarot.presentation.components.PlayerButton
 import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
 import fr.thomasbernard03.tarot.presentation.components.PreviewScreen
 import fr.thomasbernard03.tarot.presentation.player.components.CreatePlayerDialog
@@ -196,46 +197,16 @@ fun PlayersScreen(state : PlayersState, onEvent: (PlayersEvent) -> Unit) {
                     verticalArrangement = Arrangement.spacedBy(MediumPadding)
                 ) {
                     items(state.players, key = { it.id }) { player ->
-                        Surface(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            shape = RoundedCornerShape(8.dp),
-                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)),
-                        ){
-                            Row(
-                                modifier = Modifier
-                                    .height(IntrinsicSize.Min)
-                                    .combinedClickable(
-                                        onClick = { onEvent(PlayersEvent.OnPlayerSelected(player)) },
-                                        onLongClick = { selectedPlayerId = player.id }
-                                    ),
-                                verticalAlignment = Alignment.CenterVertically
-                            ){
-                                Row(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .padding(horizontal = LargePadding, vertical = MediumPadding),
-                                    horizontalArrangement = Arrangement.spacedBy(MediumPadding),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    PlayerIcon(
-                                        modifier = Modifier.size(34.dp),
-                                        name = player.name,
-                                        color = player.color.toColor(),
-                                        style = LocalTextStyle.current.copy(fontSize = 16.sp)
-                                    )
-
-                                    Text(text = player.name)
-
-                                }
-                                Box(
-                                    modifier = Modifier
-                                        .width(5.dp)
-                                        .background(player.color.toColor())
-                                        .fillMaxHeight()
-                                )
+                        PlayerButton(
+                            name = player.name,
+                            color = player.color.toColor(),
+                            onClick = {
+                                onEvent(PlayersEvent.OnPlayerSelected(player))
+                            },
+                            onLongClick = {
+                                selectedPlayerId = player.id
                             }
-                        }
+                        )
                     }
                 }
             }
