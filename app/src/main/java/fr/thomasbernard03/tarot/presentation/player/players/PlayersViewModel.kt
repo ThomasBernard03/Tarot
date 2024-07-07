@@ -9,8 +9,8 @@ import fr.thomasbernard03.tarot.domain.models.PlayerColor
 import fr.thomasbernard03.tarot.domain.models.Resource
 import fr.thomasbernard03.tarot.domain.models.errors.player.DeletePlayerError
 import fr.thomasbernard03.tarot.domain.usecases.player.CreatePlayerUseCase
-import fr.thomasbernard03.tarot.domain.usecases.player.GetPlayersUseCase
 import fr.thomasbernard03.tarot.domain.usecases.player.DeletePlayerUseCase
+import fr.thomasbernard03.tarot.domain.usecases.player.GetPlayersUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

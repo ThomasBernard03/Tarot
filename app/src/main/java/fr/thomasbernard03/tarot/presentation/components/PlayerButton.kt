@@ -29,8 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fr.thomasbernard03.tarot.commons.LargePadding
 import fr.thomasbernard03.tarot.commons.MediumPadding
-import fr.thomasbernard03.tarot.commons.extensions.toColor
-import fr.thomasbernard03.tarot.presentation.player.players.PlayersEvent
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

@@ -1,6 +1,5 @@
 package fr.thomasbernard03.tarot
 
-import fr.thomasbernard03.tarot.commons.calculateDefenderScore
 import fr.thomasbernard03.tarot.commons.extensions.calculateScore
 import fr.thomasbernard03.tarot.domain.models.Bid
 import fr.thomasbernard03.tarot.domain.models.GameModel
