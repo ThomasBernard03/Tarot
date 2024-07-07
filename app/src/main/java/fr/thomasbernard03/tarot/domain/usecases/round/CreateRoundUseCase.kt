@@ -1,4 +1,4 @@
-package fr.thomasbernard03.tarot.domain.usecases
+package fr.thomasbernard03.tarot.domain.usecases.round
 
 import fr.thomasbernard03.tarot.domain.models.Bid
 import fr.thomasbernard03.tarot.domain.models.Oudler

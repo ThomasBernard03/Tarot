@@ -145,69 +145,52 @@ fun LazyListScope.historyList(
                         .background(MaterialTheme.colorScheme.tertiary)
                         .fillMaxHeight()
                 ) {
-                    if (game.finishedAt != null){
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.align(Alignment.Center)
+                    ) {
                         Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier.align(Alignment.Center)
+                            modifier = Modifier.weight(1f),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
+                            Text(
+                                text = game.startedAt.day.toString(),
+                                style = MaterialTheme.typography.titleLarge,
+                                color = MaterialTheme.colorScheme.onTertiary
+                            )
+
+                            Text(
+                                text = String.format(Locale.getDefault(), "%tB", game.startedAt),
+                                color = MaterialTheme.colorScheme.onTertiary,
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                        }
+
+                        if (expanded){
+                            HorizontalDivider()
+                        }
+
+                        if(expanded) {
                             Column(
-                                modifier = Modifier.weight(1f),
+                                modifier = Modifier
+                                    .padding(vertical = LargePadding),
                                 verticalArrangement = Arrangement.Center,
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 Text(
-                                    text = game.startedAt.day.toString(),
-                                    style = MaterialTheme.typography.titleLarge,
-                                    color = MaterialTheme.colorScheme.onTertiary
-                                )
-
-                                Text(
-                                    text = String.format(Locale.getDefault(), "%tB", game.startedAt),
+                                    text = "${game.rounds.size}",
                                     color = MaterialTheme.colorScheme.onTertiary,
+                                    textAlign = TextAlign.Center
+                                )
+                                Text(
+                                    text = "Rounds",
+                                    color = MaterialTheme.colorScheme.onTertiary,
+                                    textAlign = TextAlign.Center,
                                     style = MaterialTheme.typography.bodySmall
                                 )
                             }
-
-                            if (expanded){
-                                HorizontalDivider()
-                            }
-
-                            if(expanded) {
-                                Column(
-                                    modifier = Modifier
-                                        .padding(vertical = LargePadding),
-                                    verticalArrangement = Arrangement.Center,
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-                                    Text(
-                                        text = "${game.rounds.size}",
-                                        color = MaterialTheme.colorScheme.onTertiary,
-                                        textAlign = TextAlign.Center
-                                    )
-                                    Text(
-                                        text = "Rounds",
-                                        color = MaterialTheme.colorScheme.onTertiary,
-                                        textAlign = TextAlign.Center,
-                                        style = MaterialTheme.typography.bodySmall
-                                    )
-                                }
-                            }
                         }
-                    }
-                    else {
-                        val preloaderLottieComposition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.cards))
-                        val preloaderProgress by animateLottieCompositionAsState(
-                            composition = preloaderLottieComposition,
-                        )
-
-                        LottieAnimation(
-                            composition = preloaderLottieComposition,
-                            progress = preloaderProgress,
-                            modifier = Modifier
-                                .align(Alignment.Center)
-                                .offset(y = 12.dp),
-                            contentScale = ContentScale.Crop
-                        )
                     }
                 }
             }
