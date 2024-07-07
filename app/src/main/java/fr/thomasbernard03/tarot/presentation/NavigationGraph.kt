@@ -24,7 +24,7 @@ import fr.thomasbernard03.tarot.presentation.player.players.PlayersViewModel
 import fr.thomasbernard03.tarot.presentation.round.RoundEvent
 import fr.thomasbernard03.tarot.presentation.round.RoundScreen
 import fr.thomasbernard03.tarot.presentation.round.RoundViewModel
-import fr.thomasbernard03.tarot.presentation.settings.InformationScreen
+import fr.thomasbernard03.tarot.presentation.settings.SettingsScreen
 
 fun NavGraphBuilder.navigationGraph(navController : NavController){
     navigation(route = "game", startDestination = "current"){
@@ -90,7 +90,7 @@ fun NavGraphBuilder.navigationGraph(navController : NavController){
         HistoryScreen(state = state, onEvent = viewModel::onEvent)
     }
     composable("information") {
-        InformationScreen()
+        SettingsScreen()
     }
     navigation(route = "players", startDestination = "list") {
         composable("list") {

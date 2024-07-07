@@ -1,5 +1,6 @@
 package fr.thomasbernard03.tarot.presentation.settings
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,6 +23,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
@@ -29,14 +31,14 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import fr.thomasbernard03.tarot.BuildConfig
 import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.presentation.components.ActionButton
+import fr.thomasbernard03.tarot.presentation.components.PreviewScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun InformationScreen() {
+fun SettingsScreen() {
     var showConfetti by remember { mutableStateOf(false) }
     val preloaderLottieComposition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.confetti))
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-
 
     val preloaderProgress by animateLottieCompositionAsState(
         preloaderLottieComposition,
@@ -67,7 +69,6 @@ fun InformationScreen() {
             modifier = Modifier.padding(it)
         ) {
             val uriHandler = LocalUriHandler.current
-
 
             LazyColumn(
                 modifier = Modifier
@@ -131,4 +132,11 @@ fun InformationScreen() {
             }
         }
     }
+}
+
+@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun SettingsScreenPreview() = PreviewScreen {
+    SettingsScreen()
 }
