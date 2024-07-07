@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -59,6 +61,7 @@ import fr.thomasbernard03.tarot.commons.extensions.toColor
 import fr.thomasbernard03.tarot.commons.extensions.toText
 import fr.thomasbernard03.tarot.domain.models.Bid
 import fr.thomasbernard03.tarot.domain.models.Oudler
+import fr.thomasbernard03.tarot.presentation.components.PlayerChip
 import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
 import fr.thomasbernard03.tarot.presentation.theme.Green
 import fr.thomasbernard03.tarot.presentation.theme.Red
@@ -136,32 +139,18 @@ fun RoundScreen(
                 contentPadding = PaddingValues(horizontal = LargePadding),
                 horizontalArrangement = Arrangement.spacedBy(MediumPadding),
             ) {
-                items(items = state.players, key = { it.id }){
-                    Button(
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = if (state.taker == it) MaterialTheme.colorScheme.primary else Color.Transparent,
-                            contentColor = if (state.taker == it) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.primary
-                        ),
+                items(items = state.players, key = { it.id }){ player ->
+                    PlayerChip(
+                        modifier = Modifier.widthIn(min = 160.dp),
+                        name = player.name,
+                        color = player.color.toColor(),
+                        selected = state.taker == player,
+                        enabled = roundId == null || editable,
                         onClick = {
-                            val taker = if (state.taker == it) null else it
+                            val taker = if (state.taker == player) null else player
                             onEvent(RoundEvent.OnTakerChanged(taker))
-                        },
-                        shape = RoundedCornerShape(8.dp),
-                        border = ButtonDefaults.outlinedButtonBorder,
-                        enabled = roundId == null || editable
-                    ) {
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(4.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            PlayerIcon(
-                                name = it.name,
-                                color = it.color.toColor()
-                            )
-
-                            Text(text = it.name)
                         }
-                    }
+                    )
                 }
             }
 
@@ -180,7 +169,8 @@ fun RoundScreen(
                         enabled = roundId == null || editable,
                         colors = FilterChipDefaults.filterChipColors(
                             selectedContainerColor = MaterialTheme.colorScheme.primary,
-                            selectedLabelColor = MaterialTheme.colorScheme.onPrimary
+                            selectedLabelColor = MaterialTheme.colorScheme.onPrimary,
+                            containerColor = MaterialTheme.colorScheme.surface,
                         ),
                         selected = state.bid == it,
                         onClick = {
@@ -209,32 +199,18 @@ fun RoundScreen(
                         contentPadding = PaddingValues(horizontal = LargePadding),
                         horizontalArrangement = Arrangement.spacedBy(MediumPadding),
                     ) {
-                        items(items = state.players, key = { it.id }){
-                            Button(
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = if (state.calledPlayer == it) MaterialTheme.colorScheme.primary else Color.Transparent,
-                                    contentColor = if (state.calledPlayer == it) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.primary
-                                ),
+                        items(items = state.players, key = { it.id }){ player ->
+                            PlayerChip(
+                                modifier = Modifier.widthIn(min = 160.dp),
+                                name = player.name,
+                                color = player.color.toColor(),
+                                selected = state.calledPlayer == player,
+                                enabled = roundId == null || editable,
                                 onClick = {
-                                    val calledPlayer = if (state.calledPlayer == it) null else it
+                                    val calledPlayer = if (state.calledPlayer == player) null else player
                                     onEvent(RoundEvent.OnCalledPlayerChanged(calledPlayer))
-                                },
-                                shape = RoundedCornerShape(8.dp),
-                                border = ButtonDefaults.outlinedButtonBorder,
-                                enabled = roundId == null || editable
-                            ) {
-                                Row(
-                                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    PlayerIcon(
-                                        name = it.name,
-                                        color = it.color.toColor()
-                                    )
-
-                                    Text(text = it.name)
                                 }
-                            }
+                            )
                         }
                     }
                 }

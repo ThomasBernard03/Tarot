@@ -29,13 +29,14 @@ fun PlayerChip(
     color : Color,
     modifier : Modifier = Modifier,
     selected : Boolean = false,
+    enabled : Boolean = true,
     onClick : () -> Unit = {},
 ) {
     PlayerButton(
         modifier = modifier,
         name = name,
         color = color,
-        onClick = onClick,
+        onClick = if(enabled) onClick else null,
         backgroundColor = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
     )
 }
