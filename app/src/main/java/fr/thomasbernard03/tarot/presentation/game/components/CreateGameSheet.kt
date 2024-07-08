@@ -105,7 +105,7 @@ fun CreateGameSheet(
             ) {
                 TextButton(
                     onClick = { onValidate(selectedPlayers) },
-                    enabled = selectedPlayers.size == 5
+                    enabled = selectedPlayers.size in 3..5
                 ) {
                     Text(text = stringResource(id = R.string.create_new_game_sheet_validate))
                 }
