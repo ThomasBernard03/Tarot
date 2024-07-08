@@ -1,4 +1,4 @@
-package fr.thomasbernard03.tarot.domain.usecases
+package fr.thomasbernard03.tarot.domain.usecases.player
 
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.domain.models.Resource

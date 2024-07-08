@@ -4,7 +4,6 @@ import fr.thomasbernard03.tarot.domain.models.PlayerColor
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.domain.models.Resource
 import fr.thomasbernard03.tarot.domain.models.errors.player.EditPlayerError
-import fr.thomasbernard03.tarot.domain.models.errors.player.GetPlayerError
 import fr.thomasbernard03.tarot.domain.repositories.PlayerRepository
 import org.koin.java.KoinJavaComponent.get
 

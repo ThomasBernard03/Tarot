@@ -47,7 +47,6 @@ import fr.thomasbernard03.tarot.domain.models.PlayerColor
 import fr.thomasbernard03.tarot.presentation.components.Loader
 import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
 import fr.thomasbernard03.tarot.presentation.player.components.PlayerColorPicker
-import fr.thomasbernard03.tarot.presentation.player.players.PlayersEvent
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

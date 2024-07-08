@@ -2,7 +2,6 @@ package fr.thomasbernard03.tarot.presentation.game.components
 
 import android.content.res.Configuration
 import android.view.Gravity
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,16 +13,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
@@ -39,7 +34,7 @@ import fr.thomasbernard03.tarot.commons.extensions.toColor
 import fr.thomasbernard03.tarot.domain.models.PlayerColor
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.presentation.components.Loader
-import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
+import fr.thomasbernard03.tarot.presentation.components.PlayerChip
 import fr.thomasbernard03.tarot.presentation.components.PreviewComponent
 
 @Composable
@@ -89,34 +84,17 @@ fun CreateGameSheet(
                     verticalArrangement = Arrangement.spacedBy(MediumPadding)
                 ) {
                     items(players, key = { it.id }) { player ->
-                        Button(
-                            contentPadding = PaddingValues(0.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.surface,
-                                contentColor = MaterialTheme.colorScheme.onSurface
-                            ),
-                            border = if (selectedPlayers.contains(player)) BorderStroke(2.dp, MaterialTheme.colorScheme.primary) else null,
-                            shape = RoundedCornerShape(topStart = 25.dp, bottomStart = 25.dp, topEnd = 12.dp, bottomEnd = 12.dp),
+                        PlayerChip(
+                            name = player.name,
+                            color = player.color.toColor(),
                             onClick = {
                                 if (selectedPlayers.contains(player))
                                     selectedPlayers.remove(player)
                                 else
                                     selectedPlayers.add(player)
-                            }) {
-                            Row(
-                                modifier = Modifier.weight(1f),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(MediumPadding)
-                            ) {
-                                PlayerIcon(
-                                    name = player.name,
-                                    color = player.color.toColor()
-                                )
-                                Text(
-                                    text = player.name,
-                                )
-                            }
-                        }
+                            },
+                            selected = selectedPlayers.contains(player)
+                        )
                     }
                 }
             }
@@ -127,7 +105,7 @@ fun CreateGameSheet(
             ) {
                 TextButton(
                     onClick = { onValidate(selectedPlayers) },
-                    enabled = selectedPlayers.size == 5
+                    enabled = selectedPlayers.size in 3..5
                 ) {
                     Text(text = stringResource(id = R.string.create_new_game_sheet_validate))
                 }

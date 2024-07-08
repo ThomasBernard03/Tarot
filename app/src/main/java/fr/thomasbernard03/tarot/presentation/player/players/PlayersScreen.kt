@@ -1,40 +1,27 @@
 package fr.thomasbernard03.tarot.presentation.player.players
 
 import android.content.res.Configuration
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -53,7 +40,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.LargePadding
 import fr.thomasbernard03.tarot.commons.MediumPadding
@@ -62,7 +48,7 @@ import fr.thomasbernard03.tarot.domain.models.PlayerColor
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.presentation.components.ActionButton
 import fr.thomasbernard03.tarot.presentation.components.Loader
-import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
+import fr.thomasbernard03.tarot.presentation.components.PlayerButton
 import fr.thomasbernard03.tarot.presentation.components.PreviewScreen
 import fr.thomasbernard03.tarot.presentation.player.components.CreatePlayerDialog
 import kotlinx.coroutines.launch
@@ -173,22 +159,27 @@ fun PlayersScreen(state : PlayersState, onEvent: (PlayersEvent) -> Unit) {
             )
         }
     ) {
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
         ) {
             if (state.loadingPlayers) {
                 Loader(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.align(Alignment.Center),
                     message = R.string.loading_players
+                )
+            }
+            else if(state.players.isEmpty()){
+                Text(
+                    text = stringResource(id = R.string.empty_players_list),
+                    modifier = Modifier.align(Alignment.Center)
                 )
             }
             else {
                 LazyVerticalGrid(
                     modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth()
+                        .fillMaxSize()
                         .nestedScroll(scrollBehavior.nestedScrollConnection),
                     columns = GridCells.Adaptive(minSize = 150.dp),
                     contentPadding = PaddingValues(LargePadding),
@@ -196,46 +187,16 @@ fun PlayersScreen(state : PlayersState, onEvent: (PlayersEvent) -> Unit) {
                     verticalArrangement = Arrangement.spacedBy(MediumPadding)
                 ) {
                     items(state.players, key = { it.id }) { player ->
-                        Surface(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            shape = RoundedCornerShape(8.dp),
-                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)),
-                        ){
-                            Row(
-                                modifier = Modifier
-                                    .height(IntrinsicSize.Min)
-                                    .combinedClickable(
-                                        onClick = { onEvent(PlayersEvent.OnPlayerSelected(player)) },
-                                        onLongClick = { selectedPlayerId = player.id }
-                                    ),
-                                verticalAlignment = Alignment.CenterVertically
-                            ){
-                                Row(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .padding(horizontal = LargePadding, vertical = MediumPadding),
-                                    horizontalArrangement = Arrangement.spacedBy(MediumPadding),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    PlayerIcon(
-                                        modifier = Modifier.size(34.dp),
-                                        name = player.name,
-                                        color = player.color.toColor(),
-                                        style = LocalTextStyle.current.copy(fontSize = 16.sp)
-                                    )
-
-                                    Text(text = player.name)
-
-                                }
-                                Box(
-                                    modifier = Modifier
-                                        .width(5.dp)
-                                        .background(player.color.toColor())
-                                        .fillMaxHeight()
-                                )
+                        PlayerButton(
+                            name = player.name,
+                            color = player.color.toColor(),
+                            onClick = {
+                                onEvent(PlayersEvent.OnPlayerSelected(player))
+                            },
+                            onLongClick = {
+                                selectedPlayerId = player.id
                             }
-                        }
+                        )
                     }
                 }
             }
