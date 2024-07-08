@@ -9,7 +9,6 @@ import fr.thomasbernard03.tarot.domain.models.PlayerColor
 import fr.thomasbernard03.tarot.domain.models.Resource
 import fr.thomasbernard03.tarot.domain.models.errors.player.DeletePlayerError
 import fr.thomasbernard03.tarot.domain.models.errors.player.EditPlayerError
-import fr.thomasbernard03.tarot.domain.models.errors.player.GetPlayerError
 import fr.thomasbernard03.tarot.domain.usecases.player.DeletePlayerUseCase
 import fr.thomasbernard03.tarot.domain.usecases.player.EditPlayerUseCase
 import fr.thomasbernard03.tarot.domain.usecases.player.GetPlayerUseCase

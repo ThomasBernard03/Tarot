@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import fr.thomasbernard03.tarot.commons.helpers.NavigationHelper
 import fr.thomasbernard03.tarot.domain.models.Resource
 import fr.thomasbernard03.tarot.domain.models.Screen
-import fr.thomasbernard03.tarot.domain.usecases.DeleteGameUseCase
-import fr.thomasbernard03.tarot.domain.usecases.GetGameHistoryUseCase
-import fr.thomasbernard03.tarot.domain.usecases.ResumeGameUseCase
+import fr.thomasbernard03.tarot.domain.usecases.game.DeleteGameUseCase
+import fr.thomasbernard03.tarot.domain.usecases.game.GetGameHistoryUseCase
+import fr.thomasbernard03.tarot.domain.usecases.game.ResumeGameUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

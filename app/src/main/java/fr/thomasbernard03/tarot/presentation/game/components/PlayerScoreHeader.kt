@@ -20,9 +20,6 @@ import androidx.compose.ui.zIndex
 import fr.thomasbernard03.tarot.commons.LargePadding
 import fr.thomasbernard03.tarot.commons.MediumPadding
 import fr.thomasbernard03.tarot.commons.SmallPadding
-import fr.thomasbernard03.tarot.commons.calculateDefenderScore
-import fr.thomasbernard03.tarot.commons.calculatePartnerScore
-import fr.thomasbernard03.tarot.commons.calculateTakerScore
 import fr.thomasbernard03.tarot.commons.extensions.calculateScore
 import fr.thomasbernard03.tarot.commons.extensions.toColor
 import fr.thomasbernard03.tarot.domain.models.GameModel

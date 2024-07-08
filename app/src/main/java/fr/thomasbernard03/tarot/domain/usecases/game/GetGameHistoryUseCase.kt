@@ -1,4 +1,4 @@
-package fr.thomasbernard03.tarot.domain.usecases
+package fr.thomasbernard03.tarot.domain.usecases.game
 
 import fr.thomasbernard03.tarot.domain.models.GameModel
 import fr.thomasbernard03.tarot.domain.models.Resource
@@ -12,7 +12,7 @@ class GetGameHistoryUseCase(
     suspend operator fun invoke() : Resource<List<GameModel>, GetGameError>  {
         return when(val result = gameRepository.getAllGames()){
             is Resource.Success -> {
-                val sortedGames = result.data.sortedWith(compareBy<GameModel> { it.finishedAt != null }.thenByDescending { it.finishedAt })
+                val sortedGames = result.data.filter { it.finishedAt != null }.sortedByDescending { it.finishedAt }
                 Resource.Success(sortedGames)
             }
             is Resource.Error -> {

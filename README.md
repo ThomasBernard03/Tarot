@@ -5,7 +5,16 @@
 
 ---
 
-[![Android CI](https://github.com/ThomasBernard03/Tarot/actions/workflows/main.yml/badge.svg)](https://github.com/ThomasBernard03/Tarot/actions/workflows/main.yml)
+<p align="center">
+   <img alt="Build status" src="https://github.com/ThomasBernard03/Tarot/actions/workflows/main.yml/badge.svg?branch=main"/>
+  <img alt="Language" src="https://img.shields.io/badge/language-kotlin-purple"/>
+  <img alt="UI " src="https://img.shields.io/badge/UI%20framework-JetpackCompose-blue"/> 
+  <img alt="API" src="https://img.shields.io/badge/plateform-Android-green"/> 
+</p>
+
+
+[<img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" 
+      alt="Download from Google Play" height="100">](https://play.google.com/store/apps/details?id=fr.thomasbernard03.tarot)
 
 - Current Game
   - [ ] 3 and 4 players games

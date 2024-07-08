@@ -8,10 +8,10 @@ import fr.thomasbernard03.tarot.domain.models.EditRoundModel
 import fr.thomasbernard03.tarot.domain.models.Oudler
 import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.domain.models.Resource
-import fr.thomasbernard03.tarot.domain.usecases.CreateRoundUseCase
-import fr.thomasbernard03.tarot.domain.usecases.EditRoundUseCase
-import fr.thomasbernard03.tarot.domain.usecases.GetGameUseCase
-import fr.thomasbernard03.tarot.domain.usecases.GetRoundUseCase
+import fr.thomasbernard03.tarot.domain.usecases.game.GetGameUseCase
+import fr.thomasbernard03.tarot.domain.usecases.round.CreateRoundUseCase
+import fr.thomasbernard03.tarot.domain.usecases.round.EditRoundUseCase
+import fr.thomasbernard03.tarot.domain.usecases.round.GetRoundUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

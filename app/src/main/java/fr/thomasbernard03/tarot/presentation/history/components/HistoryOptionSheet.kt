@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.LargePadding
 import fr.thomasbernard03.tarot.presentation.components.ActionButton
-import fr.thomasbernard03.tarot.presentation.history.HistoryEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

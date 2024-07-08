@@ -12,8 +12,8 @@ android {
         applicationId = "fr.thomasbernard03.tarot"
         minSdk = 26
         targetSdk = 34
-        versionCode = 3
-        versionName = "1.1.0"
+        versionCode = 4
+        versionName = "1.2.0"
 
         buildConfigField("String", "REPOSITORY_URL", "\"https://github.com/ThomasBernard03/Tarot\"")
         buildConfigField("String", "BUG_REPORT_URL", "\"https://github.com/ThomasBernard03/Tarot/issues/new\"")
