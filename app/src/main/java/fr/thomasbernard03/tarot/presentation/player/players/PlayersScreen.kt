@@ -3,6 +3,7 @@ package fr.thomasbernard03.tarot.presentation.player.players
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,6 +33,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
@@ -157,22 +159,27 @@ fun PlayersScreen(state : PlayersState, onEvent: (PlayersEvent) -> Unit) {
             )
         }
     ) {
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
         ) {
             if (state.loadingPlayers) {
                 Loader(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.align(Alignment.Center),
                     message = R.string.loading_players
+                )
+            }
+            else if(state.players.isEmpty()){
+                Text(
+                    text = stringResource(id = R.string.empty_players_list),
+                    modifier = Modifier.align(Alignment.Center)
                 )
             }
             else {
                 LazyVerticalGrid(
                     modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth()
+                        .fillMaxSize()
                         .nestedScroll(scrollBehavior.nestedScrollConnection),
                     columns = GridCells.Adaptive(minSize = 150.dp),
                     contentPadding = PaddingValues(LargePadding),
