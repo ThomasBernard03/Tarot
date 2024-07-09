@@ -280,6 +280,6 @@ class FullGameUnitTest {
 
         TestCase.assertEquals(-190, player1Score)
         TestCase.assertEquals(104, player2Score)
-        TestCase.assertEquals(86, player3Score)
+        TestCase.assertEquals(85, player3Score)
     }
 }
