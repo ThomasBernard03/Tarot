@@ -16,20 +16,19 @@
 [<img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" 
       alt="Download from Google Play" height="100">](https://play.google.com/store/apps/details?id=fr.thomasbernard03.tarot)
 
-- Current Game
-  - [ ] 3 and 4 players games
-  - [ ] On click on a user logo, display name
-- Round
-  - [ ] New Design for round screen
-- Users
-  - [ ] Delete player
-  - [x] Modify player
+- Features
+  - [x] 3 players games
+  - [ ] 4 players games
+  - [x] 5 players games
+  - [ ] New design for round screen
+  - [ ] Migration to KMP (For iOS Version)
+  - [ ] Play store publication
 
-- [ ] Migration to KMP (For iOS version)
-- [ ] Play store publication
 
 
 
 Resources :
+
 https://medium.com/@vontonnie/automating-success-github-actions-workflow-for-android-app-deployment-908095d53b97
+
 https://medium.com/@vontonnie/setting-up-a-service-account-on-google-cloud-for-android-app-deployment-c6e16d8fc57b
