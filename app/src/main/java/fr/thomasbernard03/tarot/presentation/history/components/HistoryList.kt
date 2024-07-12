@@ -43,6 +43,7 @@ import fr.thomasbernard03.tarot.domain.models.GameModel
 import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
 import fr.thomasbernard03.tarot.presentation.theme.Green
 import fr.thomasbernard03.tarot.presentation.theme.Red
+import java.text.SimpleDateFormat
 import java.util.Locale
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -145,7 +146,7 @@ fun LazyListScope.historyList(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
-                                text = game.startedAt.day.toString(),
+                                text = SimpleDateFormat("dd", Locale.getDefault()).format(game.startedAt),
                                 style = MaterialTheme.typography.titleLarge,
                                 color = MaterialTheme.colorScheme.onTertiary
                             )

@@ -1,5 +1,6 @@
 package fr.thomasbernard03.tarot.presentation.components
 
+import android.content.res.Configuration
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
@@ -18,7 +19,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.LargePadding
 
 @Composable
@@ -64,4 +67,15 @@ fun ActionButton(
             }
         }
     }
+}
+
+@Composable
+@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+private fun ActionButtonPreview() = PreviewComponent {
+    ActionButton(
+        title = R.string.open_source_code_settings_title,
+        icon = R.drawable.android,
+        onClick = {}
+    )
 }
