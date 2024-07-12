@@ -15,10 +15,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import domain.models.PlayerColor
 import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.MediumPadding
 import fr.thomasbernard03.tarot.commons.extensions.toColor
-import fr.thomasbernard03.tarot.domain.models.PlayerColor
 import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
 import fr.thomasbernard03.tarot.presentation.components.PreviewComponent
 

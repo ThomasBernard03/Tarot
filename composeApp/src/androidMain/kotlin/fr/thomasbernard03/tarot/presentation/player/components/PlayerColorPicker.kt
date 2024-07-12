@@ -18,10 +18,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import domain.models.PlayerColor
 import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.MediumPadding
 import fr.thomasbernard03.tarot.commons.extensions.toColor
-import fr.thomasbernard03.tarot.domain.models.PlayerColor
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable

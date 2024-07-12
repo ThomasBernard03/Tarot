@@ -3,10 +3,8 @@ package fr.thomasbernard03.tarot.presentation.history
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -29,12 +27,13 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import commons.extensions.LocalDateTimeNow
+import domain.models.GameModel
+import domain.models.PlayerColor
+import domain.models.PlayerModel
 import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.LargePadding
 import fr.thomasbernard03.tarot.commons.MediumPadding
-import fr.thomasbernard03.tarot.domain.models.GameModel
-import fr.thomasbernard03.tarot.domain.models.PlayerColor
-import fr.thomasbernard03.tarot.domain.models.PlayerModel
 import fr.thomasbernard03.tarot.presentation.components.Loader
 import fr.thomasbernard03.tarot.presentation.components.PreviewScreen
 import fr.thomasbernard03.tarot.presentation.history.components.HistoryOptionSheet
@@ -139,18 +138,18 @@ private fun HistoryScreenPreview() = PreviewScreen {
         games = listOf(
             GameModel(
                 id = 1,
-                startedAt = Date(),
+                startedAt = LocalDateTimeNow(),
                 rounds = listOf(),
                 players = listOf(
                     PlayerModel(id = 1, name = "Thomas", color = PlayerColor.GREEN),
                     PlayerModel(id = 2, name = "Marianne", color = PlayerColor.RED),
                     PlayerModel(id = 4, name = "Thibaut", color = PlayerColor.BLUE),
                 ),
-                finishedAt = Date()
+                finishedAt = LocalDateTimeNow()
             ),
             GameModel(
                 id = 2,
-                startedAt = Date(),
+                startedAt = LocalDateTimeNow(),
                 rounds = listOf(),
 
                 players = listOf(
@@ -158,18 +157,18 @@ private fun HistoryScreenPreview() = PreviewScreen {
                     PlayerModel(id = 2, name = "Marianne", color = PlayerColor.RED),
                     PlayerModel(id = 4, name = "Thibaut", color = PlayerColor.BLUE),
                 ),
-                finishedAt = Date()
+                finishedAt = LocalDateTimeNow()
             ),
             GameModel(
                 id = 3,
-                startedAt = Date(),
+                startedAt = LocalDateTimeNow(),
                 rounds = listOf(),
                 players = listOf(
                     PlayerModel(id = 1, name = "Thomas", color = PlayerColor.GREEN),
                     PlayerModel(id = 2, name = "Marianne", color = PlayerColor.RED),
                     PlayerModel(id = 4, name = "Thibaut", color = PlayerColor.BLUE),
                 ),
-                finishedAt = Date()
+                finishedAt = LocalDateTimeNow()
             ),
         )
     )

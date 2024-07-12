@@ -1,8 +1,8 @@
 package fr.thomasbernard03.tarot.presentation.round
 
-import fr.thomasbernard03.tarot.domain.models.Bid
-import fr.thomasbernard03.tarot.domain.models.Oudler
-import fr.thomasbernard03.tarot.domain.models.PlayerModel
+import domain.models.Bid
+import domain.models.Oudler
+import domain.models.PlayerModel
 
 sealed class RoundEvent {
     data class OnGetPlayers(val gameId: Long) : RoundEvent()

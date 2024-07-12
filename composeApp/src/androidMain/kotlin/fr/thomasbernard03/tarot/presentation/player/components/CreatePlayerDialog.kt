@@ -29,11 +29,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
+import commons.PLAYER_NAME_MAX_LENGTH
+import domain.models.PlayerColor
 import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.LargePadding
 import fr.thomasbernard03.tarot.commons.MediumPadding
-import fr.thomasbernard03.tarot.commons.PLAYER_NAME_MAX_LENGTH
-import fr.thomasbernard03.tarot.domain.models.PlayerColor
 import fr.thomasbernard03.tarot.presentation.components.PreviewScreen
 
 @OptIn(ExperimentalLayoutApi::class)

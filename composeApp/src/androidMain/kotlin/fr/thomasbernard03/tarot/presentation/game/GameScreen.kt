@@ -45,14 +45,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import commons.extensions.LocalDateTimeNow
+import domain.models.Bid
+import domain.models.GameModel
+import domain.models.Oudler
+import domain.models.PlayerColor
+import domain.models.PlayerModel
+import domain.models.RoundModel
 import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.LargePadding
-import fr.thomasbernard03.tarot.domain.models.Bid
-import fr.thomasbernard03.tarot.domain.models.GameModel
-import fr.thomasbernard03.tarot.domain.models.Oudler
-import fr.thomasbernard03.tarot.domain.models.PlayerColor
-import fr.thomasbernard03.tarot.domain.models.PlayerModel
-import fr.thomasbernard03.tarot.domain.models.RoundModel
 import fr.thomasbernard03.tarot.presentation.components.ActionButton
 import fr.thomasbernard03.tarot.presentation.components.Loader
 import fr.thomasbernard03.tarot.presentation.components.PreviewScreen
@@ -273,7 +274,7 @@ private fun GameScreenPreview() = PreviewScreen {
 private fun GameScreenInProgressPreview() = PreviewScreen {
     val game = GameModel(
         id = 1,
-        startedAt = Date(),
+        startedAt = LocalDateTimeNow(),
         finishedAt = null,
         players = listOf(
             PlayerModel(id = 1, name = "Thomas", color = PlayerColor.BLUE),
@@ -288,7 +289,7 @@ private fun GameScreenInProgressPreview() = PreviewScreen {
                 oudlers = listOf(Oudler.GRAND),
                 bid = Bid.GUARD,
                 points = 58,
-                finishedAt = Date(),
+                finishedAt = LocalDateTimeNow(),
             ),
         )
     )

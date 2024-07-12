@@ -1,7 +1,7 @@
 package fr.thomasbernard03.tarot.presentation.game
 
-import fr.thomasbernard03.tarot.domain.models.GameModel
-import fr.thomasbernard03.tarot.domain.models.PlayerModel
+import domain.models.GameModel
+import domain.models.PlayerModel
 
 data class GameState(
     val loadingGame: Boolean = true,

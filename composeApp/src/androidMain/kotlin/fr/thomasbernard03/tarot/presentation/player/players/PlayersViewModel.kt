@@ -2,27 +2,26 @@ package fr.thomasbernard03.tarot.presentation.player.players
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import domain.models.CreatePlayerModel
+import domain.models.PlayerColor
+import domain.models.Resource
+import domain.models.errors.player.DeletePlayerError
+import domain.usecases.player.CreatePlayerUseCase
+import domain.usecases.player.DeletePlayerUseCase
+import domain.usecases.player.GetPlayersUseCase
 import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.helpers.ResourcesHelper
-import fr.thomasbernard03.tarot.domain.models.CreatePlayerModel
-import fr.thomasbernard03.tarot.domain.models.PlayerColor
-import fr.thomasbernard03.tarot.domain.models.Resource
-import fr.thomasbernard03.tarot.domain.models.errors.player.DeletePlayerError
-import fr.thomasbernard03.tarot.domain.usecases.player.CreatePlayerUseCase
-import fr.thomasbernard03.tarot.domain.usecases.player.DeletePlayerUseCase
-import fr.thomasbernard03.tarot.domain.usecases.player.GetPlayersUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.koin.java.KoinJavaComponent.get
 
 class PlayersViewModel(
-    private val getPlayersUseCase: GetPlayersUseCase = GetPlayersUseCase(),
-    private val createPlayerUseCase: CreatePlayerUseCase = CreatePlayerUseCase(),
-    private val deletePlayerUseCase: DeletePlayerUseCase = DeletePlayerUseCase(),
-    private var resourcesHelper: ResourcesHelper = get(ResourcesHelper::class.java)
+    private val getPlayersUseCase: GetPlayersUseCase,
+    private val createPlayerUseCase: CreatePlayerUseCase,
+    private val deletePlayerUseCase: DeletePlayerUseCase,
+    private var resourcesHelper: ResourcesHelper
 ) : ViewModel() {
     private val _state = MutableStateFlow(PlayersState())
     val state: StateFlow<PlayersState> = _state.asStateFlow()

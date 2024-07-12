@@ -1,1 +1,0 @@
-fr.thomasbernard03.tarot.shared

@@ -2,29 +2,26 @@ package fr.thomasbernard03.tarot.presentation.round
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import fr.thomasbernard03.tarot.commons.helpers.NavigationHelper
-import fr.thomasbernard03.tarot.domain.models.Bid
-import fr.thomasbernard03.tarot.domain.models.EditRoundModel
-import fr.thomasbernard03.tarot.domain.models.Oudler
-import fr.thomasbernard03.tarot.domain.models.PlayerModel
-import fr.thomasbernard03.tarot.domain.models.Resource
-import fr.thomasbernard03.tarot.domain.usecases.game.GetGameUseCase
-import fr.thomasbernard03.tarot.domain.usecases.round.CreateRoundUseCase
-import fr.thomasbernard03.tarot.domain.usecases.round.EditRoundUseCase
-import fr.thomasbernard03.tarot.domain.usecases.round.GetRoundUseCase
+import domain.models.Bid
+import domain.models.EditRoundModel
+import domain.models.Oudler
+import domain.models.PlayerModel
+import domain.models.Resource
+import domain.usecases.game.GetGameUseCase
+import domain.usecases.round.CreateRoundUseCase
+import domain.usecases.round.EditRoundUseCase
+import domain.usecases.round.GetRoundUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.koin.java.KoinJavaComponent.get
 
 class RoundViewModel(
-    private val getGameUseCase: GetGameUseCase = GetGameUseCase(),
-    private val getRoundUseCase: GetRoundUseCase = GetRoundUseCase(),
-    private val createRoundUseCase: CreateRoundUseCase = CreateRoundUseCase(),
-    private val editRoundUseCase: EditRoundUseCase = EditRoundUseCase(),
-    private val navigationHelper: NavigationHelper = get(NavigationHelper::class.java)
+    private val getGameUseCase: GetGameUseCase,
+    private val getRoundUseCase: GetRoundUseCase,
+    private val createRoundUseCase: CreateRoundUseCase,
+    private val editRoundUseCase: EditRoundUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(RoundState())
@@ -50,7 +47,7 @@ class RoundViewModel(
         viewModelScope.launch {
             when(val result = createRoundUseCase(gameId, taker, calledPlayer, bid, oudlers, points)){
                 is Resource.Success -> {
-                    navigationHelper.goBack()
+//                    navigationHelper.goBack()
                 }
                 is Resource.Error -> {
                 }
@@ -63,7 +60,7 @@ class RoundViewModel(
             val round = EditRoundModel(id = roundId, taker = taker, bid = bid, oudlers = oudlers, points = points, calledPlayer = calledPlayer)
             when(val result = editRoundUseCase(round)){
                 is Resource.Success -> {
-                    navigationHelper.goBack()
+//                    navigationHelper.goBack()
                 }
                 is Resource.Error -> {
                 }

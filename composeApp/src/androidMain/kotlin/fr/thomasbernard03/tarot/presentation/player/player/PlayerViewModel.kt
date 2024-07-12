@@ -2,29 +2,26 @@ package fr.thomasbernard03.tarot.presentation.player.player
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import domain.models.PlayerColor
+import domain.models.Resource
+import domain.models.errors.player.DeletePlayerError
+import domain.models.errors.player.EditPlayerError
+import domain.usecases.player.DeletePlayerUseCase
+import domain.usecases.player.EditPlayerUseCase
+import domain.usecases.player.GetPlayerUseCase
 import fr.thomasbernard03.tarot.R
-import fr.thomasbernard03.tarot.commons.helpers.NavigationHelper
 import fr.thomasbernard03.tarot.commons.helpers.ResourcesHelper
-import fr.thomasbernard03.tarot.domain.models.PlayerColor
-import fr.thomasbernard03.tarot.domain.models.Resource
-import fr.thomasbernard03.tarot.domain.models.errors.player.DeletePlayerError
-import fr.thomasbernard03.tarot.domain.models.errors.player.EditPlayerError
-import fr.thomasbernard03.tarot.domain.usecases.player.DeletePlayerUseCase
-import fr.thomasbernard03.tarot.domain.usecases.player.EditPlayerUseCase
-import fr.thomasbernard03.tarot.domain.usecases.player.GetPlayerUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.koin.java.KoinJavaComponent.get
 
 class PlayerViewModel(
-    private val getPlayerUseCase: GetPlayerUseCase = GetPlayerUseCase(),
-    private val deletePlayerUseCase: DeletePlayerUseCase = DeletePlayerUseCase(),
-    private val editPlayerUseCase: EditPlayerUseCase = EditPlayerUseCase(),
-    private val navigationHelper: NavigationHelper = get(NavigationHelper::class.java),
-    private val resourcesHelper: ResourcesHelper = get(ResourcesHelper::class.java)
+    private val getPlayerUseCase: GetPlayerUseCase,
+    private val deletePlayerUseCase: DeletePlayerUseCase,
+    private val editPlayerUseCase: EditPlayerUseCase,
+    private val resourcesHelper: ResourcesHelper
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(PlayerState())
@@ -59,7 +56,7 @@ class PlayerViewModel(
         viewModelScope.launch {
             when(val result = deletePlayerUseCase(id)){
                 is Resource.Success -> {
-                    navigationHelper.goBack()
+//                    navigationHelper.goBack()
                 }
                 is Resource.Error -> {
                     val messageId = when(result.data){

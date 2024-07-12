@@ -17,12 +17,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import commons.extensions.calculateScore
+import domain.models.GameModel
 import fr.thomasbernard03.tarot.commons.LargePadding
 import fr.thomasbernard03.tarot.commons.MediumPadding
 import fr.thomasbernard03.tarot.commons.SmallPadding
-import fr.thomasbernard03.tarot.commons.extensions.calculateScore
 import fr.thomasbernard03.tarot.commons.extensions.toColor
-import fr.thomasbernard03.tarot.domain.models.GameModel
 import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
 
 @OptIn(ExperimentalFoundationApi::class)

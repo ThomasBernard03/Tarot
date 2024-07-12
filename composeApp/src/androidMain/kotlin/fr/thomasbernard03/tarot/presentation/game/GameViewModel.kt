@@ -2,30 +2,29 @@ package fr.thomasbernard03.tarot.presentation.game
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import domain.models.PlayerModel
+import domain.models.Resource
+import domain.models.errors.DeleteRoundError
+import domain.usecases.game.CreateGameUseCase
+import domain.usecases.game.FinishGameUseCase
+import domain.usecases.game.GetCurrentGameUseCase
+import domain.usecases.player.GetPlayersUseCase
+import domain.usecases.round.DeleteRoundUseCase
 import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.helpers.ResourcesHelper
-import fr.thomasbernard03.tarot.domain.models.PlayerModel
-import fr.thomasbernard03.tarot.domain.models.Resource
-import fr.thomasbernard03.tarot.domain.models.errors.DeleteRoundError
-import fr.thomasbernard03.tarot.domain.usecases.game.CreateGameUseCase
-import fr.thomasbernard03.tarot.domain.usecases.game.FinishGameUseCase
-import fr.thomasbernard03.tarot.domain.usecases.game.GetCurrentGameUseCase
-import fr.thomasbernard03.tarot.domain.usecases.player.GetPlayersUseCase
-import fr.thomasbernard03.tarot.domain.usecases.round.DeleteRoundUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.koin.java.KoinJavaComponent.get
 
 class GameViewModel(
-    private val createGameUseCase: CreateGameUseCase = CreateGameUseCase(),
-    private val getCurrentGameUseCase: GetCurrentGameUseCase = GetCurrentGameUseCase(),
-    private val getPlayersUseCase: GetPlayersUseCase = GetPlayersUseCase(),
-    private val finishGameUseCase: FinishGameUseCase = FinishGameUseCase(),
-    private val deleteRoundUseCase: DeleteRoundUseCase = DeleteRoundUseCase(),
-    private val resourcesHelper: ResourcesHelper = get(ResourcesHelper::class.java)
+    private val createGameUseCase: CreateGameUseCase,
+    private val getCurrentGameUseCase: GetCurrentGameUseCase,
+    private val getPlayersUseCase: GetPlayersUseCase,
+    private val finishGameUseCase: FinishGameUseCase,
+    private val deleteRoundUseCase: DeleteRoundUseCase,
+    private val resourcesHelper: ResourcesHelper
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(GameState())

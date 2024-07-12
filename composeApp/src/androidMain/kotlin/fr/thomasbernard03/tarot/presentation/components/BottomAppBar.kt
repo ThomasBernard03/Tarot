@@ -16,7 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import fr.thomasbernard03.tarot.domain.models.NavigationItem
+import fr.thomasbernard03.tarot.commons.models.NavigationItem
 
 @Composable
 fun BottomAppBar(navController: NavController) {

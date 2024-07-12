@@ -1,6 +1,7 @@
 package fr.thomasbernard03.tarot.presentation.game
 
-import fr.thomasbernard03.tarot.domain.models.PlayerModel
+import domain.models.PlayerModel
+
 
 sealed class GameEvent {
     data object OnGetCurrentGame : GameEvent()

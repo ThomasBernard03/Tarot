@@ -1,7 +1,7 @@
 package fr.thomasbernard03.tarot.presentation.player.players
 
-import fr.thomasbernard03.tarot.domain.models.PlayerColor
-import fr.thomasbernard03.tarot.domain.models.PlayerModel
+import domain.models.PlayerColor
+import domain.models.PlayerModel
 
 data class PlayersState (
     val loadingPlayers : Boolean = false,

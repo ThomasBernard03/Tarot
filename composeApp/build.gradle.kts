@@ -24,13 +24,21 @@ kotlin {
             implementation(libs.androidx.activity.compose)
         }
         commonMain.dependencies {
+            implementation(libs.androidx.navigation.compose)
+            implementation(libs.androidx.navigation.runtime.ktx)
+            implementation(libs.androidx.lifecycle.runtime.compose)
+
+            implementation(libs.lottie)
+
             implementation(compose.runtime)
             implementation(compose.foundation)
-            implementation(compose.material)
+            implementation(compose.material3)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(projects.shared)
+            implementation(libs.kotlinx.datetime)
+
         }
     }
 }
@@ -49,6 +57,10 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+
+        buildConfigField("String", "REPOSITORY_URL", "\"https://github.com/ThomasBernard03/Tarot\"")
+        buildConfigField("String", "BUG_REPORT_URL", "\"https://github.com/ThomasBernard03/Tarot/issues/new\"")
+        buildConfigField("String", "TAROT_OFFICIAL_RULES_URL", "\"https://www.fftarot.fr/assets/documents/R-RO201206.pdf\"")
     }
     packaging {
         resources {
@@ -65,6 +77,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
     dependencies {

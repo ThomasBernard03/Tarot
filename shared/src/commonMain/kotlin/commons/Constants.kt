@@ -1,4 +1,48 @@
 package commons
 
-class Constants {
+import androidx.annotation.IntRange
+import domain.models.Bid
+
+const val PLAYER_NAME_MAX_LENGTH = 20
+
+fun calculateTakerScore(
+    @IntRange(from = 0, to = 91) points: Int,
+    bid: Bid,
+    @IntRange(from = 0, to = 3) oudlers: Int,
+    calledHimSelf : Boolean = false
+): Int {
+    // Thresholds for the number of points needed based on the number of oudlers
+    val bidMultiplier = when(bid){
+        Bid.SMALL -> 1
+        Bid.GUARD -> 2
+        Bid.GUARD_WITHOUT -> 4
+        Bid.GUARD_AGAINST -> 6
+    }
+
+    val pointGoal = when(oudlers){
+        0 -> 56
+        1 -> 51
+        2 -> 41
+        3 -> 36
+        else -> throw IllegalArgumentException("Invalid number of oudlers")
+    }
+
+    var score = when {
+        (points - pointGoal >= 0) -> (points - pointGoal + 25) * bidMultiplier
+        else -> (points - pointGoal - 25) * bidMultiplier
+    }
+
+    if(calledHimSelf){
+        score *= 2
+    }
+
+    return score * 2
+}
+
+fun calculatePartnerScore(takerScore: Int): Int {
+    return takerScore / 2
+}
+
+fun calculateDefenderScore(attackScore: Int, numberOfDefenders: Int): Int {
+    return -attackScore / numberOfDefenders
 }

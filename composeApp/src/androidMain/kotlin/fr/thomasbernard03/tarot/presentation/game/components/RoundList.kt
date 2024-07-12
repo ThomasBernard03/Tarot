@@ -24,15 +24,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import commons.calculatePartnerScore
+import commons.calculateTakerScore
+import domain.models.GameModel
 import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.LargePadding
 import fr.thomasbernard03.tarot.commons.MediumPadding
 import fr.thomasbernard03.tarot.commons.SmallPadding
-import fr.thomasbernard03.tarot.commons.calculatePartnerScore
-import fr.thomasbernard03.tarot.commons.calculateTakerScore
 import fr.thomasbernard03.tarot.commons.extensions.toColor
 import fr.thomasbernard03.tarot.commons.extensions.toText
-import fr.thomasbernard03.tarot.domain.models.GameModel
 import fr.thomasbernard03.tarot.presentation.components.OudlerIndicator
 import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
 import fr.thomasbernard03.tarot.presentation.theme.Green
@@ -69,7 +69,7 @@ fun LazyListScope.roundList(
                         color = round.taker.color.toColor()
                     )
 
-                    if (round.calledPlayer != null && round.calledPlayer.id != round.taker.id){
+                    if (round.calledPlayer != null && round.calledPlayer!!.id != round.taker.id){
                         Box(modifier = Modifier
                             .offset(x = 8.dp)
                             .zIndex(1f)
@@ -84,8 +84,8 @@ fun LazyListScope.roundList(
                                         CircleShape
                                     ),
                                 style = LocalTextStyle.current.copy(fontSize = 10.sp),
-                                name = round.calledPlayer.name,
-                                color = round.calledPlayer.color.toColor()
+                                name = round.calledPlayer!!.name,
+                                color = round.calledPlayer!!.color.toColor()
                             )
                         }
                     }
@@ -122,7 +122,7 @@ fun LazyListScope.roundList(
                         fontWeight =  FontWeight.Bold
                     )
 
-                    if (round.calledPlayer != null && round.taker.id != round.calledPlayer.id){
+                    if (round.calledPlayer != null && round.taker.id != round.calledPlayer!!.id){
 
                         val calledPlayerScore = calculatePartnerScore(takerScore)
 

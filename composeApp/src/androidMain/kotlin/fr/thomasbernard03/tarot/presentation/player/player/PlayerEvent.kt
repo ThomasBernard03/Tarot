@@ -1,6 +1,6 @@
 package fr.thomasbernard03.tarot.presentation.player.player
 
-import fr.thomasbernard03.tarot.domain.models.PlayerColor
+import domain.models.PlayerColor
 
 sealed class PlayerEvent {
     data object OnDismissMessage : PlayerEvent()
