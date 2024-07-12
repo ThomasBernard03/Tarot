@@ -1,27 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "fr.thomasbernard03.tarot.composeApp-mergeDebugResources-40:/values-af/values-af.xml",
+            "outputFile": "fr.thomasbernard03.tarot.composeApp-mergeDebugResources-44:/values-af/values-af.xml",
             "map": [
                 {
-                    "source": "/Users/thomasbernard/.gradle/caches/transforms-4/578b42330aa8cdecf034df82a8324bdf/transformed/foundation-release/res/values-af/values-af.xml",
-                    "from": {
-                        "startLines": "2,3",
-                        "startColumns": "4,4",
-                        "startOffsets": "55,142",
-                        "endColumns": "86,84",
-                        "endOffsets": "137,222"
-                    },
-                    "to": {
-                        "startLines": "27,28",
-                        "startColumns": "4,4",
-                        "startOffsets": "2378,2465",
-                        "endColumns": "86,84",
-                        "endOffsets": "2460,2545"
-                    }
-                },
-                {
-                    "source": "/Users/thomasbernard/.gradle/caches/transforms-4/c8ab929fc57cb8773a5f6f63a0321508/transformed/core-1.13.0/res/values-af/values-af.xml",
+                    "source": "/Users/thomasbernard/.gradle/caches/transforms-4/98080371faf16d5fbb4e60c1aba8e9b5/transformed/core-1.13.0/res/values-af/values-af.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",
@@ -38,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "/Users/thomasbernard/.gradle/caches/transforms-4/78f441ecdcefe52bf6c3d7f224dee6d5/transformed/ui-release/res/values-af/values-af.xml",
+                    "source": "/Users/thomasbernard/.gradle/caches/transforms-4/4b1dd0134fc4caab80c368eeb9a4a0cb/transformed/ui-release/res/values-af/values-af.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -52,6 +35,23 @@
                         "startOffsets": "837,933,1020,1117,1218,1304,1380,1471,1561,1647,1711,1776,1854,1935,2107,2188,2258",
                         "endColumns": "95,86,96,100,85,75,90,89,85,63,64,77,80,70,80,69,119",
                         "endOffsets": "928,1015,1112,1213,1299,1375,1466,1556,1642,1706,1771,1849,1930,2001,2183,2253,2373"
+                    }
+                },
+                {
+                    "source": "/Users/thomasbernard/.gradle/caches/transforms-4/49cd66fe091e7a217f9330d09e579b69/transformed/foundation-release/res/values-af/values-af.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,142",
+                        "endColumns": "86,84",
+                        "endOffsets": "137,222"
+                    },
+                    "to": {
+                        "startLines": "27,28",
+                        "startColumns": "4,4",
+                        "startOffsets": "2378,2465",
+                        "endColumns": "86,84",
+                        "endOffsets": "2460,2545"
                     }
                 }
             ]

@@ -1,13 +1,12 @@
-package fr.thomasbernard03.tarot.domain.usecases.round
+package domain.usecases.round
 
 import domain.models.EditRoundModel
 import domain.models.Resource
 import domain.models.errors.EditRoundError
 import domain.repositories.RoundRepository
-import org.koin.java.KoinJavaComponent.get
 
 class EditRoundUseCase(
-    private val roundRepository: RoundRepository = get(RoundRepository::class.java)
+    private val roundRepository: RoundRepository
 ) {
     suspend operator fun invoke(round : EditRoundModel) : Resource<Unit, EditRoundError> {
         return roundRepository.editRound(round)

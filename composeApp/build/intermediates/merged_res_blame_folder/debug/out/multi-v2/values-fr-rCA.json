@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "fr.thomasbernard03.tarot.composeApp-mergeDebugResources-40:/values-fr-rCA/values-fr-rCA.xml",
+            "outputFile": "fr.thomasbernard03.tarot.composeApp-mergeDebugResources-44:/values-fr-rCA/values-fr-rCA.xml",
             "map": [
                 {
-                    "source": "/Users/thomasbernard/.gradle/caches/transforms-4/78f441ecdcefe52bf6c3d7f224dee6d5/transformed/ui-release/res/values-fr-rCA/values-fr-rCA.xml",
+                    "source": "/Users/thomasbernard/.gradle/caches/transforms-4/4b1dd0134fc4caab80c368eeb9a4a0cb/transformed/ui-release/res/values-fr-rCA/values-fr-rCA.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -21,24 +21,7 @@
                     }
                 },
                 {
-                    "source": "/Users/thomasbernard/.gradle/caches/transforms-4/c8ab929fc57cb8773a5f6f63a0321508/transformed/core-1.13.0/res/values-fr-rCA/values-fr-rCA.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,153,255,354,456,560,664,778",
-                        "endColumns": "97,101,98,101,103,103,113,100",
-                        "endOffsets": "148,250,349,451,555,659,773,874"
-                    },
-                    "to": {
-                        "startLines": "2,3,4,5,6,7,8,23",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,203,305,404,506,610,714,2040",
-                        "endColumns": "97,101,98,101,103,103,113,100",
-                        "endOffsets": "198,300,399,501,605,709,823,2136"
-                    }
-                },
-                {
-                    "source": "/Users/thomasbernard/.gradle/caches/transforms-4/578b42330aa8cdecf034df82a8324bdf/transformed/foundation-release/res/values-fr-rCA/values-fr-rCA.xml",
+                    "source": "/Users/thomasbernard/.gradle/caches/transforms-4/49cd66fe091e7a217f9330d09e579b69/transformed/foundation-release/res/values-fr-rCA/values-fr-rCA.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",
@@ -52,6 +35,23 @@
                         "startOffsets": "2411,2499",
                         "endColumns": "87,94",
                         "endOffsets": "2494,2589"
+                    }
+                },
+                {
+                    "source": "/Users/thomasbernard/.gradle/caches/transforms-4/98080371faf16d5fbb4e60c1aba8e9b5/transformed/core-1.13.0/res/values-fr-rCA/values-fr-rCA.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,153,255,354,456,560,664,778",
+                        "endColumns": "97,101,98,101,103,103,113,100",
+                        "endOffsets": "148,250,349,451,555,659,773,874"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,23",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,203,305,404,506,610,714,2040",
+                        "endColumns": "97,101,98,101,103,103,113,100",
+                        "endOffsets": "198,300,399,501,605,709,823,2136"
                     }
                 }
             ]
