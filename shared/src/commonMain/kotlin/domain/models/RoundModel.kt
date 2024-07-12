@@ -1,10 +1,10 @@
-package fr.thomasbernard03.tarot.domain.models
+package domain.models
 
-import java.util.Date
+import kotlinx.datetime.LocalDateTime
 
 data class RoundModel(
     val id : Long,
-    val finishedAt : Date,
+    val finishedAt : LocalDateTime,
     val taker: PlayerModel,
     val bid : Bid, // SMALL, GUARD, GUARD_WITHOUT, GUARD_AGAINST
     val oudlers : List<Oudler>,

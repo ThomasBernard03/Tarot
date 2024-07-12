@@ -1,4 +1,4 @@
-package fr.thomasbernard03.tarot.domain.models.errors
+package domain.models.errors
 
 sealed class CreateRoundError {
     data object GameNotFound : CreateRoundError()

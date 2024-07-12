@@ -1,13 +1,13 @@
-package fr.thomasbernard03.tarot.domain.repositories
+package domain.repositories
 
-import fr.thomasbernard03.tarot.domain.models.GameModel
-import fr.thomasbernard03.tarot.domain.models.PlayerModel
-import fr.thomasbernard03.tarot.domain.models.Resource
-import fr.thomasbernard03.tarot.domain.models.errors.CreateGameError
-import fr.thomasbernard03.tarot.domain.models.errors.DeleteGameError
-import fr.thomasbernard03.tarot.domain.models.errors.FinishGameError
-import fr.thomasbernard03.tarot.domain.models.errors.GetGameError
-import fr.thomasbernard03.tarot.domain.models.errors.ResumeGameError
+import domain.models.GameModel
+import domain.models.PlayerModel
+import domain.models.Resource
+import domain.models.errors.CreateGameError
+import domain.models.errors.DeleteGameError
+import domain.models.errors.FinishGameError
+import domain.models.errors.GetGameError
+import domain.models.errors.ResumeGameError
 
 interface GameRepository {
     suspend fun createGame(players : List<PlayerModel>) : Resource<GameModel, CreateGameError>

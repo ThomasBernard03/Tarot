@@ -1,9 +1,9 @@
 package fr.thomasbernard03.tarot.domain.usecases.round
 
-import fr.thomasbernard03.tarot.domain.models.Resource
-import fr.thomasbernard03.tarot.domain.models.RoundModel
-import fr.thomasbernard03.tarot.domain.models.errors.GetRoundError
-import fr.thomasbernard03.tarot.domain.repositories.RoundRepository
+import domain.models.Resource
+import domain.models.RoundModel
+import domain.models.errors.GetRoundError
+import domain.repositories.RoundRepository
 import org.koin.java.KoinJavaComponent.get
 
 class GetRoundUseCase(

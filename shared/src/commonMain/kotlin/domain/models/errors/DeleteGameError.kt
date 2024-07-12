@@ -1,4 +1,4 @@
-package fr.thomasbernard03.tarot.domain.models.errors
+package domain.models.errors
 
 sealed class DeleteGameError {
     data object GameInProgressError : DeleteGameError()

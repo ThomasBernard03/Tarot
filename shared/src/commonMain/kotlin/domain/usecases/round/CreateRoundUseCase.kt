@@ -1,12 +1,12 @@
 package fr.thomasbernard03.tarot.domain.usecases.round
 
-import fr.thomasbernard03.tarot.domain.models.Bid
-import fr.thomasbernard03.tarot.domain.models.Oudler
-import fr.thomasbernard03.tarot.domain.models.PlayerModel
-import fr.thomasbernard03.tarot.domain.models.Resource
-import fr.thomasbernard03.tarot.domain.models.RoundModel
-import fr.thomasbernard03.tarot.domain.models.errors.CreateRoundError
-import fr.thomasbernard03.tarot.domain.repositories.RoundRepository
+import domain.models.Bid
+import domain.models.Oudler
+import domain.models.PlayerModel
+import domain.models.Resource
+import domain.models.RoundModel
+import domain.models.errors.CreateRoundError
+import domain.repositories.RoundRepository
 import org.koin.java.KoinJavaComponent.get
 
 class CreateRoundUseCase(

@@ -1,14 +1,14 @@
-package fr.thomasbernard03.tarot.domain.repositories
+package domain.repositories
 
-import fr.thomasbernard03.tarot.domain.models.CreatePlayerModel
-import fr.thomasbernard03.tarot.domain.models.PlayerColor
-import fr.thomasbernard03.tarot.domain.models.PlayerModel
-import fr.thomasbernard03.tarot.domain.models.Resource
-import fr.thomasbernard03.tarot.domain.models.errors.player.CreatePlayerError
-import fr.thomasbernard03.tarot.domain.models.errors.player.DeletePlayerError
-import fr.thomasbernard03.tarot.domain.models.errors.player.EditPlayerError
-import fr.thomasbernard03.tarot.domain.models.errors.player.GetPlayerError
-import fr.thomasbernard03.tarot.domain.models.errors.player.GetPlayersError
+import domain.models.CreatePlayerModel
+import domain.models.PlayerColor
+import domain.models.PlayerModel
+import domain.models.Resource
+import domain.models.errors.player.CreatePlayerError
+import domain.models.errors.player.DeletePlayerError
+import domain.models.errors.player.EditPlayerError
+import domain.models.errors.player.GetPlayerError
+import domain.models.errors.player.GetPlayersError
 
 interface PlayerRepository {
     suspend fun getPlayers() : Resource<List<PlayerModel>, GetPlayersError>

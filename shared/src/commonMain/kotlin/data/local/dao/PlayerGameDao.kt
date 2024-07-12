@@ -4,9 +4,12 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
+import commons.extensions.LocalDateTimeNow
 import data.local.entities.GameEntity
 import data.local.entities.PlayerEntity
 import data.local.entities.PlayerGameEntity
+import domain.models.GameModel
+import domain.models.PlayerModel
 
 @Dao
 interface PlayerGameDao {
@@ -30,7 +33,7 @@ interface PlayerGameDao {
         players : List<PlayerModel>
     ) : GameModel {
         // 1) Create a game
-        var game = GameEntity(startedAt = Date())
+        var game = GameEntity(startedAt = LocalDateTimeNow())
         val gameId = createGame(game)
         game = game.copy(id = gameId)
 

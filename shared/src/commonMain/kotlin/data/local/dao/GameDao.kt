@@ -15,7 +15,7 @@ interface GameDao {
     suspend fun getCurrentGame(): GameEntity?
 
     @Query("UPDATE GameEntity SET finishedAt = :finishedAt WHERE id = :id")
-    suspend fun changeFinishedAt(id : Long, finishedAt : LocalDateTime = LocalDateTimeNow())
+    suspend fun changeFinishedAt(id : Long, finishedAt : LocalDateTime? = LocalDateTimeNow())
 
     @Query("SELECT * FROM GameEntity WHERE id = :id")
     suspend fun getGame(id : Long): GameEntity

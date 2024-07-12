@@ -1,11 +1,11 @@
-package fr.thomasbernard03.tarot.domain.models
+package domain.models
 
-import java.util.Date
+import kotlinx.datetime.LocalDateTime
 
 data class GameModel(
     val id: Long,
-    val startedAt : Date,
-    val finishedAt : Date? = null,
+    val startedAt : LocalDateTime,
+    val finishedAt : LocalDateTime? = null,
     val players: List<PlayerModel>,
     val rounds : List<RoundModel>
 )

@@ -1,4 +1,4 @@
-package fr.thomasbernard03.tarot.domain.models.errors
+package domain.models.errors
 
 sealed class GetRoundError {
     data class RoundNotFound(val roundId : Long) : GetRoundError()

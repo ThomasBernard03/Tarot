@@ -1,15 +1,15 @@
-package fr.thomasbernard03.tarot.domain.repositories
+package domain.repositories
 
-import fr.thomasbernard03.tarot.domain.models.Bid
-import fr.thomasbernard03.tarot.domain.models.EditRoundModel
-import fr.thomasbernard03.tarot.domain.models.Oudler
-import fr.thomasbernard03.tarot.domain.models.PlayerModel
-import fr.thomasbernard03.tarot.domain.models.Resource
-import fr.thomasbernard03.tarot.domain.models.RoundModel
-import fr.thomasbernard03.tarot.domain.models.errors.CreateRoundError
-import fr.thomasbernard03.tarot.domain.models.errors.DeleteRoundError
-import fr.thomasbernard03.tarot.domain.models.errors.EditRoundError
-import fr.thomasbernard03.tarot.domain.models.errors.GetRoundError
+import domain.models.Bid
+import domain.models.EditRoundModel
+import domain.models.Oudler
+import domain.models.PlayerModel
+import domain.models.Resource
+import domain.models.RoundModel
+import domain.models.errors.CreateRoundError
+import domain.models.errors.DeleteRoundError
+import domain.models.errors.EditRoundError
+import domain.models.errors.GetRoundError
 
 interface RoundRepository {
 

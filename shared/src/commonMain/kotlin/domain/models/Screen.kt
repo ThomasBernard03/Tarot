@@ -1,4 +1,4 @@
-package fr.thomasbernard03.tarot.domain.models
+package domain.models
 
 sealed class Screen(val route : String) {
     data object Game : Screen(route = "game")

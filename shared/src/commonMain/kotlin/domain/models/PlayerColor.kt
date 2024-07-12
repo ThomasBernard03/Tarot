@@ -1,4 +1,4 @@
-package fr.thomasbernard03.tarot.domain.models
+package domain.models
 
 enum class PlayerColor {
     RED,

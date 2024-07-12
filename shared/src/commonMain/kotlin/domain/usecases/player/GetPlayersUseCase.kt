@@ -1,9 +1,9 @@
 package fr.thomasbernard03.tarot.domain.usecases.player
 
-import fr.thomasbernard03.tarot.domain.models.PlayerModel
-import fr.thomasbernard03.tarot.domain.models.Resource
-import fr.thomasbernard03.tarot.domain.models.errors.player.GetPlayersError
-import fr.thomasbernard03.tarot.domain.repositories.PlayerRepository
+import domain.models.PlayerModel
+import domain.models.Resource
+import domain.models.errors.player.GetPlayersError
+import domain.repositories.PlayerRepository
 import org.koin.java.KoinJavaComponent.get
 
 class GetPlayersUseCase(

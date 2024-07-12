@@ -1,10 +1,10 @@
-package fr.thomasbernard03.tarot.domain.usecases.game
+package domain.usecases.game
 
-import fr.thomasbernard03.tarot.domain.models.GameModel
-import fr.thomasbernard03.tarot.domain.models.PlayerModel
-import fr.thomasbernard03.tarot.domain.models.Resource
-import fr.thomasbernard03.tarot.domain.models.errors.CreateGameError
-import fr.thomasbernard03.tarot.domain.repositories.GameRepository
+import domain.models.GameModel
+import domain.models.PlayerModel
+import domain.models.Resource
+import domain.models.errors.CreateGameError
+import domain.repositories.GameRepository
 import org.koin.java.KoinJavaComponent.get
 
 class CreateGameUseCase(

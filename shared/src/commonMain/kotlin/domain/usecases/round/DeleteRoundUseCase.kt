@@ -1,8 +1,8 @@
 package fr.thomasbernard03.tarot.domain.usecases.round
 
-import fr.thomasbernard03.tarot.domain.models.Resource
-import fr.thomasbernard03.tarot.domain.models.errors.DeleteRoundError
-import fr.thomasbernard03.tarot.domain.repositories.RoundRepository
+import domain.models.Resource
+import domain.models.errors.DeleteRoundError
+import domain.repositories.RoundRepository
 import org.koin.java.KoinJavaComponent.get
 
 class DeleteRoundUseCase(

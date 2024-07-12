@@ -1,4 +1,4 @@
-package fr.thomasbernard03.tarot.domain.models.errors.player
+package domain.models.errors.player
 
 sealed class GetPlayerError {
     data object PlayerNotFound : GetPlayerError()

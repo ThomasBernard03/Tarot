@@ -1,4 +1,4 @@
-package fr.thomasbernard03.tarot.domain.models
+package domain.models
 
 data class CreatePlayerModel(
     val name: String,
