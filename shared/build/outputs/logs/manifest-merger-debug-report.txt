@@ -1,0 +1,16 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/thomasbernard/development/Tarot/kmp/shared/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest1581820223243911737.xml:2:13-83
+INJECTED from /Users/thomasbernard/development/Tarot/kmp/shared/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest1581820223243911737.xml:2:13-83
+	package
+		INJECTED from /Users/thomasbernard/development/Tarot/kmp/shared/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest1581820223243911737.xml
+	xmlns:android
+		ADDED from /Users/thomasbernard/development/Tarot/kmp/shared/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest1581820223243911737.xml:2:23-81
+uses-sdk
+INJECTED from /Users/thomasbernard/development/Tarot/kmp/shared/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest1581820223243911737.xml reason: use-sdk injection requested
+INJECTED from /Users/thomasbernard/development/Tarot/kmp/shared/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest1581820223243911737.xml
+INJECTED from /Users/thomasbernard/development/Tarot/kmp/shared/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest1581820223243911737.xml
+	android:targetSdkVersion
+		INJECTED from /Users/thomasbernard/development/Tarot/kmp/shared/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest1581820223243911737.xml
+	android:minSdkVersion
+		INJECTED from /Users/thomasbernard/development/Tarot/kmp/shared/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest1581820223243911737.xml
