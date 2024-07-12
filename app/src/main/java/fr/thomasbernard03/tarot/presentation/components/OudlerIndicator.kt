@@ -26,6 +26,7 @@ fun OudlerIndicator(
     oudler : Oudler
 ) {
     Card(
+        modifier = modifier,
         shape = RoundedCornerShape(8.dp),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.onBackground),
         colors = CardDefaults.cardColors(
