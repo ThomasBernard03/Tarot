@@ -1,34 +1,17 @@
-<p align="center">
-  <img width="300" alt="Android tools logo" src= "./doc/banner-light.png#gh-light-mode-only"/>
-  <img width="300" alt="Android tools logo" src= "./doc/banner-dark.png#gh-dark-mode-only"/>
-</p>
+This is a Kotlin Multiplatform project targeting Android, iOS.
 
----
+* `/composeApp` is for code that will be shared across your Compose Multiplatform applications.
+  It contains several subfolders:
+  - `commonMain` is for code that’s common for all targets.
+  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
+    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
+    `iosMain` would be the right folder for such calls.
 
-<p align="center">
-   <img alt="Build status" src="https://github.com/ThomasBernard03/Tarot/actions/workflows/main.yml/badge.svg?branch=main"/>
-  <img alt="Language" src="https://img.shields.io/badge/language-kotlin-purple"/>
-  <img alt="UI " src="https://img.shields.io/badge/UI%20framework-JetpackCompose-blue"/> 
-  <img alt="API" src="https://img.shields.io/badge/plateform-Android-green"/> 
-</p>
+* `/iosApp` contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform, 
+  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
 
-
-[<img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" 
-      alt="Download from Google Play" height="100">](https://play.google.com/store/apps/details?id=fr.thomasbernard03.tarot)
-
-- Features
-  - [x] 3 players games
-  - [ ] 4 players games
-  - [x] 5 players games
-  - [ ] New design for round screen
-  - [ ] Migration to KMP (For iOS Version)
-  - [ ] Play store publication
+* `/shared` is for the code that will be shared between all targets in the project.
+  The most important subfolder is `commonMain`. If preferred, you can add code to the platform-specific folders here too.
 
 
-
-
-Resources :
-
-https://medium.com/@vontonnie/automating-success-github-actions-workflow-for-android-app-deployment-908095d53b97
-
-https://medium.com/@vontonnie/setting-up-a-service-account-on-google-cloud-for-android-app-deployment-c6e16d8fc57b
+Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
