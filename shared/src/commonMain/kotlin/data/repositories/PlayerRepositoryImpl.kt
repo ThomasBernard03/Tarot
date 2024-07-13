@@ -1,6 +1,7 @@
 package data.repositories
 
 import androidx.sqlite.SQLiteException
+import data.local.ApplicationDatabase
 import data.local.dao.PlayerDao
 import data.local.entities.PlayerEntity
 import domain.models.CreatePlayerModel
@@ -16,8 +17,11 @@ import domain.models.errors.player.GetPlayerError
 
 
 class PlayerRepositoryImpl(
-    private val playerDao: PlayerDao
+    database: ApplicationDatabase
 ) : PlayerRepository {
+
+    private val playerDao: PlayerDao = database.playerDao()
+
     override suspend fun getPlayers(): Resource<List<PlayerModel>, GetPlayersError> {
         return try {
             val playersEntity = playerDao.getPlayers().map {

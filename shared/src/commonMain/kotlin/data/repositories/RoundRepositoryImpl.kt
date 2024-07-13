@@ -1,5 +1,6 @@
 package data.repositories
 
+import data.local.ApplicationDatabase
 import data.local.dao.PlayerDao
 import data.local.dao.RoundDao
 import data.local.entities.RoundEntity
@@ -16,9 +17,14 @@ import domain.models.errors.GetRoundError
 import domain.repositories.RoundRepository
 
 class RoundRepositoryImpl(
-    private val roundDao: RoundDao,
-    private val playerDao: PlayerDao,
+    database: ApplicationDatabase
+
 ) : RoundRepository {
+
+    private val roundDao: RoundDao = database.roundDao()
+    private val playerDao: PlayerDao = database.playerDao()
+
+
     override suspend fun createRound(
         gameId: Long,
         taker: PlayerModel,

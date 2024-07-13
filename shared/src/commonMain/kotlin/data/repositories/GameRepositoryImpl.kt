@@ -1,5 +1,6 @@
 package data.repositories
 
+import data.local.ApplicationDatabase
 import data.local.dao.GameDao
 import data.local.dao.PlayerDao
 import data.local.dao.PlayerGameDao
@@ -15,12 +16,12 @@ import domain.models.errors.GetGameError
 import domain.models.errors.ResumeGameError
 import domain.repositories.GameRepository
 
-class GameRepositoryImpl(
-    private val playerDao: PlayerDao,
-    private val playerGameDao : PlayerGameDao,
-    private val gameDao: GameDao,
-    private val roundDao: RoundDao
-) : GameRepository {
+class GameRepositoryImpl(database : ApplicationDatabase) : GameRepository {
+
+    private val playerDao: PlayerDao = database.playerDao()
+    private val playerGameDao : PlayerGameDao = database.playerGameDao()
+    private val gameDao: GameDao = database.gameDao()
+    private val roundDao: RoundDao = database.roundDao()
 
     override suspend fun deleteGame(id: Long): Resource<Unit, DeleteGameError> {
         return try {
