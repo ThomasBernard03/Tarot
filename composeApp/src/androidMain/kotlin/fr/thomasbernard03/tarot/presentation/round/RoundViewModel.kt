@@ -11,6 +11,7 @@ import domain.usecases.game.GetGameUseCase
 import domain.usecases.round.CreateRoundUseCase
 import domain.usecases.round.EditRoundUseCase
 import domain.usecases.round.GetRoundUseCase
+import fr.thomasbernard03.tarot.commons.helpers.NavigationHelper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,6 +23,7 @@ class RoundViewModel(
     private val getRoundUseCase: GetRoundUseCase,
     private val createRoundUseCase: CreateRoundUseCase,
     private val editRoundUseCase: EditRoundUseCase,
+    private val navigationHelper: NavigationHelper
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(RoundState())
@@ -47,7 +49,7 @@ class RoundViewModel(
         viewModelScope.launch {
             when(val result = createRoundUseCase(gameId, taker, calledPlayer, bid, oudlers, points)){
                 is Resource.Success -> {
-//                    navigationHelper.goBack()
+                    navigationHelper.goBack()
                 }
                 is Resource.Error -> {
                 }
@@ -60,7 +62,7 @@ class RoundViewModel(
             val round = EditRoundModel(id = roundId, taker = taker, bid = bid, oudlers = oudlers, points = points, calledPlayer = calledPlayer)
             when(val result = editRoundUseCase(round)){
                 is Resource.Success -> {
-//                    navigationHelper.goBack()
+                    navigationHelper.goBack()
                 }
                 is Resource.Error -> {
                 }

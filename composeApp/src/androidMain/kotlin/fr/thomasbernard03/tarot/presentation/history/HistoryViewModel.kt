@@ -3,9 +3,11 @@ package fr.thomasbernard03.tarot.presentation.history
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import domain.models.Resource
+import domain.models.Screen
 import domain.usecases.game.DeleteGameUseCase
 import domain.usecases.game.GetGameHistoryUseCase
 import domain.usecases.game.ResumeGameUseCase
+import fr.thomasbernard03.tarot.commons.helpers.NavigationHelper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,7 +18,7 @@ class HistoryViewModel(
     private val getGameHistoryUseCase: GetGameHistoryUseCase,
     private val resumeGameUseCase: ResumeGameUseCase,
     private val deleteGameUseCase: DeleteGameUseCase,
-//    private val navigationHelper: NavigationHelper
+    private val navigationHelper: NavigationHelper
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HistoryState())
@@ -48,7 +50,7 @@ class HistoryViewModel(
         viewModelScope.launch {
             when(val result = resumeGameUseCase(id)){
                 is Resource.Success -> {
-//                    navigationHelper.navigateTo(Screen.Game, popupTo = Screen.History)
+                    navigationHelper.navigateTo(Screen.Game, popupTo = Screen.History)
                 }
                 is Resource.Error -> {
 

@@ -146,13 +146,16 @@ fun LazyListScope.historyList(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
-                                text = SimpleDateFormat("dd", Locale.getDefault()).format(game.startedAt),
+                                text = game.startedAt.dayOfMonth.toString(),
                                 style = MaterialTheme.typography.titleLarge,
                                 color = MaterialTheme.colorScheme.onTertiary
                             )
 
                             Text(
-                                text = String.format(Locale.getDefault(), "%tB", game.startedAt),
+                                text = game.startedAt.month.getDisplayName(
+                                    java.time.format.TextStyle.SHORT,
+                                    Locale.getDefault()
+                                ),
                                 color = MaterialTheme.colorScheme.onTertiary,
                                 style = MaterialTheme.typography.bodySmall
                             )

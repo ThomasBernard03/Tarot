@@ -10,6 +10,7 @@ import domain.usecases.player.DeletePlayerUseCase
 import domain.usecases.player.EditPlayerUseCase
 import domain.usecases.player.GetPlayerUseCase
 import fr.thomasbernard03.tarot.R
+import fr.thomasbernard03.tarot.commons.helpers.NavigationHelper
 import fr.thomasbernard03.tarot.commons.helpers.ResourcesHelper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,7 +22,8 @@ class PlayerViewModel(
     private val getPlayerUseCase: GetPlayerUseCase,
     private val deletePlayerUseCase: DeletePlayerUseCase,
     private val editPlayerUseCase: EditPlayerUseCase,
-    private val resourcesHelper: ResourcesHelper
+    private val resourcesHelper: ResourcesHelper,
+    private val navigationHelper: NavigationHelper
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(PlayerState())
@@ -56,7 +58,7 @@ class PlayerViewModel(
         viewModelScope.launch {
             when(val result = deletePlayerUseCase(id)){
                 is Resource.Success -> {
-//                    navigationHelper.goBack()
+                    navigationHelper.goBack()
                 }
                 is Resource.Error -> {
                     val messageId = when(result.data){
