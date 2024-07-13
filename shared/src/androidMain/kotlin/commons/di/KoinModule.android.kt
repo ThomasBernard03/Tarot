@@ -6,7 +6,6 @@ import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import data.local.ApplicationDatabase
 import kotlinx.coroutines.Dispatchers
 import org.koin.dsl.module
-import org.koin.java.KoinJavaComponent.get
 
 actual fun platformModule() = module {
     single<ApplicationDatabase> { getDatabaseBuilder(get()) }

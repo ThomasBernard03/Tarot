@@ -8,12 +8,12 @@ import domain.models.CreatePlayerModel
 import domain.models.PlayerColor
 import domain.models.PlayerModel
 import domain.models.Resource
-import domain.models.errors.player.GetPlayersError
-import domain.repositories.PlayerRepository
 import domain.models.errors.player.CreatePlayerError
 import domain.models.errors.player.DeletePlayerError
 import domain.models.errors.player.EditPlayerError
 import domain.models.errors.player.GetPlayerError
+import domain.models.errors.player.GetPlayersError
+import domain.repositories.PlayerRepository
 
 
 class PlayerRepositoryImpl(

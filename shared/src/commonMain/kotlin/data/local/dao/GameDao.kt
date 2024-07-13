@@ -4,10 +4,7 @@ import androidx.room.Dao
 import androidx.room.Query
 import commons.extensions.LocalDateTimeNow
 import data.local.entities.GameEntity
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 
 @Dao
 interface GameDao {

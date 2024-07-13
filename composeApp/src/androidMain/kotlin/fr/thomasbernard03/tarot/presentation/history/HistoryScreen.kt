@@ -38,7 +38,6 @@ import fr.thomasbernard03.tarot.presentation.components.Loader
 import fr.thomasbernard03.tarot.presentation.components.PreviewScreen
 import fr.thomasbernard03.tarot.presentation.history.components.HistoryOptionSheet
 import fr.thomasbernard03.tarot.presentation.history.components.historyList
-import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

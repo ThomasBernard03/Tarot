@@ -61,7 +61,6 @@ import fr.thomasbernard03.tarot.presentation.game.components.CreateGameSheet
 import fr.thomasbernard03.tarot.presentation.game.components.playersScoreHeader
 import fr.thomasbernard03.tarot.presentation.game.components.roundList
 import kotlinx.coroutines.launch
-import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable

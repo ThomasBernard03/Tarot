@@ -43,7 +43,6 @@ import fr.thomasbernard03.tarot.commons.extensions.toColor
 import fr.thomasbernard03.tarot.presentation.components.PlayerIcon
 import fr.thomasbernard03.tarot.presentation.theme.Green
 import fr.thomasbernard03.tarot.presentation.theme.Red
-import java.text.SimpleDateFormat
 import java.util.Locale
 
 @OptIn(ExperimentalFoundationApi::class)
