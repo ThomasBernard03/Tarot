@@ -24,9 +24,18 @@ import data.local.entities.RoundOudlerEntity
     version = 3
 )
 @TypeConverters(DateConverter::class)
-abstract class ApplicationDatabase : RoomDatabase() {
+abstract class ApplicationDatabase : RoomDatabase(), DB {
     abstract fun playerDao(): PlayerDao
     abstract fun gameDao(): GameDao
     abstract fun playerGameDao(): PlayerGameDao
     abstract fun roundDao(): RoundDao
+
+
+    override fun clearAllTables() {
+        super.clearAllTables()
+    }
+}
+
+interface DB {
+    fun clearAllTables() {}
 }

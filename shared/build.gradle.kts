@@ -25,6 +25,7 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "Shared"
             isStatic = true
+            linkerOpts.add("-lsqlite3") // add sqlite
         }
     }
     
@@ -38,6 +39,10 @@ kotlin {
             api(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.composeVM)
+        }
+        iosMain {
+            // Fixes RoomDB Unresolved reference 'instantiateImpl' in iosMain
+            kotlin.srcDir("build/generated/ksp/metadata")
         }
     }
 }
@@ -59,5 +64,17 @@ room {
 }
 
 dependencies {
-    ksp(libs.androidx.room.compiler)
+//    ksp(libs.androidx.room.compiler)
+    add("kspCommonMainMetadata", libs.androidx.room.compiler)
+
+//    add("kspAndroid", libs.androidx.room.compiler)
+//    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
+//    add("kspIosX64", libs.androidx.room.compiler)
+//    add("kspIosArm64", libs.androidx.room.compiler)
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach {
+    if (name != "kspCommonMainKotlinMetadata" ) {
+        dependsOn("kspCommonMainKotlinMetadata")
+    }
 }
