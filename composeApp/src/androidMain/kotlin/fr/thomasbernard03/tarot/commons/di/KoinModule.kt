@@ -21,6 +21,6 @@ val viewModelsModule = module {
 }
 
 val helpersModule = module {
-    single<ResourcesHelper> { ResourcesHelperImpl(get()) }
+    single<ResourcesHelper> { ResourcesHelperImpl() }
     single<NavigationHelper> { NavigationHelperImpl() }
 }

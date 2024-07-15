@@ -7,10 +7,11 @@ import domain.models.Resource
 import domain.models.RoundModel
 import domain.models.errors.CreateRoundError
 import domain.repositories.RoundRepository
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class CreateRoundUseCase(
-    private val roundRepository: RoundRepository
-) {
+class CreateRoundUseCase : KoinComponent {
+    private val roundRepository: RoundRepository by inject()
     suspend operator fun invoke(
         gameId : Long,
         taker : PlayerModel,
