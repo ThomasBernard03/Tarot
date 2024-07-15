@@ -15,14 +15,13 @@ import domain.models.errors.player.GetPlayerError
 import domain.models.errors.player.GetPlayersError
 import domain.repositories.PlayerRepository
 
-
 class PlayerRepositoryImpl(
     database: ApplicationDatabase,
 ) : PlayerRepository {
 
     private val playerDao: PlayerDao = database.playerDao()
 
-    override suspend fun getPlayers(): Result<List<PlayerModel>> {
+    override suspend fun getPlayers(): Resource<List<PlayerModel>, GetPlayersError> {
         return try {
             val playersEntity = playerDao.getPlayers().map {
                 PlayerModel(
@@ -32,11 +31,11 @@ class PlayerRepositoryImpl(
                 )
             }
 
-            Result.success(playersEntity)
+            Resource.Success(playersEntity)
         }
         catch (e : Exception){
 //            Napier.e(e) { "Error getting players" }
-            Result.failure(GetPlayersError.UnknownError)
+            Resource.Error(GetPlayersError.UnknownError)
         }
     }
 

@@ -13,16 +13,7 @@ import kotlin.coroutines.cancellation.CancellationException
 class CreatePlayerUseCase : KoinComponent {
     private val playerRepository: PlayerRepository by inject()
 
-    @Throws(CreatePlayerError::class, CancellationException::class)
-    suspend operator fun invoke(player : CreatePlayerModel): PlayerModel {
-        val result =  playerRepository.createPlayer(player)
-        println("creating player")
-
-        when(result){
-            is Resource.Error -> {
-                throw result.data
-            }
-            is Resource.Success -> return result.data
-        }
+    suspend operator fun invoke(player : CreatePlayerModel): Resource<PlayerModel, CreatePlayerError> {
+        return playerRepository.createPlayer(player)
     }
 }

@@ -7,17 +7,12 @@ import domain.repositories.PlayerRepository
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import kotlin.coroutines.cancellation.CancellationException
+import kotlin.jvm.JvmInline
 
 class GetPlayersUseCase : KoinComponent {
     private val playerRepository: PlayerRepository by inject()
 
-    @Throws(GetPlayersError.UnknownError::class, CancellationException::class)
-    suspend fun execute() : List<PlayerModel> {
-        val result = playerRepository.getPlayers()
-
-        if (result.isFailure)
-            throw result.exceptionOrNull()!!
-
-        return result.getOrNull()!!
+    suspend operator fun invoke() : Resource<List<PlayerModel>, GetPlayersError> {
+        return playerRepository.getPlayers()
     }
 }

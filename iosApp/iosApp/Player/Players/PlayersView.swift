@@ -36,8 +36,9 @@ struct PlayersView: View {
         }
         .onAppear {
             let getPlayersUseCase = GetPlayersUseCase()
-            getPlayersUseCase.execute { result, error in
-                players = result ?? []
+            getPlayersUseCase.invoke { result, error in
+
+                players = result?.getOrNull() as! [PlayerModel]
             }
         }
         .sheet(isPresented: $showNewPlayerSheet){
@@ -50,7 +51,7 @@ struct PlayersView: View {
                     let playerColor : PlayerColor = PlayerColor.all().randomElement()!
                     let player = CreatePlayerModel(name: playerName, color: playerColor)
                     createPlayerUseCase.invoke(player: player){ result, error in
-                        players.append(result!)
+                        players.append((result?.getOrNull()!)!)
                     }
                     showNewPlayerSheet.toggle()
                     

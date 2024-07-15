@@ -11,7 +11,7 @@ import domain.models.errors.player.GetPlayerError
 import domain.models.errors.player.GetPlayersError
 
 interface PlayerRepository {
-    suspend fun getPlayers() : Result<List<PlayerModel>>
+    suspend fun getPlayers() : Resource<List<PlayerModel>, GetPlayersError>
     suspend fun createPlayer(player: CreatePlayerModel) : Resource<PlayerModel, CreatePlayerError>
     suspend fun deletePlayer(id: Long) : Resource<Unit, DeletePlayerError>
     suspend fun getPlayer(id: Long) : Resource<PlayerModel, GetPlayerError>
