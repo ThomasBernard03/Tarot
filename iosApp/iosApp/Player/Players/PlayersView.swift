@@ -4,29 +4,35 @@ import Shared
 struct PlayersView: View {
     @State private var players: [PlayerModel] = []
     @State private var error: String?
+    
+    @State private var showNewPlayerSheet = false
+    @State private var playerName : String = ""
+    
 
     var body: some View {
-        VStack {
-            if let error = error {
-                Text("Error: \(error)")
-                    .foregroundColor(.red)
-            } else {
-                List(players, id: \.id) { player in
-                    Text(player.name)
+        List {
+            ForEach(players, id:\.id){ player in
+                NavigationLink(destination: PlayerView(id: player.id, name: player.name)) {
+                    Label(
+                        title: { Text(player.name) },
+                        icon: { Image(systemName: "circle.fill").foregroundColor(player.color.toColor()) }
+                    )
                 }
-                
-                
-                Button {
-                    let createPlayerUseCase = CreatePlayerUseCase()
-                    let player = CreatePlayerModel(name: "Joueur " + String(players.count), color: .red)
-                    createPlayerUseCase.invoke(player: player){ result, error in
-                        players.append(result!)
-                    }
-                } label: {
-                    Label("Create a player", systemImage: "list.dash")
-                }
-
             }
+            .onDelete { index in
+                players.remove(atOffsets: index)
+            }
+        }
+        .navigationTitle("Joueurs")
+        .toolbar {
+            Button(action: {
+                playerName = ""
+                showNewPlayerSheet.toggle()
+            }){
+                Label("Add player", systemImage: "plus")
+                    .labelStyle(.iconOnly)
+            }
+       
         }
         .onAppear {
             let getPlayersUseCase = GetPlayersUseCase()
@@ -34,6 +40,27 @@ struct PlayersView: View {
                 players = result ?? []
             }
         }
+        .sheet(isPresented: $showNewPlayerSheet){
+            VStack {
+                TextField("Nom du joueur", text: $playerName)
+                    .textFieldStyle(.roundedBorder)
+                
+                Button("Créer le joueur"){
+                    let createPlayerUseCase = CreatePlayerUseCase()
+                    let playerColor : PlayerColor = PlayerColor.all().randomElement()!
+                    let player = CreatePlayerModel(name: playerName, color: playerColor)
+                    createPlayerUseCase.invoke(player: player){ result, error in
+                        players.append(result!)
+                    }
+                    showNewPlayerSheet.toggle()
+                    
+                }
+                .buttonStyle(.borderedProminent)
+            }
+            .padding()
+            .presentationDetents([.height(200)])
+        }
+        
     }
 }
 

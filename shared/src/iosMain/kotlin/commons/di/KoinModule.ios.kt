@@ -6,7 +6,6 @@ import data.local.ApplicationDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import org.koin.core.module.Module
-import platform.Foundation.NSHomeDirectory
 import org.koin.dsl.module
 import data.local.instantiateImpl
 import kotlinx.cinterop.ExperimentalForeignApi
