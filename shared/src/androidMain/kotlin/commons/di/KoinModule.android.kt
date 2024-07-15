@@ -11,7 +11,7 @@ actual fun platformModule() = module {
     single<ApplicationDatabase> { getDatabaseBuilder(get()) }
 }
 
-fun getDatabaseBuilder(context: Context): ApplicationDatabase {
+private fun getDatabaseBuilder(context: Context): ApplicationDatabase {
     val dbFile = context.getDatabasePath("tarot.db")
     return Room.databaseBuilder<ApplicationDatabase>(context, dbFile.absolutePath)
         .setDriver(BundledSQLiteDriver())

@@ -9,10 +9,14 @@ import org.koin.core.module.Module
 import platform.Foundation.NSHomeDirectory
 import org.koin.dsl.module
 import data.local.instantiateImpl
-
+import kotlinx.cinterop.ExperimentalForeignApi
+import platform.Foundation.NSDocumentDirectory
+import platform.Foundation.NSFileManager
+import platform.Foundation.NSURL
+import platform.Foundation.NSUserDomainMask
 
 fun getDatabaseBuilder(): ApplicationDatabase {
-    val dbFile = "${NSHomeDirectory()}/tarot.db"
+    val dbFile = "${fileDirectory()}/tarot.db"
     return Room.databaseBuilder<ApplicationDatabase>(
         name = dbFile,
         factory = { ApplicationDatabase::class.instantiateImpl() }
@@ -20,6 +24,20 @@ fun getDatabaseBuilder(): ApplicationDatabase {
         .setQueryCoroutineContext(Dispatchers.IO)
         .build()
 }
+
+@OptIn(ExperimentalForeignApi::class)
+private fun fileDirectory(): String {
+    val documentDirectory: NSURL? = NSFileManager.defaultManager.URLForDirectory(
+        directory = NSDocumentDirectory,
+        inDomain = NSUserDomainMask,
+        appropriateForURL = null,
+        create = false,
+        error = null,
+    )
+    return requireNotNull(documentDirectory).path!!
+}
+
+
 
 actual fun platformModule(): Module =
     module {

@@ -44,14 +44,12 @@ class PlayersViewModel(
     private fun onLoadPlayers() {
         _state.update { it.copy(loadingPlayers = true) }
         viewModelScope.launch {
-            when(val result = getPlayersUseCase()){
-                is Resource.Success -> {
-                    _state.update { it.copy(players = result.data, loadingPlayers = false) }
-                }
-                is Resource.Error -> {
-                    _state.update { it.copy(loadingPlayers = false) }
-                }
-            }
+
+            val result = getPlayersUseCase.execute()
+            if (result.isSuccess)
+                _state.update { it.copy(players = result.getOrNull()!!, loadingPlayers = false) }
+            else
+                _state.update { it.copy(loadingPlayers = false) }
         }
     }
 

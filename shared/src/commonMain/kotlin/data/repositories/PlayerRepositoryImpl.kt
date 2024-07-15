@@ -17,12 +17,12 @@ import domain.repositories.PlayerRepository
 
 
 class PlayerRepositoryImpl(
-    database: ApplicationDatabase
+    database: ApplicationDatabase,
 ) : PlayerRepository {
 
     private val playerDao: PlayerDao = database.playerDao()
 
-    override suspend fun getPlayers(): Resource<List<PlayerModel>, GetPlayersError> {
+    override suspend fun getPlayers(): Result<List<PlayerModel>> {
         return try {
             val playersEntity = playerDao.getPlayers().map {
                 PlayerModel(
@@ -32,11 +32,11 @@ class PlayerRepositoryImpl(
                 )
             }
 
-            Resource.Success(playersEntity)
+            Result.success(playersEntity)
         }
         catch (e : Exception){
-//            Log.e(e.message, e.stackTraceToString())
-            Resource.Error(GetPlayersError.UnknownError)
+//            Napier.e(e) { "Error getting players" }
+            Result.failure(GetPlayersError.UnknownError)
         }
     }
 
@@ -57,6 +57,8 @@ class PlayerRepositoryImpl(
         }
         catch (e : Exception){
             // Log.e(e.message, e.stackTraceToString())
+            println(e.message)
+            println(e.printStackTrace())
             Resource.Error(CreatePlayerError.UnknownError)
         }
     }
