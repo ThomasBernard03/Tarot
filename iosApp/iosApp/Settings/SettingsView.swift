@@ -12,6 +12,14 @@ struct SettingsView: View {
     @State private var isAlwaysOnDisplay : Bool = false
     @Environment(\.openURL) var openURL
     
+    private var appVersion: String {
+         Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "Unknown"
+     }
+     
+     private var appBuild: String {
+         Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "Unknown"
+     }
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -60,7 +68,7 @@ struct SettingsView: View {
                 
                 Section("Autres"){
                     Label(
-                        title: { Text("Tarot iOS 0.0.0 (1)") },
+                        title: { Text("Tarot iOS \(appVersion) (\(appBuild))") },
                         icon: { Image(systemName: "apple.logo").foregroundColor(.primary) }
                     )
                 }

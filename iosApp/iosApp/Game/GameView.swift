@@ -13,6 +13,7 @@ struct GameView: View {
     
     private let getPlayersUseCase = GetPlayersUseCase()
     private let getCurrentGameUseCase = GetCurrentGameUseCase()
+    private let createGameUseCase = CreateGameUseCase()
     
     @State private var showNewGameSheet = false
     @State private var players: [PlayerModel] = []
@@ -68,6 +69,12 @@ struct GameView: View {
                     }
 
                     Button(action: {
+                        createGameUseCase.invoke(players: players) { result, _ in
+                            if result?.isSuccess() ?? false {
+                                currentGame = result?.getOrNull()
+                            }
+                        }
+                        
                         showNewGameSheet.toggle()
                     }) {
                         Text("Démarrer la partie")
