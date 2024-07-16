@@ -4,11 +4,19 @@ import Shared
 struct ContentView: View {
     var body: some View {
         TabView {
-            NavigationStack {
-                PlayersView()
-            }
+            GameView()
+                .tabItem { Label("Jouer", systemImage: "menucard") }
             
-            .tabItem { Label("Players", systemImage: "list.dash") }
+            HistoryView()
+                .tabItem { Label("Historique", systemImage: "list.bullet") }
+            
+            
+            PlayersView()
+            .tabItem { Label("Joueurs", systemImage: "person.3.sequence") }
+            
+            
+            SettingsView()
+            .tabItem { Label("Informations", systemImage: "info.circle") }
         }
     }
 }

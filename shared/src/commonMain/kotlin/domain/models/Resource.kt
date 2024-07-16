@@ -2,6 +2,14 @@ package domain.models
 
 sealed class Resource<T, E> {
 
+    fun isSuccess() : Boolean {
+        return this is Success
+    }
+
+    fun isError() : Boolean {
+        return this is Error
+    }
+
     fun getOrNull() : T? {
         return when(this) {
             is Success -> data
