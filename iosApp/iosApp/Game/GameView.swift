@@ -14,6 +14,7 @@ struct GameView: View {
     private let getPlayersUseCase = GetPlayersUseCase()
     private let getCurrentGameUseCase = GetCurrentGameUseCase()
     private let createGameUseCase = CreateGameUseCase()
+    private let finishGameUseCase = FinishGameUseCase()
     
     @State private var showNewGameSheet = false
     @State private var players: [PlayerModel] = []
@@ -28,18 +29,34 @@ struct GameView: View {
                         .padding()
                         .multilineTextAlignment(.center)
                 } else {
-                    // Votre code existant ici
+                    
                 }
             }
             .navigationTitle("Partie en cours")
             .toolbar {
-                Button(action: {
-                    selectedPlayers = []
-                    showNewGameSheet.toggle()
-                }) {
-                    Label("New game", systemImage: "plus")
-                        .labelStyle(.iconOnly)
+                if currentGame == nil {
+                    Button(action: {
+                        selectedPlayers = []
+                        showNewGameSheet.toggle()
+                    }) {
+                        Label("New game", systemImage: "plus")
+                            .labelStyle(.iconOnly)
+                    }
                 }
+                else {
+                    Button(action: {
+                        finishGameUseCase.invoke(gameId: currentGame!.id) { result, _ in
+                            if result?.isSuccess() ?? false {
+                                currentGame = nil
+                            }
+                        }
+                        
+                    }) {
+                        Label("Terminer la partie", systemImage: "flag.checkered")
+                            .labelStyle(.iconOnly)
+                    }
+                }
+
             }
             .sheet(isPresented: $showNewGameSheet) {
                 VStack(alignment: .leading, spacing: 12) {

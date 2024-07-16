@@ -1,5 +1,6 @@
 package data.repositories
 
+import commons.Logger
 import data.local.ApplicationDatabase
 import data.local.dao.GameDao
 import data.local.dao.PlayerDao
@@ -16,7 +17,10 @@ import domain.models.errors.GetGameError
 import domain.models.errors.ResumeGameError
 import domain.repositories.GameRepository
 
-class GameRepositoryImpl(database : ApplicationDatabase) : GameRepository {
+class GameRepositoryImpl(
+    database : ApplicationDatabase,
+    private val logger : Logger
+) : GameRepository {
 
     private val playerDao: PlayerDao = database.playerDao()
     private val playerGameDao : PlayerGameDao = database.playerGameDao()
@@ -33,7 +37,7 @@ class GameRepositoryImpl(database : ApplicationDatabase) : GameRepository {
             Resource.Error(DeleteGameError.GameNotFound)
         }
         catch (e : Exception){
-            // Log.e(e.message, e.stackTraceToString())
+            logger.e(e)
             Resource.Error(DeleteGameError.UnknownError)
         }
     }
@@ -53,7 +57,7 @@ class GameRepositoryImpl(database : ApplicationDatabase) : GameRepository {
             Resource.Success(game)
         }
         catch (e: Exception) {
-            // Log.e(e.message, e.stackTraceToString())
+            logger.e(e)
             Resource.Error(CreateGameError.UnknownError)
         }
     }
@@ -70,11 +74,11 @@ class GameRepositoryImpl(database : ApplicationDatabase) : GameRepository {
             Resource.Success(Unit)
         }
         catch (e : NullPointerException){
-            // Log.e(e.message, e.stackTraceToString())
+            logger.e(e)
             Resource.Error(FinishGameError.GameNotFound)
         }
         catch (e : Exception){
-            // Log.e(e.message, e.stackTraceToString())
+            logger.e(e)
             Resource.Error(FinishGameError.UnknownError)
         }
     }
@@ -116,7 +120,7 @@ class GameRepositoryImpl(database : ApplicationDatabase) : GameRepository {
 
             Resource.Success(games)
         } catch (e : Exception){
-            // Log.e(e.message, e.stackTraceToString())
+            logger.e(e)
             Resource.Error(GetGameError.UnknownError)
         }
     }
@@ -157,7 +161,7 @@ class GameRepositoryImpl(database : ApplicationDatabase) : GameRepository {
             )
         }
         catch (e : Exception){
-            // Log.e(e.message, e.stackTraceToString())
+            logger.e(e)
             Resource.Error(GetGameError.UnknownError)
         }
     }
@@ -194,7 +198,7 @@ class GameRepositoryImpl(database : ApplicationDatabase) : GameRepository {
             )
         }
         catch (e : Exception){
-            // Log.e(e.message, e.stackTraceToString())
+            logger.e(e)
             Resource.Error(GetGameError.UnknownError)
         }
     }
@@ -209,7 +213,7 @@ class GameRepositoryImpl(database : ApplicationDatabase) : GameRepository {
             return Resource.Success(Unit)
         }
         catch (e : Exception){
-            // Log.e(e.message, e.stackTraceToString())
+            logger.e(e)
             Resource.Error(ResumeGameError.UnknownError)
         }
     }
