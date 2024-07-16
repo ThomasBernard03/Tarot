@@ -39,6 +39,8 @@ kotlin {
             api(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.composeVM)
+
+            implementation(libs.napier)
         }
         iosMain {
             // Fixes RoomDB Unresolved reference 'instantiateImpl' in iosMain

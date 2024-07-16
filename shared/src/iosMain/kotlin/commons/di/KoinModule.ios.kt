@@ -8,6 +8,8 @@ import kotlinx.coroutines.IO
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import data.local.instantiateImpl
+import io.github.aakira.napier.DebugAntilog
+import io.github.aakira.napier.Napier
 import kotlinx.cinterop.ExperimentalForeignApi
 import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSFileManager
@@ -40,5 +42,6 @@ private fun fileDirectory(): String {
 
 actual fun platformModule(): Module =
     module {
+        Napier.base(DebugAntilog())
         single<ApplicationDatabase> { getDatabaseBuilder() }
     }

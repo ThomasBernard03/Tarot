@@ -1,6 +1,7 @@
 package data.repositories
 
 import androidx.sqlite.SQLiteException
+import commons.Logger
 import data.local.ApplicationDatabase
 import data.local.dao.PlayerDao
 import data.local.entities.PlayerEntity
@@ -17,6 +18,7 @@ import domain.repositories.PlayerRepository
 
 class PlayerRepositoryImpl(
     database: ApplicationDatabase,
+    private val logger : Logger
 ) : PlayerRepository {
 
     private val playerDao: PlayerDao = database.playerDao()
@@ -34,7 +36,7 @@ class PlayerRepositoryImpl(
             Resource.Success(playersEntity)
         }
         catch (e : Exception){
-//            Napier.e(e) { "Error getting players" }
+            logger.e(e)
             Resource.Error(GetPlayersError.UnknownError)
         }
     }
@@ -51,13 +53,11 @@ class PlayerRepositoryImpl(
             return Resource.Success(PlayerModel(id = id, name = player.name, color = player.color))
         }
         catch (e : SQLiteException){
-            // Log.e(e.message, e.stackTraceToString())
+            logger.e(e)
             Resource.Error(CreatePlayerError.PlayerAlreadyExists)
         }
         catch (e : Exception){
-            // Log.e(e.message, e.stackTraceToString())
-            println(e.message)
-            println(e.printStackTrace())
+            logger.e(e)
             Resource.Error(CreatePlayerError.UnknownError)
         }
     }
@@ -69,15 +69,15 @@ class PlayerRepositoryImpl(
             Resource.Success(Unit)
         }
         catch (e : NullPointerException){
-            // Log.e(e.message, e.stackTraceToString())
+            logger.e(e)
             Resource.Error(DeletePlayerError.PlayerNotFound(id))
         }
         catch (e : SQLiteException){
-//            Log.e(e.message, e.stackTraceToString())
+            logger.e(e)
             Resource.Error(DeletePlayerError.PlayerHasGames)
         }
         catch (e : Exception){
-//            Log.e(e.message, e.stackTraceToString())
+            logger.e(e)
             Resource.Error(DeletePlayerError.UnknownError)
         }
     }
@@ -88,11 +88,11 @@ class PlayerRepositoryImpl(
             Resource.Success(PlayerModel(id = player.id!!, name = player.name, color = player.color))
         }
         catch (e : NullPointerException){
-//            Log.e(e.message, e.stackTraceToString())
+            logger.e(e)
             Resource.Error(GetPlayerError.PlayerNotFound)
         }
         catch (e : Exception){
-//            Log.e(e.message, e.stackTraceToString())
+            logger.e(e)
             Resource.Error(GetPlayerError.UnknownError)
         }
     }
@@ -110,15 +110,15 @@ class PlayerRepositoryImpl(
             Resource.Success(PlayerModel(id = player.id!!, name = player.name, color = player.color))
         }
         catch (e : SQLiteException){
-//            Log.e(e.message, e.stackTraceToString())
+            logger.e(e)
             Resource.Error(EditPlayerError.NameAlreadyTaken)
         }
         catch (e : NullPointerException){
-//            Log.e(e.message, e.stackTraceToString())
+            logger.e(e)
             Resource.Error(EditPlayerError.PlayerNotFound)
         }
         catch (e : Exception){
-//            Log.e(e.message, e.stackTraceToString())
+            logger.e(e)
             Resource.Error(EditPlayerError.UnknownError)
         }
     }

@@ -1,5 +1,6 @@
 package commons.di
 
+import commons.Logger
 import data.repositories.GameRepositoryImpl
 import data.repositories.PlayerRepositoryImpl
 import data.repositories.RoundRepositoryImpl
@@ -28,6 +29,7 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.bind
 import org.koin.dsl.module
+import commons.NapierLoggerImpl
 
 expect fun platformModule(): Module
 
@@ -38,17 +40,23 @@ fun initKoin(config: KoinAppDeclaration? = null){
             provideRepositories,
             provideUseCases,
             platformModule(),
+            loggerModule
         )
     }
 }
 
-val provideRepositories = module {
+private val loggerModule = module {
+    singleOf(::NapierLoggerImpl).bind(Logger::class)
+
+}
+
+private val provideRepositories = module {
     singleOf(::GameRepositoryImpl).bind(GameRepository::class)
     singleOf(::PlayerRepositoryImpl).bind(PlayerRepository::class)
     singleOf(::RoundRepositoryImpl).bind(RoundRepository::class)
 }
 
-val provideUseCases = module {
+private val provideUseCases = module {
     singleOf(::CreateGameUseCase)
     singleOf(::DeleteGameUseCase)
     singleOf(::FinishGameUseCase)

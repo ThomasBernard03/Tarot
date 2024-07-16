@@ -40,6 +40,8 @@ struct PlayersView: View {
             }
             .navigationTitle("Joueurs")
             .toolbar {
+                EditButton()
+                
                 Button(action: {
                     playerName = ""
                     selectedColor = nil
