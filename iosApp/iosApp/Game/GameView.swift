@@ -29,7 +29,14 @@ struct GameView: View {
                         .padding()
                         .multilineTextAlignment(.center)
                 } else {
-                    
+                    List {
+                        HStack {
+                            ForEach(currentGame!.players, id:\.id){ player in
+                                Text(player.name)
+                            }
+                        }
+                        
+                    }
                 }
             }
             .navigationTitle("Partie en cours")
@@ -82,6 +89,7 @@ struct GameView: View {
                             } else {
                                 selectedPlayers.insert(player)
                             }
+                            
                         }
                     }
 
