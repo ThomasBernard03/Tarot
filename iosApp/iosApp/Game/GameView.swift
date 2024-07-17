@@ -29,14 +29,24 @@ struct GameView: View {
                         .padding()
                         .multilineTextAlignment(.center)
                 } else {
-                    List {
-                        HStack {
+                    Grid {
+                        GridRow() {
                             ForEach(currentGame!.players, id:\.id){ player in
                                 Text(player.name)
+                                    .onTapGesture {
+                                        print(player.name + " tapped")
+                                    }
                             }
                         }
-                        
+                        Divider()
+                        ForEach(currentGame!.rounds, id:\.id){ round in
+                            GridRow {
+                                Text(round.bid.name)
+                            }
+                        }
                     }
+                    .padding(.top)
+                    Spacer()
                 }
             }
             .navigationTitle("Partie en cours")
@@ -63,52 +73,16 @@ struct GameView: View {
                             .labelStyle(.iconOnly)
                     }
                 }
-
             }
             .sheet(isPresented: $showNewGameSheet) {
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Nouvelle partie")
-                        .font(.title2)
-                        .padding()
-                    
-                    Text("Sélectionner les joueurs à ajouter dans la partie")
-                        .font(.title3)
-                        .padding(.horizontal)
-                    
-                    List(players, id: \.id) { player in
-                        HStack(spacing: 12) {
-                            Image(systemName: selectedPlayers.contains(player) ? "checkmark.circle.fill" : "circle")
-                                .foregroundColor(selectedPlayers.contains(player) ? player.color.toColor() : .gray)
-                            Text(player.name)
-                            Spacer()
-                        }
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            if selectedPlayers.contains(player) {
-                                selectedPlayers.remove(player)
-                            } else {
-                                selectedPlayers.insert(player)
-                            }
-                            
+                NewGameSheet(players: $players, selectedPlayers: $selectedPlayers) {
+                    createGameUseCase.invoke(players: Array(selectedPlayers)) { result, _ in
+                        if result?.isSuccess() ?? false {
+                            currentGame = result?.getOrNull()
                         }
                     }
-
-                    Button(action: {
-                        createGameUseCase.invoke(players: players) { result, _ in
-                            if result?.isSuccess() ?? false {
-                                currentGame = result?.getOrNull()
-                            }
-                        }
-                        
-                        showNewGameSheet.toggle()
-                    }) {
-                        Text("Démarrer la partie")
-                            .frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
-                    .disabled(selectedPlayers.isEmpty)
-                    .padding([.horizontal, .bottom])
+                    
+                    showNewGameSheet.toggle()
                 }
                 .onAppear {
                     getPlayersUseCase.invoke { result, _ in

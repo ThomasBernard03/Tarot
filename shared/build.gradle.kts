@@ -46,6 +46,9 @@ kotlin {
             // Fixes RoomDB Unresolved reference 'instantiateImpl' in iosMain
             kotlin.srcDir("build/generated/ksp/metadata")
         }
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
+        }
     }
 }
 

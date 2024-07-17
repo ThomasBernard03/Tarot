@@ -21,3 +21,5 @@ Keystore
 /composeApp/build
 /composeApp/build
 /iosApp/iosApp.xcodeproj/project.xcworkspace/xcuserdata
+*.apk
+/composeApp/release

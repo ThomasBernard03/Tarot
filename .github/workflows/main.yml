@@ -37,8 +37,8 @@ jobs:
       - name: Find APK and AAB files
         id: find_files
         run: |
-          APK_PATH=$(find . -name "app-release.apk" | head -n 1)
-          AAB_PATH=$(find . -name "app-release.aab" | head -n 1)
+          APK_PATH=$(find . -name "composeApp-release.apk" | head -n 1)
+          AAB_PATH=$(find . -name "composeApp-release.aab" | head -n 1)
           echo "APK_PATH=$APK_PATH" >> $GITHUB_ENV
           echo "AAB_PATH=$AAB_PATH" >> $GITHUB_ENV
       - name: Upload APK to Artifacts
