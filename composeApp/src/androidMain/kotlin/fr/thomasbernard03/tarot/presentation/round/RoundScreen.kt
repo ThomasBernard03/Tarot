@@ -181,7 +181,7 @@ fun RoundScreen(
                 }
             }
 
-            AnimatedVisibility(visible = state.players.size == 5) {
+            AnimatedVisibility(visible = state.players.size >= 5) {
                 Column {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
