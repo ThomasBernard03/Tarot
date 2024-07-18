@@ -27,6 +27,7 @@ jobs:
         run: |
           echo $ENCODED_STRING > keystore-b64.txt
           base64 -d keystore-b64.txt > Keystore
+
       - name: Build Release apk and aab
         env:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -35,7 +36,7 @@ jobs:
         run: ./gradlew assembleRelease bundleRelease --stacktrace
 
       - name: List files
-        run: ls composeApp
+        run: ls composeApp/build
 
       - name: Print
         run: pwd 
