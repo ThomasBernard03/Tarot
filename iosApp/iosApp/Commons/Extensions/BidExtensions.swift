@@ -14,4 +14,22 @@ extension Bid {
     static func all() -> [Bid] {
         return [Bid.small, Bid.guard, Bid.guardWithout, Bid.guardAgainst]
     }
+    
+    
+    func toLabel() -> String {
+        if self == Bid.small {
+            return "Petite"
+        }
+        else if self == Bid.guard {
+            return "Garde"
+        }
+        else if self == Bid.guardWithout {
+            return "Garde sans"
+        }
+        else if self == Bid.guardAgainst {
+            return "Garde contre"
+        }
+        
+        return ""
+    }
 }

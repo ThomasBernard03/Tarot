@@ -23,12 +23,7 @@ struct GameView: View {
     @State private var selectedPlayers = Set<PlayerModel>()
     @State private var currentGame: GameModel? = nil
     
-    @State private var taker: PlayerModel? = nil
-    @State private var bid: Bid = Bid.small
-    @State private var calledPlayer: PlayerModel? = nil
-    @State private var oudler: Oudler? = nil
-    @State private var points: Double = 0
-    @State private var attackSide: Bool = true
+
     
     var body: some View {
         NavigationStack {
@@ -105,88 +100,10 @@ struct GameView: View {
             }
             .sheet(isPresented: $showNewRoundSheet){
                 
-                
-                
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Nouveau tour")
-                        .font(.title2)
-                        .padding()
+                NewRoundSheet(players:currentGame!.players){taker,bid,calledPlayer,oudlers,points in 
                     
-                    Form {
-                        Section("General") {
-                            Picker("Preneur",selection: $taker) {
-                                Text("").tag(Optional<PlayerModel>(nil))
-                                ForEach(currentGame!.players, id: \.id) {
-                                    Text($0.name).tag(Optional($0))
-                               }
-                             }.pickerStyle(.menu)
-                            
-                            Picker("Contrat",selection: $bid) {
-                                ForEach(Bid.all(), id: \.self) {
-                                    Text($0.name).tag($0)
-                                }
-                             }.pickerStyle(.menu)
-           
-                            
-                            if(currentGame!.players.count >= 5){
-                                Picker("Joueur appelé",selection: $calledPlayer) {
-                                    Text("").tag(Optional<PlayerModel>(nil))
-                                    ForEach(currentGame!.players, id: \.id) {
-                                        Text($0.name).tag(Optional($0))
-                                    }
-                                 }.pickerStyle(.menu)
-                            }
-                            
-                            Picker("Bouts",selection: $oudler) {
-                                Text("").tag(Optional<Oudler>(nil))
-                                ForEach(Oudler.all(), id: \.self) {
-                                    Text($0.name).tag(Optional($0))
-                                }
-                             }.pickerStyle(.menu)
-                            
-                            
-                        }
-                        
-                        Section("Points"){
-                            Group {
-                                VStack {
-                                    Picker("",selection: $attackSide) {
-                                        Text("Attaque").tag(true)
-                                        Text("Défense").tag(false)
-                                    }.pickerStyle(.segmented)
-                                    
-                                    Text(String(points))
-                                        .font(.title)
-                                    
-                                    
-                                    Slider(value: $points, in: 0...91)
-                                }
-                            }
-                        }
-                        
-                        
-                        
-                        Section("Bonus"){
-                            
-                        }
-                    }
-                    
-
-                    
-
-                    Button(action: {
-                        createRoundUseCase.invoke(gameId: currentGame!.id, taker: taker!, playerCalled: calledPlayer, bid: bid, oudlers: [oudler!], points: 51){ result, error in
-                            
-                        }
-                    }) {
-                        Text("Ajouter le tour")
-                            .frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
-                    .disabled(taker == nil)
-                    .padding([.horizontal, .bottom])
                 }
+ 
             }
             .onAppear {
                 getCurrentGameUseCase.invoke { result, _ in

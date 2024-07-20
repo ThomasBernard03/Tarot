@@ -14,4 +14,23 @@ extension Oudler {
     static func all() -> [Oudler] {
         return [Oudler.petit, Oudler.excuse, Oudler.grand]
     }
+    
+    
+}
+
+extension Array where Element == Oudler {
+    func getRequiredPoints() -> Int {
+        switch self.count {
+        case 0:
+            return 56
+        case 1:
+            return 51
+        case 2:
+            return 41
+        case 3:
+            return 36
+        default:
+            return 0
+        }
+    }
 }
