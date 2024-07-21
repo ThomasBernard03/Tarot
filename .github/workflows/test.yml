@@ -36,7 +36,7 @@ jobs:
         run: ./gradlew assembleRelease bundleRelease --stacktrace
 
       - name: List files
-        run: ls composeApp/build
+        run: ls composeApp
 
       - name: Print
         run: pwd 
