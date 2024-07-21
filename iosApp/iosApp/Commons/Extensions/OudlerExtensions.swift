@@ -16,7 +16,23 @@ extension Oudler {
     }
     
     
+    func toLabel() -> String {
+        if self == Oudler.petit {
+            return "1"
+        }
+        if self == Oudler.excuse {
+            return "*"
+        }
+        if self == Oudler.grand {
+            return "21"
+        }
+        
+        return ""
+    }
+
 }
+
+
 
 extension Array where Element == Oudler {
     func getRequiredPoints() -> Int {

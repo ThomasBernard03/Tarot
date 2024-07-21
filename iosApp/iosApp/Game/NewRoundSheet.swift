@@ -8,6 +8,7 @@
 
 import SwiftUI
 import Shared
+import MultiPicker
 
 struct NewRoundSheet: View {
     var players : [PlayerModel]
@@ -16,10 +17,9 @@ struct NewRoundSheet: View {
     @State private var taker: PlayerModel
     @State private var bid: Bid = Bid.small
     @State private var calledPlayer: PlayerModel
-    @State private var numberOfOudlers: Int = 0
     @State private var points: Double = 0
     @State private var attackSide: Bool = true
-    @State private var oudlers : [Oudler] = []
+    @State private var oudlers : Set<Oudler> = []
     
     init(players: [PlayerModel], onCreateRound: @escaping (_ taker : PlayerModel, _ bid : Bid, _ calledPlayer : PlayerModel?, _ oudlers : [Oudler], _ points : Int) -> Void) {
         self.players = players
@@ -54,11 +54,12 @@ struct NewRoundSheet: View {
                              }.pickerStyle(.menu)
                         }
                         
-                        Picker("Bouts",selection: $numberOfOudlers) {
-                            ForEach([0, 1, 2, 3], id: \.self) {
-                                Text(String($0)).tag($0)
+                        MultiPicker("Bouts", selection: $oudlers){
+                            ForEach(Oudler.all(), id: \.self){
+                                Text($0.name).mpTag($0)
                             }
-                         }.pickerStyle(.menu)
+                        }
+                        .mpPickerStyle(.navigationLink)
                         
                         
                     }
@@ -74,7 +75,7 @@ struct NewRoundSheet: View {
                                 Text(String(format: "%.0f", points))
                                     .font(.system(size: 52))
                                 
-                                let attackScore = Int(points) - Oudler.all().getRequiredPoints()
+                                let attackScore = Int(points) - Array($oudlers.wrappedValue).getRequiredPoints()
                                 
                                 Text(String(attackScore))
                                     .font(.title3)
@@ -120,7 +121,12 @@ struct NewRoundSheet: View {
 
                 
 
-                Button(action: { onCreateRound(taker, bid, calledPlayer, oudlers, Int(points)) }) {
+                Button(
+                    action: {
+                        let calledPlayer = players.count >= 5 ? calledPlayer : nil
+                        onCreateRound(taker, bid, calledPlayer, Array(oudlers), Int(points))
+                    }
+                ) {
                     Text("Ajouter le tour")
                         .frame(maxWidth: .infinity)
                 }

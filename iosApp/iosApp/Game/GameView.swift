@@ -36,8 +36,63 @@ struct GameView: View {
                     VStack {
                         
                         List(currentGame!.rounds, id: \.id){ round in
-                            HStack {
-                                // Text(round.bi)
+                            NavigationLink(destination: EmptyView()) {
+                                HStack {
+                                    ZStack(alignment:.bottomTrailing) {
+                                        ZStack {
+                                            Circle()
+                                                .foregroundColor(round.taker.color.toColor())
+                                                .frame(width: 40, height: 40)
+                                            Text("" + round.taker.name.uppercased().prefix(1))
+                                                .foregroundColor(.white)
+                                        }.padding(.trailing, 5)
+                                        
+                                        if(round.calledPlayer != nil && round.taker != round.calledPlayer) {
+                                            ZStack {
+                                                Circle()
+                                                    .foregroundColor(round.calledPlayer!.color.toColor())
+                                                    .frame(width: 25, height: 25)
+                                                Text("" + round.calledPlayer!.name.uppercased().prefix(1))
+                                                    .foregroundColor(.white)
+                                                    .font(.system(size: 12))
+                                            }
+                                            .shadow(radius: 1)
+                                        }
+                                       
+                                    }
+                                    // Text(round.bi)
+                                    
+                                    ForEach(round.oudlers, id: \.self){ oudler in
+                                        OudlerView(oudler: oudler)
+                                    }
+                                    
+                                    Text(round.bid.toLabel())
+                                    
+                                    
+                                    Spacer()
+                                    
+                                    VStack(alignment:.trailing) {
+                                        let takerScore = ConstantsKt.calculateTakerScore(points: round.points, bid: round.bid, oudlers: Int32(round.oudlers.count), calledHimSelf: round.calledPlayer == round.taker)
+                                        
+                                        
+                                        Text(String(takerScore))
+                                            .foregroundColor(takerScore >= 0 ? Color.green : Color.red)
+                                            .padding(.trailing, 5)
+                                            .fontWeight(.bold)
+                                        
+                                        if (round.calledPlayer != nil && round.calledPlayer != round.taker){
+                                            let calledPlayerScore = ConstantsKt.calculatePartnerScore(takerScore: takerScore)
+                                            
+                                            Text(String(calledPlayerScore))
+                                                .foregroundColor(calledPlayerScore >= 0 ? Color.green : Color.red)
+                                                .padding(.trailing, 5)
+                                                .font(.system(size: 12))
+                                    }
+                                    
+                     
+                                    }
+                                    
+                                }
                             }
                         }
                     }
@@ -100,8 +155,15 @@ struct GameView: View {
             }
             .sheet(isPresented: $showNewRoundSheet){
                 
-                NewRoundSheet(players:currentGame!.players){taker,bid,calledPlayer,oudlers,points in 
-                    
+                NewRoundSheet(players:currentGame!.players){ taker, bid, calledPlayer, oudlers, points in
+                    createRoundUseCase.invoke(gameId: currentGame!.id, taker: taker, playerCalled: calledPlayer, bid: bid, oudlers: oudlers, points: Int32(points)) { result, _ in
+                        if result?.isSuccess() ?? false {
+                            
+                            let newRounds = currentGame!.rounds + [result?.getOrNull()!]
+                            //currentGame?.rounds = newRounds
+                            showNewRoundSheet = false
+                        }
+                    }
                 }
  
             }
