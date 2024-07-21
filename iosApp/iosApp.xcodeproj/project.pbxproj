@@ -12,6 +12,7 @@
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
 		814D210A2C4C0E3E00A5521D /* OudlerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814D21092C4C0E3E00A5521D /* OudlerView.swift */; };
+		814D210C2C4D6B2C00A5521D /* RoundListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814D210B2C4D6B2C00A5521D /* RoundListItemView.swift */; };
 		815A0DB72C46430800F6328F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815A0DB62C46430800F6328F /* SettingsView.swift */; };
 		815A0DB92C46431400F6328F /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815A0DB82C46431400F6328F /* HistoryView.swift */; };
 		816F4FB62C4B938B004FC79B /* NewRoundSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816F4FB52C4B938B004FC79B /* NewRoundSheet.swift */; };
@@ -33,6 +34,7 @@
 		7555FF82242A565900829871 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		814D21092C4C0E3E00A5521D /* OudlerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OudlerView.swift; sourceTree = "<group>"; };
+		814D210B2C4D6B2C00A5521D /* RoundListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundListItemView.swift; sourceTree = "<group>"; };
 		815A0DB62C46430800F6328F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		815A0DB82C46431400F6328F /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		816F4FB52C4B938B004FC79B /* NewRoundSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRoundSheet.swift; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 				81C625712C47D48600CCDD39 /* NewGameSheet.swift */,
 				816F4FB52C4B938B004FC79B /* NewRoundSheet.swift */,
 				814D21092C4C0E3E00A5521D /* OudlerView.swift */,
+				814D210B2C4D6B2C00A5521D /* RoundListItemView.swift */,
 			);
 			path = Game;
 			sourceTree = "<group>";
@@ -291,6 +294,7 @@
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
 				7555FF83242A565900829871 /* ContentView.swift in Sources */,
 				815A0DB72C46430800F6328F /* SettingsView.swift in Sources */,
+				814D210C2C4D6B2C00A5521D /* RoundListItemView.swift in Sources */,
 				8182F93E2C452E2000738D85 /* PlayersView.swift in Sources */,
 				81B591CB2C49A777000CB7F9 /* OudlerExtensions.swift in Sources */,
 				81C625722C47D48600CCDD39 /* NewGameSheet.swift in Sources */,
