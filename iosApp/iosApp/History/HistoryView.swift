@@ -12,6 +12,7 @@ import Shared
 struct HistoryView: View {
     private let getGameHistoryUseCase = GetGameHistoryUseCase()
     private let deleteGameUseCase = DeleteGameUseCase()
+    private let resumeGameUseCase = ResumeGameUseCase()
     
     @State private var games: [GameModel] = []
     
@@ -42,6 +43,14 @@ struct HistoryView: View {
                                     // Text(date.timeIntervalSinceNow)
                                     
                                 }
+                            }
+                            .swipeActions(edge:.leading){
+                                Button(action: { resumeGameUseCase.invoke(id: game.id) { result, _ in
+                                    
+                                } }){
+                                    Label("Reprendre la partie", systemImage: "play.circle")
+                                }
+                                .tint(.indigo)
                             }
                         }
                         .onDelete { index in
