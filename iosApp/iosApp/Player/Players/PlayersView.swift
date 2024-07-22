@@ -3,26 +3,27 @@ import Toast
 import Shared
 
 struct PlayersView: View {
-    private let getPlayersUseCase = GetPlayersUseCase()
-    private let createPlayerUseCase = CreatePlayerUseCase()
-    private let deletePlayerUseCase = DeletePlayerUseCase()
     
-    @State private var players: [PlayerModel] = []
+    private let createPlayerUseCase = CreatePlayerUseCase()
+    
+    
     @State private var error: String?
     
     @State private var showNewPlayerSheet = false
     @State private var playerName : String = ""
     @State private var selectedColor : PlayerColor? = nil
+    
+    @State private var viewModel = ViewModel()
 
     var body: some View {
         NavigationStack {
             VStack(alignment:.center) {
-                if players.isEmpty {
+                if viewModel.players.isEmpty {
                     Text("Créez un nouveau joueur pour commencer")
                 }
                 else {
                     List {
-                        ForEach(players, id:\.id){ player in
+                        ForEach(viewModel.players, id:\.id){ player in
                             NavigationLink(destination: PlayerView(id: player.id, name: player.name)) {
                                 Label(
                                     title: { Text(player.name) },
@@ -30,37 +31,11 @@ struct PlayersView: View {
                                 )
                             }
                             .swipeActions(edge:.trailing){
-                                Button(
-                                    action: {
-                                        deletePlayerUseCase.invoke(id: player.id) { result, _ in
-                                            if result?.isSuccess() ?? false {
-                                                if let index = players.firstIndex(where: { $0.id == player.id }) {
-                                                    DispatchQueue.main.async {
-                                                        players.remove(at: index)
-                                                    }
-                                                }
-                                            }
-                                            else {
-                                                DispatchQueue.main.async {
-                                                    let toast = Toast.default(
-                                                        image: UIImage(systemName: "xmark.circle")!,
-                                                        title: "Impossible de supprimer le joueur",
-                                                        subtitle: "Il a participé à des parties"
-                                                    )
-                                                    toast.show()
-                                                }
-                                            }
-                                        }
-                                    }
-                                ){
+                                Button(action: { viewModel.deletePlayer(player: player)}){
                                     Label("Supprimer le joueur", systemImage: "trash")
                                 }
                                 .tint(.red)
                             }
-                        }
-                        
-                        .onDelete { index in
-
                         }
                     }
                 }
@@ -77,15 +52,8 @@ struct PlayersView: View {
                     Label("Add player", systemImage: "plus")
                         .labelStyle(.iconOnly)
                 }
-           
             }
-            .onAppear {
-                getPlayersUseCase.invoke { result, error in
-                    if result?.isSuccess() ?? false {
-                        players = result?.getOrNull() as! [PlayerModel]
-                    }
-                }
-            }
+            .onAppear { viewModel.getPlayers() }
             .sheet(isPresented: $showNewPlayerSheet){
                 VStack(alignment:.leading, spacing: 12) {
                     Text("Création d'un joueur")
@@ -123,7 +91,7 @@ struct PlayersView: View {
                         createPlayerUseCase.invoke(player: player){ result, _ in
                             
                             if result?.isSuccess() ?? false {
-                                players.append((result?.getOrNull()!)!)
+                                viewModel.players.append((result?.getOrNull()!)!)
                             }
                            
                         }
@@ -139,7 +107,6 @@ struct PlayersView: View {
                 }
                 .presentationDetents([.height(300)])
             }
-            
         }
     }
 }

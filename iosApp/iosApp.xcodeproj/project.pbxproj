@@ -11,6 +11,7 @@
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
+		8127D2472C4EBB6D00ECBBFD /* PlayersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8127D2462C4EBB6D00ECBBFD /* PlayersViewModel.swift */; };
 		814D210A2C4C0E3E00A5521D /* OudlerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814D21092C4C0E3E00A5521D /* OudlerView.swift */; };
 		814D210C2C4D6B2C00A5521D /* RoundListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814D210B2C4D6B2C00A5521D /* RoundListItemView.swift */; };
 		815A0DB72C46430800F6328F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815A0DB62C46430800F6328F /* SettingsView.swift */; };
@@ -34,6 +35,7 @@
 		7555FF7B242A565900829871 /* Tarot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tarot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF82242A565900829871 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8127D2462C4EBB6D00ECBBFD /* PlayersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersViewModel.swift; sourceTree = "<group>"; };
 		814D21092C4C0E3E00A5521D /* OudlerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OudlerView.swift; sourceTree = "<group>"; };
 		814D210B2C4D6B2C00A5521D /* RoundListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundListItemView.swift; sourceTree = "<group>"; };
 		815A0DB62C46430800F6328F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				8182F93D2C452E2000738D85 /* PlayersView.swift */,
+				8127D2462C4EBB6D00ECBBFD /* PlayersViewModel.swift */,
 			);
 			path = Players;
 			sourceTree = "<group>";
@@ -304,6 +307,7 @@
 				81C625722C47D48600CCDD39 /* NewGameSheet.swift in Sources */,
 				818520652C4665CB001BAB49 /* GameView.swift in Sources */,
 				816F4FB62C4B938B004FC79B /* NewRoundSheet.swift in Sources */,
+				8127D2472C4EBB6D00ECBBFD /* PlayersViewModel.swift in Sources */,
 				81EB95542C45B3B60039A5A7 /* PlayerView.swift in Sources */,
 				81B591C92C49A5BE000CB7F9 /* BidExtensions.swift in Sources */,
 			);
@@ -365,7 +369,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -422,7 +426,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -446,7 +450,7 @@
 					"$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)",
 				);
 				INFOPLIST_FILE = iosApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -473,7 +477,7 @@
 					"$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)",
 				);
 				INFOPLIST_FILE = iosApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
