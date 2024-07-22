@@ -12,6 +12,7 @@
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
 		8127D2472C4EBB6D00ECBBFD /* PlayersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8127D2462C4EBB6D00ECBBFD /* PlayersViewModel.swift */; };
+		8127D2492C4EE37B00ECBBFD /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8127D2482C4EE37B00ECBBFD /* HistoryViewModel.swift */; };
 		814D210A2C4C0E3E00A5521D /* OudlerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814D21092C4C0E3E00A5521D /* OudlerView.swift */; };
 		814D210C2C4D6B2C00A5521D /* RoundListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814D210B2C4D6B2C00A5521D /* RoundListItemView.swift */; };
 		815A0DB72C46430800F6328F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815A0DB62C46430800F6328F /* SettingsView.swift */; };
@@ -36,6 +37,7 @@
 		7555FF82242A565900829871 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8127D2462C4EBB6D00ECBBFD /* PlayersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersViewModel.swift; sourceTree = "<group>"; };
+		8127D2482C4EE37B00ECBBFD /* HistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModel.swift; sourceTree = "<group>"; };
 		814D21092C4C0E3E00A5521D /* OudlerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OudlerView.swift; sourceTree = "<group>"; };
 		814D210B2C4D6B2C00A5521D /* RoundListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundListItemView.swift; sourceTree = "<group>"; };
 		815A0DB62C46430800F6328F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				815A0DB82C46431400F6328F /* HistoryView.swift */,
+				8127D2482C4EE37B00ECBBFD /* HistoryViewModel.swift */,
 			);
 			path = History;
 			sourceTree = "<group>";
@@ -310,6 +313,7 @@
 				8127D2472C4EBB6D00ECBBFD /* PlayersViewModel.swift in Sources */,
 				81EB95542C45B3B60039A5A7 /* PlayerView.swift in Sources */,
 				81B591C92C49A5BE000CB7F9 /* BidExtensions.swift in Sources */,
+				8127D2492C4EE37B00ECBBFD /* HistoryViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

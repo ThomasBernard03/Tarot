@@ -18,14 +18,14 @@ extension PlayersView {
         private let deletePlayerUseCase = DeletePlayerUseCase()
         private let createPlayerUseCase = CreatePlayerUseCase()
         
-        var players = [PlayerModel]()
-        
+        private(set) var players = [PlayerModel]()
         
         func getPlayers(){
-            getPlayersUseCase.invoke { result, _ in
+            Task {
+                let result = try! await self.getPlayersUseCase.invoke()
                 DispatchQueue.main.async {
-                    if result?.isSuccess() ?? false {
-                        self.players = (result?.getOrNull() ?? []) as! [PlayerModel]
+                    if result.isSuccess() {
+                        self.players = (result.getOrNull() ?? []) as! [PlayerModel]
                     }
                     else {
                         let toast = Toast.default(
@@ -39,9 +39,10 @@ extension PlayersView {
         }
         
         func deletePlayer(player : PlayerModel){
-            deletePlayerUseCase.invoke(id: player.id) { result, _ in
+            Task {
+                let result = try! await deletePlayerUseCase.invoke(id: player.id)
                 DispatchQueue.main.async {
-                    if result?.isSuccess() ?? false {
+                    if result.isSuccess() {
                         let index = self.players.firstIndex(of: player)!
                         self.players.remove(at: index)
                     }
@@ -58,11 +59,13 @@ extension PlayersView {
         }
         
         func createPlayer(name : String, color : PlayerColor){
-            let player = CreatePlayerModel(name: name, color: color)
-            createPlayerUseCase.invoke(player: player){ result, _ in
+            Task {
+                let player = CreatePlayerModel(name: name, color: color)
+                let result = try! await createPlayerUseCase.invoke(player: player)
+                
                 DispatchQueue.main.async {
-                    if result?.isSuccess() ?? false {
-                        self.players.append((result?.getOrNull()!)!)
+                    if result.isSuccess() {
+                        self.players.append((result.getOrNull()!))
                     }
                     else {
                         let toast = Toast.default(

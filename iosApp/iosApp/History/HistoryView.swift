@@ -10,21 +10,18 @@ import SwiftUI
 import Shared
 
 struct HistoryView: View {
-    private let getGameHistoryUseCase = GetGameHistoryUseCase()
-    private let deleteGameUseCase = DeleteGameUseCase()
-    private let resumeGameUseCase = ResumeGameUseCase()
     
-    @State private var games: [GameModel] = []
+    @State private var viewModel = ViewModel()    
     
     var body: some View {
         NavigationView {
             VStack(alignment:.center) {
-                if games.isEmpty {
+                if viewModel.games.isEmpty {
                     Text("Aucune partie réalisée")
                 }
                 else {
                     List {
-                        ForEach(games, id: \.id){ game in
+                        ForEach(viewModel.games, id: \.id){ game in
                             NavigationLink(destination: { EmptyView() }) {
                                 HStack(spacing: 2) {
                                     ForEach(game.players, id : \.id){ player in
@@ -45,22 +42,15 @@ struct HistoryView: View {
                                 }
                             }
                             .swipeActions(edge:.leading){
-                                Button(action: { resumeGameUseCase.invoke(id: game.id) { result, _ in
-                                    
-                                } }){
+                                Button(action: { viewModel.resumeGame(game: game) }){
                                     Label("Reprendre la partie", systemImage: "play.circle")
                                 }
                                 .tint(.indigo)
                             }
                         }
                         .onDelete { index in
-                            let game = games[index.first!]
-                            
-                            deleteGameUseCase.invoke(id: game.id) { result, _ in
-                                if result?.isSuccess() ?? false {
-                                    games.remove(atOffsets: index)
-                                }
-                            }
+                            let game = viewModel.games[index.first!]
+                            viewModel.deleteGame(game: game)
                         }
                     }
                 }
@@ -69,13 +59,7 @@ struct HistoryView: View {
             .toolbar {
                 EditButton()
             }
-            .onAppear {
-                getGameHistoryUseCase.invoke { result, _ in
-                    if result?.isSuccess() ?? false {
-                        games = result?.getOrNull() as! [GameModel]
-                    }
-                }
-            }
+            .onAppear { viewModel.getGameHistory() }
         }
     }
 }

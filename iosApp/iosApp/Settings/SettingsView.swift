@@ -9,7 +9,6 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @State private var isAlwaysOnDisplay : Bool = false
     @Environment(\.openURL) var openURL
     
     private var appVersion: String {
