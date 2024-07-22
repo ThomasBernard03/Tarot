@@ -48,24 +48,6 @@ struct SettingsView: View {
                     }
                 }
                 
-                Section("Préférences"){
-                    HStack {
-                        Image(systemName: "sun.max").foregroundColor(.primary)
-                        Toggle(isOn: $isAlwaysOnDisplay) {
-                            Text("Laisser l'appareil allumé")
-                        }
-                        
-                    }
-                    Label(
-                        title: { Text("Appareance") },
-                        icon: { Image(systemName: "moon").foregroundColor(.primary) }
-                    )
-                    Label(
-                        title: { Text("Langue") },
-                        icon: { Image(systemName: "globe") }
-                    )
-                }
-                
                 Section("Autres"){
                     Label(
                         title: { Text("Tarot iOS \(appVersion) (\(appBuild))") },

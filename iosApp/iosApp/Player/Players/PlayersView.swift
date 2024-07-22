@@ -1,4 +1,5 @@
 import SwiftUI
+import Toast
 import Shared
 
 struct PlayersView: View {
@@ -28,12 +29,38 @@ struct PlayersView: View {
                                     icon: { Image(systemName: "circle.fill").foregroundColor(player.color.toColor()) }
                                 )
                             }
-                        }
-                        .onDelete { index in
-                            let player = players[index.first!]
-                            deletePlayerUseCase.invoke(id: player.id) { result, _ in
-                                players.remove(atOffsets: index)
+                            .swipeActions(edge:.trailing){
+                                Button(
+                                    action: {
+                                        deletePlayerUseCase.invoke(id: player.id) { result, _ in
+                                            if result?.isSuccess() ?? false {
+                                                if let index = players.firstIndex(where: { $0.id == player.id }) {
+                                                    DispatchQueue.main.async {
+                                                        players.remove(at: index)
+                                                    }
+                                                }
+                                            }
+                                            else {
+                                                DispatchQueue.main.async {
+                                                    let toast = Toast.default(
+                                                        image: UIImage(systemName: "xmark.circle")!,
+                                                        title: "Impossible de supprimer le joueur",
+                                                        subtitle: "Il a participé à des parties"
+                                                    )
+                                                    toast.show()
+                                                }
+                                            }
+                                        }
+                                    }
+                                ){
+                                    Label("Supprimer le joueur", systemImage: "trash")
+                                }
+                                .tint(.red)
                             }
+                        }
+                        
+                        .onDelete { index in
+
                         }
                     }
                 }

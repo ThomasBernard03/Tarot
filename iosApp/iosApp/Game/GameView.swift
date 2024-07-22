@@ -22,6 +22,7 @@ struct GameView: View {
     @State private var players: [PlayerModel] = []
     @State private var selectedPlayers = Set<PlayerModel>()
     @State private var currentGame: GameModel? = nil
+    @State private var showFinishGameConfirmationAlert : Bool = false
     
 
     
@@ -36,9 +37,9 @@ struct GameView: View {
                     Form {
                         Section("Résultats"){
                             List {
-                                ForEach(currentGame!.calculateScore().sorted { Int($0.second!) > Int($1.second!) }, id: \.first!.id) { playerScore in
+                                ForEach(currentGame!.calculateScore().sorted { Int(truncating: $0.second!) > Int(truncating: $1.second!) }, id: \.first!.id) { playerScore in
                                     
-                                    let index = currentGame!.calculateScore().sorted { Int($0.second!) > Int($1.second!) }.firstIndex { $0.first!.id == playerScore.first!.id }!
+                                    let index = currentGame!.calculateScore().sorted { Int(truncating: $0.second!) > Int(truncating: $1.second!) }.firstIndex { $0.first!.id == playerScore.first!.id }!
                                     
                                     HStack {
                                         ZStack {
@@ -66,8 +67,9 @@ struct GameView: View {
                                         }
              
                                         
-                                        Text(String(Int(playerScore.second!)))
-                                            .foregroundColor(Int(playerScore.second!) >= 0 ? Color.green : Color.red)
+                                        Text(String(Int(truncating: playerScore.second!)))
+                                            .foregroundColor(Int(truncating: playerScore.second!) >= 0 ? Color.green : Color.red)
+                                            .frame(width:50)
                                     }
                                 }
                             }
@@ -95,16 +97,7 @@ struct GameView: View {
                     }
                 }
                 else {
-                    Button(
-                        action: {
-                        finishGameUseCase.invoke(gameId: currentGame!.id) { result, _ in
-                            if result?.isSuccess() ?? false {
-                                currentGame = nil
-                            }
-                        }
-                        
-                        }
-                    ) {
+                    Button(action: { showFinishGameConfirmationAlert.toggle() }) {
                         Label("Terminer la partie", systemImage: "flag.checkered")
                             .labelStyle(.iconOnly)
                     }
@@ -157,6 +150,16 @@ struct GameView: View {
                         currentGame = result?.getOrNull()
                     }
                 }
+            }
+            .alert("Voulez-vous terminer la partie ?", isPresented: $showFinishGameConfirmationAlert){
+                Button("Terminer", role:.destructive){
+                    finishGameUseCase.invoke(gameId: currentGame!.id) { result, _ in
+                        if result?.isSuccess() ?? false {
+                            currentGame = nil
+                        }
+                    }
+                }
+                Button("Annuler", role: .cancel) { }
             }
         }
     }
