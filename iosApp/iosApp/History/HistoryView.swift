@@ -14,7 +14,7 @@ struct HistoryView: View {
     @State private var viewModel = ViewModel()    
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(alignment:.center) {
                 if viewModel.games.isEmpty {
                     Text("Aucune partie réalisée")
@@ -22,7 +22,7 @@ struct HistoryView: View {
                 else {
                     List {
                         ForEach(viewModel.games, id: \.id){ game in
-                            NavigationLink(destination: { EmptyView() }) {
+                            NavigationLink(destination: { HistoryGameView(game: game) }) {
                                 HStack(spacing: 2) {
                                     ForEach(game.players, id : \.id){ player in
                                         ZStack {

@@ -13,6 +13,8 @@
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
 		8127D2472C4EBB6D00ECBBFD /* PlayersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8127D2462C4EBB6D00ECBBFD /* PlayersViewModel.swift */; };
 		8127D2492C4EE37B00ECBBFD /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8127D2482C4EE37B00ECBBFD /* HistoryViewModel.swift */; };
+		8127D24B2C4EEE3100ECBBFD /* HistoryGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8127D24A2C4EEE3100ECBBFD /* HistoryGameView.swift */; };
+		8127D24E2C4EEEA900ECBBFD /* GameResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8127D24D2C4EEEA900ECBBFD /* GameResultView.swift */; };
 		814D210A2C4C0E3E00A5521D /* OudlerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814D21092C4C0E3E00A5521D /* OudlerView.swift */; };
 		814D210C2C4D6B2C00A5521D /* RoundListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814D210B2C4D6B2C00A5521D /* RoundListItemView.swift */; };
 		815A0DB72C46430800F6328F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815A0DB62C46430800F6328F /* SettingsView.swift */; };
@@ -38,6 +40,8 @@
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8127D2462C4EBB6D00ECBBFD /* PlayersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersViewModel.swift; sourceTree = "<group>"; };
 		8127D2482C4EE37B00ECBBFD /* HistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModel.swift; sourceTree = "<group>"; };
+		8127D24A2C4EEE3100ECBBFD /* HistoryGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryGameView.swift; sourceTree = "<group>"; };
+		8127D24D2C4EEEA900ECBBFD /* GameResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameResultView.swift; sourceTree = "<group>"; };
 		814D21092C4C0E3E00A5521D /* OudlerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OudlerView.swift; sourceTree = "<group>"; };
 		814D210B2C4D6B2C00A5521D /* RoundListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundListItemView.swift; sourceTree = "<group>"; };
 		815A0DB62C46430800F6328F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -102,6 +106,7 @@
 		7555FF7D242A565900829871 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				8127D24C2C4EEE9900ECBBFD /* Components */,
 				818520622C4665B1001BAB49 /* Game */,
 				815A0DB52C4642EB00F6328F /* History */,
 				815A0DB42C4642E300F6328F /* Settings */,
@@ -114,6 +119,14 @@
 				058557D7273AAEEB004C7B11 /* Preview Content */,
 			);
 			path = iosApp;
+			sourceTree = "<group>";
+		};
+		8127D24C2C4EEE9900ECBBFD /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				8127D24D2C4EEEA900ECBBFD /* GameResultView.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		815A0DB42C4642E300F6328F /* Settings */ = {
@@ -129,6 +142,7 @@
 			children = (
 				815A0DB82C46431400F6328F /* HistoryView.swift */,
 				8127D2482C4EE37B00ECBBFD /* HistoryViewModel.swift */,
+				8127D24A2C4EEE3100ECBBFD /* HistoryGameView.swift */,
 			);
 			path = History;
 			sourceTree = "<group>";
@@ -299,6 +313,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				814D210A2C4C0E3E00A5521D /* OudlerView.swift in Sources */,
+				8127D24E2C4EEEA900ECBBFD /* GameResultView.swift in Sources */,
 				815A0DB92C46431400F6328F /* HistoryView.swift in Sources */,
 				81EB95582C45B5130039A5A7 /* PlayerColorExtensions.swift in Sources */,
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
@@ -310,6 +325,7 @@
 				81C625722C47D48600CCDD39 /* NewGameSheet.swift in Sources */,
 				818520652C4665CB001BAB49 /* GameView.swift in Sources */,
 				816F4FB62C4B938B004FC79B /* NewRoundSheet.swift in Sources */,
+				8127D24B2C4EEE3100ECBBFD /* HistoryGameView.swift in Sources */,
 				8127D2472C4EBB6D00ECBBFD /* PlayersViewModel.swift in Sources */,
 				81EB95542C45B3B60039A5A7 /* PlayerView.swift in Sources */,
 				81B591C92C49A5BE000CB7F9 /* BidExtensions.swift in Sources */,
