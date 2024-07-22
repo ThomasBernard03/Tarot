@@ -4,16 +4,11 @@ import Shared
 
 struct PlayersView: View {
     
-    private let createPlayerUseCase = CreatePlayerUseCase()
-    
-    
-    @State private var error: String?
+    @State private var viewModel = ViewModel()
     
     @State private var showNewPlayerSheet = false
     @State private var playerName : String = ""
     @State private var selectedColor : PlayerColor? = nil
-    
-    @State private var viewModel = ViewModel()
 
     var body: some View {
         NavigationStack {
@@ -42,13 +37,13 @@ struct PlayersView: View {
             }
             .navigationTitle("Joueurs")
             .toolbar {
-                EditButton()
-                
-                Button(action: {
-                    playerName = ""
-                    selectedColor = nil
-                    showNewPlayerSheet.toggle()
-                }){
+                Button(
+                    action: {
+                        playerName = ""
+                        selectedColor = nil
+                        showNewPlayerSheet.toggle()
+                    }
+                ){
                     Label("Add player", systemImage: "plus")
                         .labelStyle(.iconOnly)
                 }
@@ -87,14 +82,7 @@ struct PlayersView: View {
                     }
                     
                     Button(action: {
-                        let player = CreatePlayerModel(name: playerName, color: selectedColor!)
-                        createPlayerUseCase.invoke(player: player){ result, _ in
-                            
-                            if result?.isSuccess() ?? false {
-                                viewModel.players.append((result?.getOrNull()!)!)
-                            }
-                           
-                        }
+                        viewModel.createPlayer(name: playerName, color: selectedColor!)
                         showNewPlayerSheet.toggle()
                     }){
                         Text("Créer le joueur")

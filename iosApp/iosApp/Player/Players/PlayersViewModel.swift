@@ -16,6 +16,7 @@ extension PlayersView {
     class ViewModel {
         private let getPlayersUseCase = GetPlayersUseCase()
         private let deletePlayerUseCase = DeletePlayerUseCase()
+        private let createPlayerUseCase = CreatePlayerUseCase()
         
         var players = [PlayerModel]()
         
@@ -49,6 +50,24 @@ extension PlayersView {
                             image: UIImage(systemName: "xmark.circle")!,
                             title: "Impossible de supprimer le joueur",
                             subtitle: "Il a participé à des parties"
+                        )
+                        toast.show()
+                    }
+                }
+            }
+        }
+        
+        func createPlayer(name : String, color : PlayerColor){
+            let player = CreatePlayerModel(name: name, color: color)
+            createPlayerUseCase.invoke(player: player){ result, _ in
+                DispatchQueue.main.async {
+                    if result?.isSuccess() ?? false {
+                        self.players.append((result?.getOrNull()!)!)
+                    }
+                    else {
+                        let toast = Toast.default(
+                            image: UIImage(systemName: "xmark.circle")!,
+                            title: "Impossible de créer le joueur"
                         )
                         toast.show()
                     }
