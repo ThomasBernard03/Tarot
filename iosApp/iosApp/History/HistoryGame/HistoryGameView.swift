@@ -12,6 +12,7 @@ import Shared
 struct HistoryGameView: View {
     
     let game : GameModel
+    @State private var viewModel = ViewModel()
     
     var body: some View {
         Form {
@@ -26,10 +27,10 @@ struct HistoryGameView: View {
         }
         .navigationTitle("Partie du ")
         .toolbar {
-            Button(action : {}) {
+            Button(action : { viewModel.resumeGame(game: game) }) {
                 Label("Reprendre", systemImage: "play.circle")
             }
-            Button(action : {}) {
+            Button(action : { viewModel.deleteGame(game: game) }) {
                 Label("Supprimer", systemImage: "trash")
             }
         }
