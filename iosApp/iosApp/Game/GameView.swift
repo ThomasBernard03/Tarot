@@ -13,19 +13,9 @@ struct GameView: View {
     
     @State private var viewModel = ViewModel()
     
-    private let getPlayersUseCase = GetPlayersUseCase()
-    
-    private let createGameUseCase = CreateGameUseCase()
-    private let finishGameUseCase = FinishGameUseCase()
-    private let createRoundUseCase = CreateRoundUseCase()
-    
     @State private var showNewGameSheet = false
     @State private var showNewRoundSheet = false
-    @State private var players: [PlayerModel] = []
-    @State private var selectedPlayers = Set<PlayerModel>()
     @State private var showFinishGameConfirmationAlert : Bool = false
-    
-
     
     var body: some View {
         NavigationStack {
@@ -34,7 +24,8 @@ struct GameView: View {
                     Text("Aucune partie en cours, appuyez sur le '+' pour démarrer une nouvelle partie")
                         .padding()
                         .multilineTextAlignment(.center)
-                } else {
+                } 
+                else {
                     Form {
                         Section("Résultats"){
                             GameResultView(scores: viewModel.currentGame!.calculateScore())
@@ -53,10 +44,7 @@ struct GameView: View {
             .navigationTitle("Partie en cours")
             .toolbar {
                 if viewModel.currentGame == nil {
-                    Button(action: {
-                        selectedPlayers = []
-                        showNewGameSheet.toggle()
-                    }) {
+                    Button(action: { showNewGameSheet.toggle() }) {
                         Label("New game", systemImage: "plus")
                             .labelStyle(.iconOnly)
                     }
@@ -78,44 +66,21 @@ struct GameView: View {
                 }
             }
             .sheet(isPresented: $showNewGameSheet) {
-                NewGameSheet(players: $players, selectedPlayers: $selectedPlayers) {
-                    createGameUseCase.invoke(players: Array(selectedPlayers)) { result, _ in
-                        if result?.isSuccess() ?? false {
-                            viewModel.currentGame = result?.getOrNull()
-                        }
-                    }
-                    
+                NewGameSheet(players: $viewModel.players) { players in
+                    viewModel.createGame(players: players)
                     showNewGameSheet.toggle()
                 }
-                .onAppear {
-                    getPlayersUseCase.invoke { result, _ in
-                        if result?.isSuccess() ?? false {
-                            players = result?.getOrNull() as! [PlayerModel]
-                        }
-                    }
-                }
+                .onAppear { viewModel.getPlayers() }
             }
             .sheet(isPresented: $showNewRoundSheet){
-                
                 NewRoundSheet(players:viewModel.currentGame!.players){ taker, bid, calledPlayer, oudlers, points in
-                    createRoundUseCase.invoke(gameId: viewModel.currentGame!.id, taker: taker, playerCalled: calledPlayer, bid: bid, oudlers: oudlers, points: Int32(points)) { result, _ in
-                        if result?.isSuccess() ?? false {
-                            viewModel.getCurrentGame()
-                            showNewRoundSheet = false
-                        }
-                    }
+                    viewModel.createRound(taker: taker, bid: bid, calledPlayer: calledPlayer, oudlers: oudlers, points: points)
+                    showNewRoundSheet = false
                 }
- 
             }
             .onAppear { viewModel.getCurrentGame() }
             .alert("Voulez-vous terminer la partie ?", isPresented: $showFinishGameConfirmationAlert){
-                Button("Terminer", role:.destructive){
-                    finishGameUseCase.invoke(gameId: viewModel.currentGame!.id) { result, _ in
-                        if result?.isSuccess() ?? false {
-                            viewModel.currentGame = nil
-                        }
-                    }
-                }
+                Button("Terminer", role:.destructive) { viewModel.finishGame() }
                 Button("Annuler", role: .cancel) { }
             }
         }

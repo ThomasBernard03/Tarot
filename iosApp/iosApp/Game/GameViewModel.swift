@@ -15,15 +15,46 @@ extension GameView {
     @Observable
     class ViewModel {
         private let getCurrentGameUseCase = GetCurrentGameUseCase()
-        
-        
+        private let getPlayersUseCase = GetPlayersUseCase()
+        private let finishGameUseCase = FinishGameUseCase()
+        private let createGameUseCase = CreateGameUseCase()
+        private let createRoundUseCase = CreateRoundUseCase()
         
         var currentGame : GameModel? = nil
+        var players : [PlayerModel] = []
         
         
         func getCurrentGame(){
             Task {
                 let result = try! await getCurrentGameUseCase.invoke()
+                DispatchQueue.main.async {
+                    self.currentGame = result.getOrNull()
+                }
+            }
+        }
+        
+        func getPlayers(){
+            Task {
+                let result = try! await getPlayersUseCase.invoke()
+                DispatchQueue.main.async {
+                    if result.isSuccess() {
+                        self.players = (result.getOrNull() ?? []) as! [PlayerModel]
+                    }
+                    else {
+                        let toast = Toast.default(
+                          image: UIImage(systemName: "xmark.circle")!,
+                          title: "Impossible de récupérer les joueurs"
+                        )
+                        toast.show()
+                    }
+                }
+            }
+        }
+        
+        
+        func createGame(players : [PlayerModel]){
+            Task {
+                let result = try! await createGameUseCase.invoke(players: players)
                 DispatchQueue.main.async {
                     if result.isSuccess() {
                         self.currentGame = result.getOrNull()
@@ -31,10 +62,46 @@ extension GameView {
                     else {
                         let toast = Toast.default(
                           image: UIImage(systemName: "xmark.circle")!,
-                          title: "Impossible de récupérer la partie en cours"
+                          title: "Impossible de créer la partie"
                         )
                         toast.show()
                     }
+                }
+            }
+        }
+        
+        func finishGame(){
+            Task {
+                let result = try! await finishGameUseCase.invoke(gameId: currentGame!.id)
+                DispatchQueue.main.async {
+                    if result.isSuccess() {
+                        self.currentGame = nil
+                    }
+                    else {
+                        let toast = Toast.default(
+                          image: UIImage(systemName: "xmark.circle")!,
+                          title: "Impossible de terminer la partie en cours"
+                        )
+                        toast.show()
+                    }
+                }
+            }
+        }
+        
+        func createRound(taker : PlayerModel, bid : Bid, calledPlayer : PlayerModel?, oudlers : [Oudler], points : Int){
+            Task {
+                let result = try! await createRoundUseCase.invoke(gameId: currentGame!.id, taker: taker, playerCalled: calledPlayer, bid: bid, oudlers: oudlers, points: Int32(points))
+                
+                if result.isSuccess() {
+                    // TODO Add round into current game
+                    getCurrentGame()
+                }
+                else {
+                    let toast = Toast.default(
+                      image: UIImage(systemName: "xmark.circle")!,
+                      title: "Impossible de créer le tour"
+                    )
+                    toast.show()
                 }
             }
         }
