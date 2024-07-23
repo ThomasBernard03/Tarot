@@ -7,23 +7,25 @@
 //
 
 import SwiftUI
+import Shared
 
 struct PlayerView: View {
     
-    let id : Int64
-    let name : String
+    let player : PlayerModel
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-            .navigationTitle(name)
-            .toolbar {
-                Button("Modifier"){
-                    
-                }
+        Form {
+            
+        }
+        .navigationTitle(player.name)
+        .toolbar {
+            Button(action : { }) {
+                Label("Modifier", systemImage: "pencil.circle")
             }
+            
+            Button(action : { }) {
+                Label("Supprimer", systemImage: "trash")
+            }
+        }
     }
-}
-
-#Preview {
-    PlayerView(id: 1, name: "Thomas")
 }

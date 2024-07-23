@@ -19,7 +19,7 @@ struct PlayersView: View {
                 else {
                     List {
                         ForEach(viewModel.players, id:\.id){ player in
-                            NavigationLink(destination: PlayerView(id: player.id, name: player.name)) {
+                            NavigationLink(destination: PlayerView(player: player)) {
                                 Label(
                                     title: { Text(player.name) },
                                     icon: { Image(systemName: "circle.fill").foregroundColor(player.color.toColor()) }

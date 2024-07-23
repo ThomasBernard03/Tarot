@@ -13,6 +13,8 @@ struct HistoryGameView: View {
     
     let game : GameModel
     @State private var viewModel = ViewModel()
+    @State private var showDeleteGameAlert = false
+    @State private var showResumeGameAlert = false
     
     var body: some View {
         Form {
@@ -25,14 +27,33 @@ struct HistoryGameView: View {
                 }
             }
         }
-        .navigationTitle("Partie du ")
+        .navigationTitle("Partie du " + String(game.startedAt.date.dayOfMonth) + " " + game.startedAt.month.name.lowercased())
         .toolbar {
-            Button(action : { viewModel.resumeGame(game: game) }) {
+            Button(action : { showResumeGameAlert.toggle() }) {
                 Label("Reprendre", systemImage: "play.circle")
             }
-            Button(action : { viewModel.deleteGame(game: game) }) {
+            Button(action : { showDeleteGameAlert.toggle() }) {
                 Label("Supprimer", systemImage: "trash")
             }
         }
+        .alert("Voulez-vous supprimer cette partie ?", isPresented: $showDeleteGameAlert){
+            Button("Supprimer", role:.destructive){
+                viewModel.deleteGame(game: game)
+                showDeleteGameAlert.toggle()
+            }
+            Button("Annuler", role: .cancel) { }
+        }
+        .alert(
+            "Reprendre cette partie ?",
+            isPresented: $showResumeGameAlert,
+            actions: {
+                Button("Reprendre"){
+                    viewModel.resumeGame(game: game)
+                    showResumeGameAlert.toggle()
+                }
+                Button("Annuler", role: .cancel) { }
+        }, message: {
+            Text("Si une partie est en cours, cette dernière sera terminée")
+        })
     }
 }
