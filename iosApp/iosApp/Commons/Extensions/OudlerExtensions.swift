@@ -8,6 +8,7 @@
 
 import Foundation
 import Shared
+import SwiftUI
 
 extension Oudler {
     
@@ -29,7 +30,34 @@ extension Oudler {
         
         return ""
     }
-
+    
+    func toName() -> String {
+        if self == Oudler.petit {
+            return "Petit"
+        }
+        if self == Oudler.excuse {
+            return "Excuse"
+        }
+        if self == Oudler.grand {
+            return "Vingt-et-un"
+        }
+        
+        return ""
+    }
+    
+    func toImage() -> Image {
+        if self == Oudler.petit {
+            return Image("Un")
+        }
+        if self == Oudler.excuse {
+            return Image("Excuse")
+        }
+        if self == Oudler.grand {
+            return Image("VingtEtUn")
+        }
+        
+        return Image("")
+    }
 }
 
 

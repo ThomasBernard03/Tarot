@@ -55,13 +55,19 @@ struct NewRoundSheet: View {
                         }
                         
                         MultiPicker("Bouts", selection: $oudlers){
-                            ForEach(Oudler.all(), id: \.self){
-                                Text($0.name).mpTag($0)
+                            ForEach(Oudler.all(), id: \.self){ oudler in
+                                HStack {
+                                    oudler.toImage()
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(height:60)
+                                    
+                                    Text(oudler.toName())
+                                }
+                                .mpTag(oudler)
                             }
                         }
                         .mpPickerStyle(.navigationLink)
-                        
-                        
                     }
                     
                     Section("Points"){
@@ -69,7 +75,7 @@ struct NewRoundSheet: View {
                             VStack {
                                 Picker("",selection: $attackSide) {
                                     Text("Attaque").tag(true)
-                                    Text("Défense").tag(false)
+                                    // Text("Défense").tag(false)
                                 }.pickerStyle(.segmented)
                                 
                                 Text(String(format: "%.0f", points))

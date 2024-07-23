@@ -11,8 +11,10 @@ import Shared
 
 struct GameView: View {
     
+    @State private var viewModel = ViewModel()
+    
     private let getPlayersUseCase = GetPlayersUseCase()
-    private let getCurrentGameUseCase = GetCurrentGameUseCase()
+    
     private let createGameUseCase = CreateGameUseCase()
     private let finishGameUseCase = FinishGameUseCase()
     private let createRoundUseCase = CreateRoundUseCase()
@@ -21,7 +23,6 @@ struct GameView: View {
     @State private var showNewRoundSheet = false
     @State private var players: [PlayerModel] = []
     @State private var selectedPlayers = Set<PlayerModel>()
-    @State private var currentGame: GameModel? = nil
     @State private var showFinishGameConfirmationAlert : Bool = false
     
 
@@ -29,18 +30,18 @@ struct GameView: View {
     var body: some View {
         NavigationStack {
             VStack(alignment: .center) {
-                if currentGame == nil {
+                if viewModel.currentGame == nil {
                     Text("Aucune partie en cours, appuyez sur le '+' pour démarrer une nouvelle partie")
                         .padding()
                         .multilineTextAlignment(.center)
                 } else {
                     Form {
                         Section("Résultats"){
-                            GameResultView(scores: currentGame!.calculateScore())
+                            GameResultView(scores: viewModel.currentGame!.calculateScore())
                         }
                         
                         Section("Tours"){
-                            List(currentGame!.rounds, id: \.id){ round in
+                            List(viewModel.currentGame!.rounds, id: \.id){ round in
                                 NavigationLink(destination: EmptyView()) {
                                     RoundListItemView(round: round)
                                 }
@@ -51,7 +52,7 @@ struct GameView: View {
             }
             .navigationTitle("Partie en cours")
             .toolbar {
-                if currentGame == nil {
+                if viewModel.currentGame == nil {
                     Button(action: {
                         selectedPlayers = []
                         showNewGameSheet.toggle()
@@ -80,7 +81,7 @@ struct GameView: View {
                 NewGameSheet(players: $players, selectedPlayers: $selectedPlayers) {
                     createGameUseCase.invoke(players: Array(selectedPlayers)) { result, _ in
                         if result?.isSuccess() ?? false {
-                            currentGame = result?.getOrNull()
+                            viewModel.currentGame = result?.getOrNull()
                         }
                     }
                     
@@ -96,30 +97,22 @@ struct GameView: View {
             }
             .sheet(isPresented: $showNewRoundSheet){
                 
-                NewRoundSheet(players:currentGame!.players){ taker, bid, calledPlayer, oudlers, points in
-                    createRoundUseCase.invoke(gameId: currentGame!.id, taker: taker, playerCalled: calledPlayer, bid: bid, oudlers: oudlers, points: Int32(points)) { result, _ in
+                NewRoundSheet(players:viewModel.currentGame!.players){ taker, bid, calledPlayer, oudlers, points in
+                    createRoundUseCase.invoke(gameId: viewModel.currentGame!.id, taker: taker, playerCalled: calledPlayer, bid: bid, oudlers: oudlers, points: Int32(points)) { result, _ in
                         if result?.isSuccess() ?? false {
-                            
-                            let newRounds = currentGame!.rounds + [result?.getOrNull()!]
-                            //currentGame?.rounds = newRounds
+                            viewModel.getCurrentGame()
                             showNewRoundSheet = false
                         }
                     }
                 }
  
             }
-            .onAppear {
-                getCurrentGameUseCase.invoke { result, _ in
-                    if result?.isSuccess() ?? false {
-                        currentGame = result?.getOrNull()
-                    }
-                }
-            }
+            .onAppear { viewModel.getCurrentGame() }
             .alert("Voulez-vous terminer la partie ?", isPresented: $showFinishGameConfirmationAlert){
                 Button("Terminer", role:.destructive){
-                    finishGameUseCase.invoke(gameId: currentGame!.id) { result, _ in
+                    finishGameUseCase.invoke(gameId: viewModel.currentGame!.id) { result, _ in
                         if result?.isSuccess() ?? false {
-                            currentGame = nil
+                            viewModel.currentGame = nil
                         }
                     }
                 }

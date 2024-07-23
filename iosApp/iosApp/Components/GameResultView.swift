@@ -48,6 +48,7 @@ struct GameResultView: View {
                     Text(String(Int(truncating: playerScore.second!)))
                         .foregroundColor(Int(truncating: playerScore.second!) >= 0 ? Color.green : Color.red)
                         .frame(width:50)
+                        .fontWeight(.bold)
                 }
             }
         }
