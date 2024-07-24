@@ -75,43 +75,34 @@ struct NewRoundSheet: View {
                             VStack {
                                 Picker("",selection: $attackSide) {
                                     Text("Attaque").tag(true)
-                                    // Text("Défense").tag(false)
+                                    Text("Défense").tag(false)
                                 }.pickerStyle(.segmented)
                                 
                                 Text(String(format: "%.0f", points))
                                     .font(.system(size: 52))
                                 
-                                let attackScore = Int(points) - Array($oudlers.wrappedValue).getRequiredPoints()
                                 
-                                Text(String(attackScore))
+                                let indicatorScore = attackSide
+                                ? Int(points) - Array($oudlers.wrappedValue).getRequiredPoints()
+                                : Int(points) - Array(Oudler.all().filter { !$oudlers.wrappedValue.contains($0) }).getRequiredPoints()
+                                
+                                Text(String(indicatorScore))
                                     .font(.title3)
-                                    .foregroundColor(attackScore >= 0 ? Color.green : Color.red)
-                                    
-                                
+                                    .foregroundColor(indicatorScore >= 0 ? Color.green : Color.red)
+
                                 HStack {
-                                    Button(action: {
-                                        if points > 0 {
-                                            points -= 1
-                                        }
-                                            
-                                    }) {
+                                    Button(action: { points -= 1 }) {
                                         Label("Moins", systemImage: "minus")
                                     }
+                                    .disabled(points <= 0)
                                     Slider(value: $points, in: 0...91, step: 1)
-                                    Button(action: {
-                                        if points < 91 {
-                                            points += 1
-                                        }
-                                            
-                                        
-                                    }) {
+                                    Button(action: { points += 1 }) {
                                         Label("Plus", systemImage: "plus")
                                     }
+                                    .disabled(points >= 91)
                                 }
                                 .buttonStyle(.borderless)
                                 .labelStyle(.iconOnly)
-                                
-                                
                             }
                         }
                     }
@@ -130,7 +121,8 @@ struct NewRoundSheet: View {
                 Button(
                     action: {
                         let calledPlayer = players.count >= 5 ? calledPlayer : nil
-                        onCreateRound(taker, bid, calledPlayer, Array(oudlers), Int(points))
+                        let points = attackSide ? Int(points) : 91 - Int(points)
+                        onCreateRound(taker, bid, calledPlayer, Array(oudlers), points)
                     }
                 ) {
                     Text("Ajouter le tour")

@@ -33,7 +33,8 @@ struct GameView: View {
                         
                         Section("Tours"){
                             List(viewModel.currentGame!.rounds, id: \.id){ round in
-                                NavigationLink(destination: EmptyView()) {
+                                let index = (viewModel.currentGame!.rounds.firstIndex(of: round) ?? 0) + 1
+                                NavigationLink(destination: RoundDetailView(index: index, round: round)) {
                                     RoundListItemView(round: round)
                                 }
                             }
@@ -45,23 +46,16 @@ struct GameView: View {
             .toolbar {
                 if viewModel.currentGame == nil {
                     Button(action: { showNewGameSheet.toggle() }) {
-                        Label("New game", systemImage: "plus")
-                            .labelStyle(.iconOnly)
+                        Label("New game", systemImage: "plus").labelStyle(.iconOnly)
                     }
                 }
                 else {
                     Button(action: { showFinishGameConfirmationAlert.toggle() }) {
-                        Label("Terminer la partie", systemImage: "flag.checkered")
-                            .labelStyle(.iconOnly)
+                        Label("Terminer la partie", systemImage: "flag.checkered").labelStyle(.iconOnly)
                     }
                     
-                    Button(
-                        action: {
-                            showNewRoundSheet.toggle()
-                        }
-                    ) {
-                        Label("New round", systemImage: "plus")
-                            .labelStyle(.iconOnly)
+                    Button(action: { showNewRoundSheet.toggle()}) {
+                        Label("New round", systemImage: "plus").labelStyle(.iconOnly)
                     }
                 }
             }
