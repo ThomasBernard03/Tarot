@@ -23,17 +23,7 @@ struct HistoryView: View {
                     List {
                         ForEach(viewModel.games, id: \.id){ game in
                             NavigationLink(destination: { HistoryGameView(game: game) }) {
-                                HStack(spacing: 2) {
-                                    ZStack {
-                                        Color.accentColor
-                                        VStack {
-                                            Text(String(game.startedAt.date.dayOfMonth))
-                                            Text(String(game.startedAt.month.name.lowercased()))
-                                        }
-                                        
-                                    }
-                                    .frame(width:100)
-                                    
+                                HStack(spacing: 2) { 
                                     ForEach(game.players, id : \.id){ player in
                                         ZStack {
                                             Circle()

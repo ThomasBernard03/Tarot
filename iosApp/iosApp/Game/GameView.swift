@@ -33,7 +33,7 @@ struct GameView: View {
                         
                         Section("Tours"){
                             List(viewModel.currentGame!.rounds, id: \.id){ round in
-                                let index = (viewModel.currentGame!.rounds.firstIndex(of: round) ?? 0) + 1
+                                let index = (viewModel.currentGame?.rounds.firstIndex(of: round) ?? 0) + 1
                                 NavigationLink(destination: RoundDetailView(index: index, round: round)) {
                                     RoundListItemView(round: round)
                                 }
