@@ -558,8 +558,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/toastersocks/MultiPicker";
 			requirement = {
-				kind = exactVersion;
-				version = 1.0.0;
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
 			};
 		};
 		81BD408C2C4E716700226806 /* XCRemoteSwiftPackageReference "toast-swift" */ = {

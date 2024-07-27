@@ -2,6 +2,15 @@
   "originHash" : "ec6b3f09ed589b213dd538c2b91138cf5edebac58e273c83107b4ec40dc72187",
   "pins" : [
     {
+      "identity" : "flow",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/toastersocks/Flow.git",
+      "state" : {
+        "revision" : "5c1b99acf390ace87006e065b14f9bdcdd27fdbb",
+        "version" : "1.2.3"
+      }
+    },
+    {
       "identity" : "helpers",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/toastersocks/Helpers.git",
@@ -15,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/toastersocks/MultiPicker",
       "state" : {
-        "revision" : "ee974d666b6945916c201ea0443725652ded9704",
-        "version" : "1.0.0"
+        "revision" : "bd217fcdbd39969b6b42126565a077702a0f0015",
+        "version" : "1.1.0"
       }
     },
     {
