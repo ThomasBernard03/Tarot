@@ -184,6 +184,37 @@ class FullGameUnitTest {
         assertEquals(334, player5Score)
     }
 
+    @Test
+    fun fourPlayersGame(){
+        val player1 = PlayerModel(id = 1, name = "Player 1", color = PlayerColor.GREEN)
+        val player2 = PlayerModel(id = 2, name = "Player 2", color = PlayerColor.BLUE)
+        val player3 = PlayerModel(id = 3, name = "Player 3", color = PlayerColor.RED)
+        val player4 = PlayerModel(id = 3, name = "Player 4", color = PlayerColor.ORANGE)
+
+        val rounds = mutableListOf(
+            RoundModel(
+                id = 1,
+                taker = player1,
+                bid = Bid.SMALL,
+                oudlers = listOf(),
+                points = 41,
+                finishedAt = LocalDateTimeNow()
+            )
+        )
+
+        var game = GameModel(id = 1, startedAt = LocalDateTimeNow(), players = listOf(player1, player2, player3, player4), rounds = rounds)
+        val playersScoreRound1 = game.calculateScore()
+        var player1Score = playersScoreRound1.find { it.first == player1 }?.second
+        var player2Score = playersScoreRound1.find { it.first == player2 }?.second
+        var player3Score = playersScoreRound1.find { it.first == player3 }?.second
+        var player4Score = playersScoreRound1.find { it.first == player4 }?.second
+
+        assertEquals(-120, player1Score)
+        assertEquals(40, player2Score)
+        assertEquals(40, player3Score)
+        assertEquals(40, player4Score)
+    }
+
 
     @Test
     fun threePlayersGame(){
