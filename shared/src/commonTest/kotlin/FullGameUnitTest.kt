@@ -213,6 +213,54 @@ class FullGameUnitTest {
         assertEquals(40, player2Score)
         assertEquals(40, player3Score)
         assertEquals(40, player4Score)
+
+        rounds.add(
+            RoundModel(
+                id = 2,
+                taker = player2,
+                bid = Bid.GUARD,
+                oudlers = listOf(Oudler.EXCUSE),
+                points = 55,
+                finishedAt = LocalDateTimeNow()
+            )
+        )
+
+
+        game = game.copy(rounds = rounds)
+        val playersScoreRound2 = game.calculateScore()
+        player1Score = playersScoreRound2.find { it.first == player1 }?.second
+        player2Score = playersScoreRound2.find { it.first == player2 }?.second
+        player3Score = playersScoreRound2.find { it.first == player3 }?.second
+        player4Score = playersScoreRound2.find { it.first == player4 }?.second
+
+        assertEquals(-178, player1Score)
+        assertEquals(214, player2Score)
+        assertEquals(-18, player3Score)
+        assertEquals(-18, player4Score)
+
+        rounds.add(
+            RoundModel(
+                id = 3,
+                taker = player3,
+                bid = Bid.GUARD_WITHOUT,
+                oudlers = listOf(Oudler.EXCUSE, Oudler.PETIT),
+                points = 57,
+                finishedAt = LocalDateTimeNow()
+            )
+        )
+
+
+        game = game.copy(rounds = rounds)
+        val playersScoreRound3 = game.calculateScore()
+        player1Score = playersScoreRound3.find { it.first == player1 }?.second
+        player2Score = playersScoreRound3.find { it.first == player2 }?.second
+        player3Score = playersScoreRound3.find { it.first == player3 }?.second
+        player4Score = playersScoreRound3.find { it.first == player4 }?.second
+
+        assertEquals(-342, player1Score)
+        assertEquals(50, player2Score)
+        assertEquals(474, player3Score)
+        assertEquals(-182, player4Score)
     }
 
 
