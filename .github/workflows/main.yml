@@ -63,20 +63,28 @@ jobs:
         run: ./gradlew test
 
   deploy:
-    needs: test
     runs-on: ubuntu-latest
+    needs: build
     steps:
-      # Step 1 - Download app bundle
-      - name: Download app bundle from artifact
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Download releases.zip from artifacts
         uses: actions/download-artifact@v3
         with:
-          name: app-release.aab
+          name: releases
           path: ./
+
+      - name: Unzip releases.zip
+        run: unzip releases.zip
+
+      - name: List extracted files
+        run: ls -al releases
 
       - name: Publish to Play Store
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
           packageName: fr.thomasbernard03.tarot
-          releaseFiles: ${{ github.workspace }}/app-release.aab
+          releaseFiles: releases/composeApp-release.aab
           track: production

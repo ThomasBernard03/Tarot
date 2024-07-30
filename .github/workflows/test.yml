@@ -35,17 +35,18 @@ jobs:
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: ./gradlew assembleRelease bundleRelease --stacktrace
 
-      - name: Upload APK to Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: app-release.apk
-          path: composeApp/build/outputs/apk/release/composeApp-release.apk
+      - name: Create releases.zip
+        run: |
+          mkdir releases
+          cp composeApp/build/outputs/apk/release/composeApp-release.apk releases/
+          cp composeApp/build/outputs/bundle/release/composeApp-release.aab releases/
+          zip -r releases.zip releases
 
-      - name: Upload AAB to Artifacts
+      - name: Upload releases.zip to Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: app-release.aab
-          path: composeApp/build/outputs/bundle/release/composeApp-release.aab
+          name: releases
+          path: releases.zip
 
   test:
     runs-on: ubuntu-latest
