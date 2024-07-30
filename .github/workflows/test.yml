@@ -35,12 +35,6 @@ jobs:
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: ./gradlew assembleRelease bundleRelease --stacktrace
 
-      - name: List files
-        run: ls composeApp
-
-      - name: Print
-        run: pwd 
-
       - name: Upload APK to Artifacts
         uses: actions/upload-artifact@v3
         with:
