@@ -45,13 +45,13 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: app-release.apk
-          path: composeApp/release/composeApp-release.apk
+          path: composeApp/build/outputs/apk/release/composeApp-release.apk
 
       - name: Upload AAB to Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: app-release.aab
-          path: composeApp/release/composeApp-release.aab
+          path: composeApp/build/outputs/bundle/release/composeApp-release.aab
 
   test:
     runs-on: ubuntu-latest
