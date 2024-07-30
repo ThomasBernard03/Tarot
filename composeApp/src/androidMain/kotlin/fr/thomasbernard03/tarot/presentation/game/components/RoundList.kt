@@ -24,8 +24,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import commons.calculatePartnerScore
-import commons.calculateTakerScore
+import commons.extensions.calculatePartnerScore
+import commons.extensions.calculateTakerScore
 import domain.models.GameModel
 import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.LargePadding
@@ -108,14 +108,7 @@ fun LazyListScope.roundList(
                 Column (
                     horizontalAlignment = Alignment.End
                 ){
-                    val takerScore =
-                        calculateTakerScore(
-                            points = round.points,
-                            bid = round.bid,
-                            oudlers = round.oudlers.size,
-                            calledHimSelf = round.calledPlayer == round.taker
-                        )
-
+                    val takerScore = round.calculateTakerScore(game.players.size)
                     Text(
                         text = "$takerScore",
                         color = if (takerScore >= 0) Green else Red,
@@ -124,7 +117,7 @@ fun LazyListScope.roundList(
 
                     if (round.calledPlayer != null && round.taker.id != round.calledPlayer!!.id){
 
-                        val calledPlayerScore = calculatePartnerScore(takerScore)
+                        val calledPlayerScore = round.calculatePartnerScore()
 
                         Text(
                             text = "$calledPlayerScore",

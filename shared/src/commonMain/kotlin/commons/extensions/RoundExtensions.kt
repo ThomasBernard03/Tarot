@@ -1,26 +1,9 @@
 package commons.extensions
 
+import commons.getBidMultiplier
+import commons.getPointToReach
 import domain.models.Bid
 import domain.models.RoundModel
-
-private fun getPointToReach(oudlers: Int): Int {
-    return when (oudlers) {
-        0 -> 56
-        1 -> 51
-        2 -> 41
-        3 -> 36
-        else -> throw IllegalArgumentException("Invalid number of oudlers")
-    }
-}
-
-private fun getBidMultiplier(bid: Bid): Int {
-    return when (bid) {
-        Bid.SMALL -> 1
-        Bid.GUARD -> 2
-        Bid.GUARD_WITHOUT -> 4
-        Bid.GUARD_AGAINST -> 6
-    }
-}
 
 fun RoundModel.calculateTakerScore(numberOfPlayers : Int) : Int {
     val pointGoal = getPointToReach(oudlers.size)

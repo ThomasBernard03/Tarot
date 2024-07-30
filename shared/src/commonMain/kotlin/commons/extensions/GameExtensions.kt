@@ -1,9 +1,5 @@
 package commons.extensions
 
-import commons.calculateDefenderScore
-import commons.calculatePartnerScore
-import commons.calculateTakerScore
-import domain.models.Bid
 import domain.models.GameModel
 import domain.models.PlayerModel
 

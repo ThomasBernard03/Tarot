@@ -12,6 +12,7 @@ import Shared
 struct RoundListItemView: View {
     
     let round : RoundModel
+    let numberOfPlayers : Int
 
     var body: some View {
         HStack {
@@ -49,8 +50,7 @@ struct RoundListItemView: View {
             Spacer()
             
             VStack(alignment:.trailing) {
-                let takerScore = ConstantsKt.calculateTakerScore(points: round.points, bid: round.bid, oudlers: Int32(round.oudlers.count), calledHimSelf: round.calledPlayer == round.taker)
-                
+                let takerScore = round.calculateTakerScore(numberOfPlayers: Int32(numberOfPlayers))
                 
                 Text(String(takerScore))
                     .foregroundColor(takerScore >= 0 ? Color.green : Color.red)
@@ -58,7 +58,8 @@ struct RoundListItemView: View {
                     .fontWeight(.bold)
                 
                 if (round.calledPlayer != nil && round.calledPlayer != round.taker){
-                    let calledPlayerScore = ConstantsKt.calculatePartnerScore(takerScore: takerScore)
+                    
+                    let calledPlayerScore = round.calculatePartnerScore()
                     
                     Text(String(calledPlayerScore))
                         .foregroundColor(calledPlayerScore >= 0 ? Color.green : Color.red)

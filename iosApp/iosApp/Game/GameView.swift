@@ -35,7 +35,7 @@ struct GameView: View {
                             List(viewModel.currentGame!.rounds, id: \.id){ round in
                                 let index = (viewModel.currentGame?.rounds.firstIndex(of: round) ?? 0) + 1
                                 NavigationLink(destination: RoundDetailView(index: index, round: round)) {
-                                    RoundListItemView(round: round)
+                                    RoundListItemView(round: round, numberOfPlayers: viewModel.currentGame!.players.count)
                                 }
                             }
                         }

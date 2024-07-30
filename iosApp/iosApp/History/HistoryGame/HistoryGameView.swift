@@ -23,7 +23,7 @@ struct HistoryGameView: View {
             }
             Section("Tours"){
                 List(game.rounds, id: \.id){ round in
-                    RoundListItemView(round: round)
+                    RoundListItemView(round: round, numberOfPlayers: game.players.count)
                 }
             }
         }

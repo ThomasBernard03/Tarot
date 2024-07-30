@@ -51,6 +51,7 @@ import commons.calculateTakerScore
 import commons.extensions.getRequiredPoints
 import domain.models.Bid
 import domain.models.Oudler
+import domain.models.RoundModel
 import fr.thomasbernard03.tarot.R
 import fr.thomasbernard03.tarot.commons.LargePadding
 import fr.thomasbernard03.tarot.commons.MediumPadding
@@ -81,8 +82,10 @@ fun RoundScreen(
 
     val score by remember(state.bid, state.oudlers.size, state.numberOfPoints) {
         derivedStateOf {
-            state.bid?.let {
-                calculateTakerScore(state.numberOfPoints, state.bid, state.oudlers.size)
+            if (state.bid != null && state.taker != null){
+                return@derivedStateOf calculateTakerScore(state.taker, state.calledPlayer, state.players.size, state.oudlers.size, state.bid, state.numberOfPoints)
+            } else {
+                return@derivedStateOf null
             }
         }
     }
