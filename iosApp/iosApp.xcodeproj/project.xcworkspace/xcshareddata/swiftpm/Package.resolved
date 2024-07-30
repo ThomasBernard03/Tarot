@@ -1,0 +1,42 @@
+{
+  "originHash" : "ec6b3f09ed589b213dd538c2b91138cf5edebac58e273c83107b4ec40dc72187",
+  "pins" : [
+    {
+      "identity" : "flow",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/toastersocks/Flow.git",
+      "state" : {
+        "revision" : "5c1b99acf390ace87006e065b14f9bdcdd27fdbb",
+        "version" : "1.2.3"
+      }
+    },
+    {
+      "identity" : "helpers",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/toastersocks/Helpers.git",
+      "state" : {
+        "revision" : "ae8fe3d43f72082cd4a67a0e9791fa982aa90d54",
+        "version" : "0.6.0"
+      }
+    },
+    {
+      "identity" : "multipicker",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/toastersocks/MultiPicker",
+      "state" : {
+        "revision" : "bd217fcdbd39969b6b42126565a077702a0f0015",
+        "version" : "1.1.0"
+      }
+    },
+    {
+      "identity" : "toast-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/BastiaanJansen/toast-swift",
+      "state" : {
+        "revision" : "9a40b722b6eeb9683d47e3584501e81525741291",
+        "version" : "2.1.2"
+      }
+    }
+  ],
+  "version" : 3
+}

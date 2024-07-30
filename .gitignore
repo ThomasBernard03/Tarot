@@ -15,3 +15,11 @@
 local.properties
 Keystore
 /app/release
+/.kotlin
+/shared/build
+/composeApp/build
+/composeApp/build
+/composeApp/build
+/iosApp/iosApp.xcodeproj/project.xcworkspace/xcuserdata
+*.apk
+/composeApp/release

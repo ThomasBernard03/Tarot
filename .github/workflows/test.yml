@@ -27,6 +27,7 @@ jobs:
         run: |
           echo $ENCODED_STRING > keystore-b64.txt
           base64 -d keystore-b64.txt > Keystore
+
       - name: Build Release apk and aab
         env:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -34,24 +35,17 @@ jobs:
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: ./gradlew assembleRelease bundleRelease --stacktrace
 
-      - name: Find APK and AAB files
-        id: find_files
-        run: |
-          APK_PATH=$(find . -name "app-release.apk" | head -n 1)
-          AAB_PATH=$(find . -name "app-release.aab" | head -n 1)
-          echo "APK_PATH=$APK_PATH" >> $GITHUB_ENV
-          echo "AAB_PATH=$AAB_PATH" >> $GITHUB_ENV
       - name: Upload APK to Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: app-release.apk
-          path: ${{ env.APK_PATH }}
+          path: composeApp/build/outputs/apk/release/composeApp-release.apk
 
       - name: Upload AAB to Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: app-release.aab
-          path: ${{ env.AAB_PATH }}
+          path: composeApp/build/outputs/bundle/release/composeApp-release.aab
 
   test:
     runs-on: ubuntu-latest
