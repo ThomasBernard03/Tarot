@@ -13,18 +13,25 @@
 </p>
 
 
-[<img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
+[<img src=".doc/images/get_in_on_google_play.png"
 alt="Download from Google Play" height="100">](https://play.google.com/store/apps/details?id=fr.thomasbernard03.tarot)
+
+[<img src=".doc/images/download_on_the_app_store.webp"
+alt="Download from App Store" height="100">](https://apps.apple.com/fr/app/points-tarot/id6575344812?l=en-GB)
+
+
+
 
 - Features
   - [x] 3 players games
-  - [ ] 4 players games
+  - [x] 4 players games
   - [x] 5 players games
-  - [ ] New design for round screen
-  - [ ] Migration to KMP (For iOS Version)
+  - [ ] New design for round screen (Android)
+  - [x] Migration to KMP (For iOS Version)
     - [x] Database
-    - [ ] DI
-  - [ ] Play store publication
+    - [x] DI
+    - [x] App Store publication
+  - [x] Play store publication
 
 
 
