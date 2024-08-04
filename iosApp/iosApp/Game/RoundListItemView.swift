@@ -38,7 +38,6 @@ struct RoundListItemView: View {
                 }
                
             }
-            // Text(round.bi)
             
             ForEach(round.oudlers, id: \.self){ oudler in
                 OudlerView(oudler: oudler)

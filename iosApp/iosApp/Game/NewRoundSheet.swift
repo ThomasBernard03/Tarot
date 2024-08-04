@@ -53,7 +53,9 @@ struct NewRoundSheet: View {
                                 }
                              }.pickerStyle(.menu)
                         }
-                        
+                    }
+                    
+                    Section("Bouts"){
                         MultiPicker("Bouts", selection: $oudlers){
                             ForEach(Oudler.all(), id: \.self){ oudler in
                                 HStack {
@@ -67,7 +69,6 @@ struct NewRoundSheet: View {
                                 .mpTag(oudler)
                             }
                         }
-                        .mpPickerStyle(.navigationLink)
                     }
                     
                     Section("Points"){
