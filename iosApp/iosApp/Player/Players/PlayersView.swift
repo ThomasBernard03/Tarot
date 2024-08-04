@@ -19,12 +19,12 @@ struct PlayersView: View {
                 else {
                     List {
                         ForEach(viewModel.players, id:\.id){ player in
-                            //NavigationLink(destination: PlayerView(player: player)) {
+                            NavigationLink(destination: PlayerView(player: player)) {
                                 Label(
                                     title: { Text(player.name) },
                                     icon: { Image(systemName: "circle.fill").foregroundColor(player.color.toColor()) }
                                 )
-                            //}
+                            }
                             .swipeActions(edge:.trailing){
                                 Button(action: { viewModel.deletePlayer(player: player)}){
                                     Label("Supprimer le joueur", systemImage: "trash")
