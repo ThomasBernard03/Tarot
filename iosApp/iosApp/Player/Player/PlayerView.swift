@@ -13,17 +13,15 @@ struct PlayerView: View {
     
     let player: PlayerModel
     
+    @State private var viewModel = ViewModel()
     @State private var playerName = ""
-    @State private var playerColor : Color? = nil
-    
-    @State private var editable : Bool = false
+    @State private var playerColor : PlayerColor? = nil
     
     var body: some View {
         
         Form {
             Section("Apparance"){
                 TextField("Nom du joueur", text: $playerName)
-                    .disabled(!editable)
                 
                 HStack {
                     ScrollView(.horizontal) {
@@ -33,39 +31,25 @@ struct PlayerView: View {
                                     .foregroundColor(color.toColor())
                                     .frame(width: 50, height: 50)
                                     .overlay(
-                                        Circle().stroke(Color.primary, lineWidth: playerColor == color.toColor()  ? 4 : 0)
+                                        Circle().stroke(Color.primary, lineWidth: playerColor == color  ? 4 : 0)
                                     )
+                                    .onTapGesture {
+                                        if playerColor == color {
+                                            playerColor = nil
+                                        }
+                                        else {
+                                            playerColor = color
+                                        }
+                                    }
                             }
                         }
                         .padding()
                     }
                 }
                 
-//                ScrollView(.horizontal) {
-//                    HStack {
-//                        ForEach(PlayerColor.all(), id: \.self) { color in
-//                            Circle()
-//                                .foregroundColor(color.toColor())
-//                                .frame(width: 50, height: 50)
-//                                .overlay(
-//                                    Circle().stroke(Color.primary, lineWidth: playerColor == color ? 4 : 0)
-//                                )
-////                                .onTapGesture {
-////                                    if playerColor == color {
-////                                        playerColor = nil
-////                                    }
-////                                    else {
-////                                        playerColor = color
-////                                    }
-////                                }
-//                        }
-//                    }
-//                    .padding()
-//                }
-                
                 Button(action: {
-//                        viewModel.createPlayer(name: playerName, color: selectedColor!)
-//                        showNewPlayerSheet.toggle()
+//                    viewModel.editPlayer(id: player.id,name: playerName, color: playerColor)
+                    viewModel.editPlayer(id: Int(player.id), name: playerName, color: playerColor!)
                 }){
                     Text("Modifier le joueur")
                         .frame(maxWidth: .infinity)
@@ -85,10 +69,6 @@ struct PlayerView: View {
         }
         .navigationTitle(player.name)
         .toolbar {
-            Button(action: { editable.toggle() }) {
-                Label("Modifier", systemImage: "pencil.circle")
-                    .foregroundColor(player.color.toColor())
-            }
             
             Button(action: { }) {
                 Label("Supprimer", systemImage: "trash")
@@ -97,7 +77,7 @@ struct PlayerView: View {
         }
         .onAppear {
             playerName = player.name
-            playerColor = player.color.toColor()
+            playerColor = player.color
         }
     }
 }
