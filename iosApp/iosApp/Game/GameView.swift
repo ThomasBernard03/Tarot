@@ -20,26 +20,27 @@ struct GameView: View {
     var body: some View {
         NavigationStack {
             VStack(alignment: .center) {
-                if viewModel.currentGame == nil {
-                    Text("Aucune partie en cours, appuyez sur le '+' pour démarrer une nouvelle partie")
-                        .padding()
-                        .multilineTextAlignment(.center)
-                } 
-                else {
+                
+                if let game = viewModel.currentGame {
                     Form {
                         Section("Résultats"){
-                            GameResultView(scores: viewModel.currentGame!.calculateScore())
+                            GameResultView(scores: game.calculateScore())
                         }
                         
                         Section("Tours"){
-                            List(viewModel.currentGame!.rounds, id: \.id){ round in
-                                let index = (viewModel.currentGame?.rounds.firstIndex(of: round) ?? 0) + 1
+                            List(game.rounds, id: \.id){ round in
+                                let index = (game.rounds.firstIndex(of: round) ?? 0) + 1
                                 NavigationLink(destination: RoundDetailView(index: index, round: round)) {
-                                    RoundListItemView(round: round, numberOfPlayers: viewModel.currentGame!.players.count)
+                                    RoundListItemView(round: round, numberOfPlayers: game.players.count)
                                 }
                             }
                         }
                     }
+                }
+                else {
+                    Text("Aucune partie en cours, appuyez sur le '+' pour démarrer une nouvelle partie")
+                        .padding()
+                        .multilineTextAlignment(.center)
                 }
             }
             .navigationTitle("Partie en cours")
