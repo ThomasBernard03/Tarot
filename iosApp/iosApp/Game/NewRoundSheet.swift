@@ -111,7 +111,7 @@ struct NewRoundSheet: View {
                     
                     
                     Section("Bonus"){
-                        
+                        Text("À venir ...")
                     }
                 }
                 

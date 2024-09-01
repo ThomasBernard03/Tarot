@@ -7,9 +7,11 @@
 //
 
 import SwiftUI
+import StoreKit
 
 struct SettingsView: View {
     @Environment(\.openURL) var openURL
+    @Environment(\.requestReview) var requestReview
     
     private var appVersion: String {
          Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "Unknown"
@@ -43,6 +45,14 @@ struct SettingsView: View {
                         Label(
                             title: { Text("Remonter un bug").foregroundColor(.primary) },
                             icon: { Image(systemName: "ladybug").foregroundColor(.green) }
+                        )
+                    }
+                    Button(action: {
+                        requestReview()
+                    }) {
+                        Label(
+                            title: { Text("Noter l'application").foregroundColor(.primary) },
+                            icon: { Image(systemName: "star").foregroundColor(.yellow) }
                         )
                     }
                 }
