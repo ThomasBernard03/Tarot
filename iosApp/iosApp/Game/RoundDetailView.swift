@@ -16,7 +16,6 @@ struct RoundDetailView: View {
     
     var body: some View {
         Form {
-            
             Section("General"){
                 HStack {
                     Text("Preneur")
@@ -74,5 +73,14 @@ struct RoundDetailView: View {
             }
         }
         .navigationTitle("Tour n°" + String(index))
+        .toolbar {
+            Button(action: { }) {
+                Label("Supprimer le tour", systemImage: "trash").labelStyle(.iconOnly)
+            }
+            
+            Button(action: { }) {
+                Label("Modifier le tour", systemImage: "pencil").labelStyle(.iconOnly)
+            }
+        }
     }
 }

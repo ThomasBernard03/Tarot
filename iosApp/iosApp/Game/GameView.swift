@@ -28,10 +28,23 @@ struct GameView: View {
                         }
                         
                         Section("Tours"){
-                            List(game.rounds, id: \.id){ round in
-                                let index = (game.rounds.firstIndex(of: round) ?? 0) + 1
-                                NavigationLink(destination: RoundDetailView(index: index, round: round)) {
-                                    RoundListItemView(round: round, numberOfPlayers: game.players.count)
+                            List {
+                                ForEach(game.rounds, id : \.id){ round in
+                                    let index = (game.rounds.firstIndex(of: round) ?? 0) + 1
+                                    NavigationLink(destination: RoundDetailView(index: index, round: round)) {
+                                        RoundListItemView(round: round, numberOfPlayers: game.players.count)
+                                    }
+                                    .swipeActions(edge:.trailing){
+                                        Button(action: { viewModel.deleteRound(round: round) }){
+                                            Label("Supprimer le tour", systemImage: "trash")
+                                        }
+                                        .tint(.red)
+                                        
+                                        Button(action: { }){
+                                            Label("Modifier le tour", systemImage: "pencil")
+                                        }
+                                        .tint(.accentColor)
+                                    }
                                 }
                             }
                         }

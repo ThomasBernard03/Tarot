@@ -19,6 +19,7 @@ extension GameView {
         private let finishGameUseCase = FinishGameUseCase()
         private let createGameUseCase = CreateGameUseCase()
         private let createRoundUseCase = CreateRoundUseCase()
+        private let deleteRoundUseCase = DeleteRoundUseCase()
         
         var currentGame : GameModel? = nil
         var players : [PlayerModel] = []
@@ -100,6 +101,22 @@ extension GameView {
                     let toast = Toast.default(
                       image: UIImage(systemName: "xmark.circle")!,
                       title: "Impossible de créer le tour"
+                    )
+                    toast.show()
+                }
+            }
+        }
+        
+        func deleteRound(round : RoundModel){
+            Task {
+                let result = try! await deleteRoundUseCase.invoke(roundId: round.id)
+                if result.isSuccess() {
+                    getCurrentGame()
+                }
+                else {
+                    let toast = Toast.default(
+                      image: UIImage(systemName: "xmark.circle")!,
+                      title: "Impossible de supprimer le tour"
                     )
                     toast.show()
                 }
