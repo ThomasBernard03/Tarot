@@ -1,15 +1,18 @@
+<h1 align="center">Tarot Points</h1>
+
+
 <p align="center">
-  <img width="300" alt="Android tools logo" src= "./doc/banner-light.png#gh-light-mode-only"/>
-  <img width="300" alt="Android tools logo" src= "./doc/banner-dark.png#gh-dark-mode-only"/>
+<img src=".doc/images/banner.png"/>
 </p>
 
----
 
 <p align="center">
    <img alt="Build status" src="https://github.com/ThomasBernard03/Tarot/actions/workflows/main.yml/badge.svg?branch=main"/>
   <img alt="Language" src="https://img.shields.io/badge/language-kotlin-purple"/>
   <img alt="UI " src="https://img.shields.io/badge/UI%20framework-JetpackCompose-blue"/> 
+  <img alt="UI " src="https://img.shields.io/badge/UI%20framework-SwiftUI-orange"/> 
   <img alt="API" src="https://img.shields.io/badge/plateform-Android-green"/> 
+  <img alt="API" src="https://img.shields.io/badge/plateform-iOS-blue"/> 
 </p>
 
 
